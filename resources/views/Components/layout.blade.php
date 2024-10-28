@@ -1,19 +1,22 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-gray-900">
+<html lang="en" class="h-full bg-white">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="h-full text-gray-300">
+<body class="h-full text-black">
 <div class="min-h-full">
-  <nav class="bg-gray-800 shadow-md">
+  <nav class="bg-blue-950 shadow-md">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="flex h-16 items-center justify-between">
         <div class="flex items-center">
           <div class="flex-shrink-0">
-            <img class="h-8 w-8" src="{{asset('images/icon.png')}}" alt="My Logo">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 text-white">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 0 1 0 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 0 1 0-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375Z" />
+              </svg>
+
           </div>
           <div class="hidden md:block">
             <div class="ml-10 flex items-baseline space-x-4">
@@ -77,9 +80,9 @@
     </div>
   </nav>
 
-  <header class="bg-gray-900"> <!-- Header background changed to lighter gray -->
-    <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-      <h1 class="text-3xl font-bold tracking-tight text-yellow-400 text-center">{{$head}}</h1> <!-- Header text color set to a lighter yellow -->
+  <header class="mt-4"> <!-- Header background changed to lighter gray -->
+    <div class="mx-auto max-w-7xl">
+      <div>{{$head}}</div> <!-- Header text color set to a lighter yellow -->
     </div>
   </header>
 
