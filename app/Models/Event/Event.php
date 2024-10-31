@@ -21,6 +21,7 @@ class Event extends Model
         return Event::all();
     }
 
+
     // locationId Belongs To Location
     public function location()
     {

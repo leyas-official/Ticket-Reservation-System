@@ -11,7 +11,7 @@
                     >
                     <button
                         type="submit"
-                        class="bg-blue-600 text-white px-4 py-2 rounded-md  hover:bg-blue-700 transition duration-300 ml-2"
+                        class="bg-blue-800 text-white px-4 py-2 rounded-md  hover:bg-blue-900 transition duration-200 ml-2"
                     >
                         Search
                     </button>
@@ -20,34 +20,51 @@
         </div>
     </x-slot:head>
     <div class="relative overflow-x-auto  sm:rounded-lg p-6">
+        @if(session('success'))
+            <div id="success-message" class="relative mb-4 p-3 bg-green-100 text-green-700 border border-green-300 rounded-lg">
+                <button onclick="document.getElementById('success-message').style.display='none'" class="absolute top-2 right-2 text-green-700 hover:text-green-900 focus:outline-none text-lg">
+                    &times;
+                </button>
+                {{ session('success') }}
+            </div>
+        @endif
+
+
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <!-- Event Box -->
             @foreach ($events as $event)
 
             <div class="box flex flex-col bg-white shadow-md rounded-xl p-6 transition-shadow hover:shadow-lg group">
-                <h1 class="text-2xl font-bold text-black group-hover:text-blue-900"> {{ $event['name']}}</h1>
+                <h1 class="text-2xl font-bold text-black group-hover:text-blue-900"> {{ $event['name'] }}</h1>
+
                 <p class="text-gray-500 mt-2 flex items-center">
                     <svg class="w-5 h-5 text-gray-400 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="..."/></svg>
                     Location :  {{ $event['location']['name'] }}
                 </p>
+
                 <p class="text-gray-500 mt-2 flex items-center">
                     <svg class="w-5 h-5 text-gray-400 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="..."/></svg>
                     Date :  {{ $event->date }}
                 </p>
+
                 <p class="text-gray-500 mt-2 flex items-center">
                     <svg class="w-5 h-5 text-gray-400 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="..."/></svg>
                     Time :  {{ $event->time }}
                 </p>
-                <p class="text-gray-500 mt-2 flex items-center">
+
+                <p class="text-gray-500 mt-2 flex items-center truncate">
                     <svg class="w-5 h-5 text-gray-400 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="..."/></svg>
-                    description :  {{ $event->description }}
+                    Description : <span class="truncate max-w-xs">{{ $event->description }}</span>
                 </p>
+
                 <p class="text-gray-700 mt-2 font-semibold flex items-center">
                     <svg class="w-5 h-5 text-yellow-500 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="..."/></svg>
                     Price : {{ $event->price }}
                 </p>
-                <a href="{{ route('booking' , $event->id)}}" class="mt-6 inline-block text-center text-white bg-blue-600 hover:bg-blue-700 font-medium py-2 rounded-lg transition-colors duration-300">Book Now</a>
+
+                <a href="{{ route('book', $event->id) }}" class="mt-6 inline-block text-center text-white bg-blue-800 hover:bg-blue-900 font-medium py-2 rounded-lg transition-colors duration-200">Book Now</a>
             </div>
+
             @endforeach
 
 

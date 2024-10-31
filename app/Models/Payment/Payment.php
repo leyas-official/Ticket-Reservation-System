@@ -12,6 +12,12 @@ class Payment extends Model
         'paymentDate',
     ];
 
+    public function getAllPayment()
+    {
+        return Payment::all();
+    }
+
+
     public function tickets()
     {
         return $this->hasMany(Ticket::class);

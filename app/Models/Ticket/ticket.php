@@ -1,10 +1,13 @@
 <?php
 
-namespace App\Models\ticket;
+namespace App\Models\Ticket;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
+use App\Models\User\User;
 
-class ticket extends Model
+
+class Ticket extends Model
 {
     protected $fillable = [
         'name',
@@ -15,6 +18,31 @@ class ticket extends Model
         'eventId',
         'paymentId',
     ];
+
+    public static function booking(Request $request) {
+
+        $validatedData = self::validation($request);
+
+        // Store User Data
+        User::createUser($validatedData);
+
+        // Store Ticket
+
+        return redirect()->route('events')->with('success', 'Your booking has been successfully completed!');
+    }
+
+    public  static function validation(Request $request) {
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:8',
+            'tickets' => 'required|integer|min:1',
+            'payment_method' => 'required|string|in:credit_card,sadad,mobicash',
+        ]);
+
+        return $validatedData ;
+    }
+
 
     // userId Belongs To User
     public function user()
