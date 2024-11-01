@@ -16,4 +16,5 @@ class Customer extends Person
     {
         return self::where('role', 'U')->get();
     }
+
 }

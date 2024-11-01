@@ -78,4 +78,12 @@ abstract class Person extends Model implements AuthenticatableContract
             'Role' => 'U',
         ]);
     }
+
+    public static function getID(){
+        if(Auth::check()) {
+            return auth::id();
+        }
+
+        return null;
+    }
 }

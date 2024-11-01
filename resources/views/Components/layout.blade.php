@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-white">
+<html lang="en" class="h-full bg-gray-200">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -40,7 +40,7 @@
             <div class="relative ml-3">
                 @guest()
                 <a href="{{ route('login') }}" type="submit" class="relative flex max-w-xs items-center rounded-full bg-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                    <p class="border border-white px-3 py-1 rounded-md text-white bg-blue-950 hover:bg-white hover:text-blue-950 transition duration-200 focus:outline-none">Login</p>
+                    <p class="border border-white px-3 py-1 rounded-md text-white bg-blue-950 hover:bg-blue-800 transition duration-200 focus:outline-none">Login</p>
                 </a>
                 @endguest
 

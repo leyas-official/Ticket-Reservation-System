@@ -54,12 +54,12 @@
 
             @auth
             <h3 class="text-3xl font-bold text-center text-blue-800">Book an Event</h3>
-            <form action="#" method="POST" class="space-y-4">
+            <form action="{{route('addTicket')}}" method="POST" class="space-y-4">
                 @csrf
                 <!-- Name -->
                 <div>
                     <label class="block text-sm font-medium text-gray-600">Full Name</label>
-                    <input type="text" name="name" disabled class="w-full px-4 py-2 mt-1 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 @error('name') border-red-600 @enderror" placeholder="Your Name" value="{{ auth()->user()->name }}">
+                    <input type="text" name="name" class="w-full px-4 py-2 mt-1 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 @error('name') border-red-600 @enderror" placeholder="Your Name" value="{{ auth()->user()->name }}">
                     @error('name')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
@@ -68,7 +68,7 @@
                 <!-- Email -->
                 <div>
                     <label class="block text-sm font-medium text-gray-600">Email Address</label>
-                    <input type="email" name="email" required class="w-full px-4 py-2 mt-1 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 @error('email') border-red-600 @enderror" placeholder="you@example.com" value="{{ auth()->user()->email }}" disabled>
+                    <input type="email" name="email" class="w-full px-4 py-2 mt-1 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 @error('email') border-red-600 @enderror" placeholder="you@example.com" value="{{ auth()->user()->email }}">
                     @error('email')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
@@ -86,6 +86,9 @@
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
                 </div>
+
+                <input type="hidden" name="eventId" value="{{ $event->id }}">
+                <input type="hidden" name="userId" value="{{ auth()->user()->id }}">
 
                 <!-- Submit Button -->
                 <div class="flex flex-row gap-4">

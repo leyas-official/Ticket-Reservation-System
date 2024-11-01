@@ -15,7 +15,6 @@
                     >
                         Search
                     </button>
-                </div>
             </form>
         </div>
     </x-slot:head>

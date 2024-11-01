@@ -2,9 +2,13 @@
 
 namespace App\Models\Ticket;
 
+use App\Models\Event\Event;
+use App\Models\Payment\Payment;
+use App\Models\People\Customer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use App\Models\User\User;
+use Illuminate\Support\Facades\Auth;
+use App\Enums\ticketStatus;
 
 
 class Ticket extends Model
@@ -16,7 +20,11 @@ class Ticket extends Model
         'price',
         'userId',
         'eventId',
-        'paymentId',
+        'paymentType',
+    ];
+
+    protected $casts = [
+        'ticketStatus' => ticketStatus::class,
     ];
 
     public static function booking(Request $request) {
@@ -24,33 +32,61 @@ class Ticket extends Model
         $validatedData = self::validation($request);
 
         // Store User Data
-        User::createUser($validatedData);
+        Customer::createUser($validatedData);
 
         // Store Ticket
 
         return redirect()->route('events')->with('success', 'Your booking has been successfully completed!');
     }
 
-    public  static function validation(Request $request) {
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8',
-            'tickets' => 'required|integer|min:1',
-            'payment_method' => 'required|string|in:credit_card,sadad,mobicash',
-        ]);
-
-        return $validatedData ;
-    }
+//    public  static function validation(Request $request) {
+////        dd($request);
+//        return $request->validate([
+//            'userId' => 'required|integer|min:5|exists:customers,id',
+//            'eventId' => 'required|integer|min:5|exists:tickets,id',
+//            'name' => 'required|string|max:255|exists:customers,name',
+//            'email' => 'required|email|exists:customers,email',
+//            'payment_method' => 'required|string|exists:credit_card,sadad,mobicash',
+//        ]);
+//    }
 
     public static function getAllTickets() {
         return Ticket::all();
     }
 
+    public static function getAllUserTickets($id) {
+         return Ticket::where('userId', $id)->get();
+    }
+
+    public static function getTicketByID($id) {
+        return Ticket::where('id', $id)->first();
+    }
+
+    public static function addTicket(Request $request) {
+//        $validatedData = self::validation($request);
+        $T_data = TicketStatus::ACTIVE->value;
+        self::createTicket($request, $T_data);
+        return redirect()->route('events')->with('success', 'Purchase has been successfully completed!');
+    }
+
+    public static function cancelReservation(Request $request) {
+
+    }
+
+    public static function createTicket($data, $T_data) {
+//        dd($data->all());
+        return self::create([
+            'userId' => $data['userId'],
+            'eventId' => $data['eventId'],
+            'paymentType' => $data['payment_method'],
+            'ticketStatus' => $T_data,
+        ]);
+    }
+
     // userId Belongs To User
     public function user()
     {
-        return $this->belongsTo(User::class, 'userId');
+        return $this->belongsTo(Customer::class, 'userId');
     }
 
     // eventId Belongs To Event
