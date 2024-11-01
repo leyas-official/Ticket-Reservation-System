@@ -22,8 +22,6 @@ Route::post('/signUp', [User::class , 'signUp'])->name('signUp');
 
 Route::post('/signIn', [User::class , 'signIn'])->name('signIn');
 
-
-
 Route::get('/events/index', function ()  {
     return view('events.index', [
         'events' => Event::getAllEvents()
@@ -37,8 +35,4 @@ Route::get('/events/booking/{event}', function (Event $event) {
     return view('events.booking', ['event' => $event]);
 })->name('book');
 
-
-
-Route::get('/myTickets', function () {
-    return view('myTickets');
-});
+Route::get('/myTickets',[Ticket::class, 'booking']);
