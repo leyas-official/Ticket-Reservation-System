@@ -28,60 +28,6 @@ class User extends Authenticatable
     ];
 
 
-    public static function signIn(Request $request) {
-
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);;
-
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            return redirect()->route('events')->with('success', 'login Successful');
-        } else {
-            return back()->withErrors([
-                'email' => 'The password or email is incorrect please try again !',
-                'password' => 'The password or email is incorrect please try again !',
-            ])->onlyInput('password');
-        }
-    }
-
-
-    public static function signUp(Request $request) {
-        $validatedData = self::validation($request);
-        $user = self::createUser($validatedData);
-        Auth::login($user);
-        return  redirect()->route('events')->with('success', 'signup Successful');
-    }
-
-    public  static function validation(Request $request) {
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
-
-        return $validatedData ;
-    }
-
-    public function signOut(Request $request)
-    {
-        // 1 - Removing Authentication from session
-        Auth::logout();
-
-        // 2 - Back To Index
-        return redirect()->to(url('/'));
-    }
-
-    public  static function createUser($data) {
-         return self::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-            'Role' => 'U',
-        ]);
-    }
-
-
 
     /**
      * The attributes that should be hidden for serialization.

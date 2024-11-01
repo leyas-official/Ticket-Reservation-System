@@ -10,6 +10,10 @@ class Location extends Model
         'name'
     ];
 
+    public static function getAllLocations() {
+        return Location::all();
+    }
+
     public function events()
     {
         return $this->hasMany(Event::class);

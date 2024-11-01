@@ -19,12 +19,12 @@
           </div>
           <div class="hidden md:block">
             <div class="ml-10 flex items-baseline space-x-4">
-              <x-nav-link href="/" :active="request()->is('/')" class="text-gray-300  hover:text-white">Home</x-nav-link>
-              <x-nav-link href="{{ route('events') }}" :active="request()->routeIs('events')" class="text-gray-300 hover:bg-yellow-600 hover:text-white">
+                <x-nav-link href="/" :active="request()->is('/')" class="text-gray-300  hover:text-white">Home</x-nav-link>
+                <x-nav-link href="{{ route('events') }}" :active="request()->routeIs('events')" class="text-gray-300 hover:bg-yellow-600 hover:text-white">
                 Events
-            </x-nav-link>
-                          <x-nav-link href="/myTickets" :active="request()->is('myTickets')" class="text-gray-300 hover:bg-yellow-600 hover:text-white">My Tickets</x-nav-link>
-              <x-nav-link href="/about" :active="request()->is('about')" class="text-gray-300 hover:bg-yellow-600 hover:text-white">About</x-nav-link>
+                 </x-nav-link>
+                <x-nav-link href="/myTickets" :active="request()->is('myTickets')" class="text-gray-300 hover:bg-yellow-600 hover:text-white">My Tickets</x-nav-link>
+                <x-nav-link href="/about" :active="request()->is('about')" class="text-gray-300 hover:bg-yellow-600 hover:text-white">About</x-nav-link>
             </div>
           </div>
         </div>
@@ -39,18 +39,15 @@
 
             <div class="relative ml-3">
                 @guest()
-                  <button type="button" class="relative flex max-w-xs items-center rounded-full bg-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                        <img class="h-10 w-10 rounded-full bg-gray-800" src="{{asset('images/profile.png')}}" alt="">
-                  </button>
+                <a href="{{ route('login') }}" type="submit" class="relative flex max-w-xs items-center rounded-full bg-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                    <p class="border border-white px-3 py-1 rounded-md text-white bg-blue-950 hover:bg-white hover:text-blue-950 transition duration-200 focus:outline-none">Login</p>
+                </a>
                 @endguest
 
                 @auth()
-                    <form action="{{ route('signOut') }}" method="POST" class="inline">
-                        @csrf  <!-- Important for CSRF protection -->
-                        <button type="submit" class="relative flex max-w-xs items-center rounded-full bg-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                            <p class="border border-amber-50">LogOut</p>
-                        </button>
-                    </form>
+                        <a href="{{ route('signOut') }}" type="submit" class="relative flex max-w-xs items-center rounded-full bg-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                            <p class="border border-white px-3 py-1 rounded-md text-white bg-blue-950 hover:bg-white hover:text-blue-950 transition duration-200 focus:outline-none">Logout</p>
+                        </a>
                 @endauth
             </div>
           </div>

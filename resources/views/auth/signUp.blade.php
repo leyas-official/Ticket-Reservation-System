@@ -59,7 +59,7 @@
         <!-- End Sign In Form -->
 
         <div class="mt-6 text-center">
-            <p class="text-sm text-gray-600">Already have an account? <a href="{{ url()->previous() }}" class="text-blue-600 hover:underline">Sign In</a></p>
+            <p class="text-sm text-gray-600">Already have an account? <a href="{{ route('login') }}" class="text-blue-600 hover:underline">Sign In</a></p>
         </div>
 
     </div>

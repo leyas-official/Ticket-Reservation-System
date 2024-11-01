@@ -43,6 +43,9 @@ class Ticket extends Model
         return $validatedData ;
     }
 
+    public static function getAllTickets() {
+        return Ticket::all();
+    }
 
     // userId Belongs To User
     public function user()
