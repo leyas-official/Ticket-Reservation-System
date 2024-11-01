@@ -63,6 +63,15 @@ class User extends Authenticatable
         return $validatedData ;
     }
 
+    public function signOut(Request $request)
+    {
+        // 1 - Removing Authentication from session
+        Auth::logout();
+
+        // 2 - Back To Index
+        return redirect()->to(url('/'));
+    }
+
     public  static function createUser($data) {
          return self::create([
             'name' => $data['name'],
