@@ -5,6 +5,7 @@ use App\Models\Event\Event;
 use App\Models\Event\Location;
 use App\Models\Event\EventType;
 use App\Models\People\Customer;
+use App\Models\People\Admin;
 use App\Models\Ticket\Ticket;
 use App\Models\Payment\Payment;
 
@@ -75,8 +76,23 @@ Route::middleware(['auth', 'admin'])->group(function () {
         ]);
     })->name('admin.events');
 
+
+    // Add Event
     Route::get('/Admin/events/create', function () {
         return view('admin.events.create' , ['locations' => Location::getAllLocations() , 'types' => EventType::getAllTypes() ]);
     })->name('admin.events.create');
+
+    Route::post('/Admin/events/store', [Admin::class , 'addEvent'])->name('admin.events.store');
+
+    // Edit Event
+    Route::put('/Admin/events/{event}', [Admin::class , 'editEvent'])->name('admin.events.update');
+
+    Route::get('/Admin/events/{event}/edit', function (Event $event) {
+        return view('admin.events.edit' , ['event' => $event , 'locations' => Location::getAllLocations() , 'types' => EventType::getAllTypes() ]);
+    })->name('admin.events.edit');;
+
+    Route::delete('/Admin/events/{event}' , [Admin::class , 'deleteEvent'])->name('admin.events.delete');
+
+    
 });
 

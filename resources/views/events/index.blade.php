@@ -3,19 +3,30 @@
         <!-- Search Navigation Bar -->
         <div class="w-full bg-white shadow-md rounded-lg p-4 mb-6 mx-4 flex items-center justify-between">
             <h1 class="text-xl font-bold text-blue-900">Event Ticketing</h1>
-            <form action="#" class="flex items-center w-full max-w-lg">
+            <div class="flex flex-row items-center gap-4">
+                <form action="{{ route('events') }}" class="flex items-center  justify-center w-full max-w-lg " method="GET">
+                    @csrf
                     <input
-                        type="text"
-                        placeholder="Search Events..."
-                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    type="text"
+                    placeholder="Search Events..."
+                    name="search"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                     <button
                         type="submit"
-                        class="bg-blue-800 text-white px-4 py-2 rounded-md  hover:bg-blue-900 transition duration-200 ml-2"
+                        class="bg-blue-800 text-white px-4 py-2 rounded-md hover:bg-blue-900 transition duration-200 ml-2"
                     >
-                        Search
+                       <span class="ml-2"> Search </span>
                     </button>
-            </form>
+                </form>
+            </div>
+            <a
+            href="{{ route('events') }}"
+            class="bg-blue-800 text-white px-4 py-2 rounded-md hover:bg-blue-900 transition duration-200 ml-2 "
+            >
+            <span class="ml-2">All Events </span>
+
+            </a>
         </div>
     </x-slot:head>
     <div class="relative overflow-x-auto  sm:rounded-lg p-6">
@@ -29,6 +40,7 @@
         @endif
 
 
+        @if(count($events) > 0)
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <!-- Event Box -->
             @foreach ($events as $event)
@@ -68,5 +80,20 @@
 
 
         </div>
+        @else
+        <div class="max-w-lg mx-auto p-6 mt-6 bg-red-50 border border-red-300 text-red-800 rounded-lg shadow-md">
+            <h2 class="text-lg font-semibold">Oops! No Events Found</h2>
+            <p class="mt-2 text-sm">It seems there are currently no events available. We’re working hard to bring you new events soon!</p>
+            <p class="mt-2 text-sm">You can also try searching for different events:</p>
+            <p class="mt-2 font-medium text-blue-600">{{ old('search') }}</p>
+            <div class="mt-4">
+                <a href="{{ route('events') }}" class="bg-blue-800 text-white px-4 py-2 rounded-md hover:bg-blue-900 transition duration-200">
+                    View All Events
+                </a>
+            </div>
+        </div>
+
+        @endif
+
     </div>
 </x-layout>

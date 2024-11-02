@@ -48,7 +48,7 @@ abstract class Person extends Model implements AuthenticatableContract
         $validatedData = self::validation($request);
         $user = self::createUser($validatedData);
         Auth::login($user);
-        return redirect()->route('events')->with('success', 'Signup Successful');
+        return redirect()->route('admin.events')->with('success', 'Signup Successful');
     }
 
     // Validation method

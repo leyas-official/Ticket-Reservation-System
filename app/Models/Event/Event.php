@@ -13,13 +13,62 @@ class Event extends Model
         'price',
         'description',
         'numberOfTicket',
-        'discount',
+        'locationId',
+        'eventTypeId',
     ];
 
     public static function getAllEvents()
     {
-        return Event::all();
+
+        return Event::query()
+        ->where('name','like','%'.request()->input('search').'%')
+        ->get();
     }
+
+    public static function validation($request)
+    {
+        return  $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string|min:10',
+            'date' => 'required|date',
+            'time' => 'required|date_format:H:i',
+            'location' => 'required|integer|exists:locations,id',
+            'type' => 'required|integer|exists:event_types,id',
+            'price' => 'required|numeric',
+            'numberOfTicket' => 'required|integer|min:1',
+        ]);
+    }
+
+    public static function createEvent($event)
+    {
+        return self::create([
+            'name' => $event['name'],
+            'description' => $event['description'],
+            'date' => $event['date'],
+            'time' => $event['time'],
+            'locationId' => $event['location'],
+            'eventTypeId' => $event['type'],
+            'price' => $event['price'],
+            'numberOfTicket' => $event['numberOfTicket'],
+        ]);
+    }
+
+    public static function updateEvent($event , $data)
+    {
+        $event->update([
+            'name' => $data['name'],
+            'description' => $data['description'],
+            'date' => $data['date'],
+            'time' => $data['time'],
+            'locationId' => $data['location'],
+            'eventTypeId' => $data['type'],
+            'price' => $data['price'],
+            'numberOfTicket' => $data['numberOfTicket'],
+        ]);
+
+        return $event;
+    }
+
 
 
     // locationId Belongs To Location
