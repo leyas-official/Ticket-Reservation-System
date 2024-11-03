@@ -17,7 +17,7 @@
             <div>
                 <label for="name" class="block text-lg font-semibold text-gray-800">Event Name</label>
                 <input type="text" id="name" name="name" required
-                       class="w-full border @error('name') border-red-500 @else border-gray-300 @enderror p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                       class="w-full border @error('name') border-red-500 border-gray-300 @enderror p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
                        placeholder="Enter Name Event" value="{{ old('name') }}">
                 @error('name')
                     <span class="text-red-500 text-sm">{{ $message }}</span>
@@ -27,7 +27,7 @@
             <div>
                 <label for="description" class="block text-lg font-semibold text-gray-800">Event Description</label>
                 <textarea id="description" name="description" required
-                          class="w-full border @error('description') border-red-500 @else border-gray-300 @enderror p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                          class="w-full border @error('description') border-red-500 border-gray-300 @enderror p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
                           rows="4" placeholder="Provide a brief description of the event...">{{ old('description') }}</textarea>
                 @error('description')
                     <span class="text-red-500 text-sm">{{ $message }}</span>
@@ -38,7 +38,7 @@
                 <div>
                     <label for="date" class="block text-lg font-semibold text-gray-800">Event Date</label>
                     <input type="date" id="date" name="date" required
-                           class="w-full border @error('date') border-red-500 @else border-gray-300 @enderror p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" value="{{ old('date') }}">
+                           class="w-full border @error('date') border-red-500 border-gray-300 @enderror p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" value="{{ old('date') }}">
                     @error('date')
                         <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
@@ -46,7 +46,7 @@
                 <div>
                     <label for="time" class="block text-lg font-semibold text-gray-800">Event Time</label>
                     <input type="time" id="time" name="time" required
-                           class="w-full border @error('time') border-red-500 @else border-gray-300 @enderror p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" value="{{ old('time') }}">
+                           class="w-full border @error('time') border-red-500 border-gray-300 @enderror p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" value="{{ old('time') }}">
                     @error('time')
                         <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
@@ -56,7 +56,7 @@
             <div>
                 <label for="location" class="block text-lg font-semibold text-gray-800">Event Location</label>
                 <select id="location" name="location" required
-                        class="w-full border @error('location') border-red-500 @else border-gray-300 @enderror p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
+                        class="w-full border @error('location') border-red-500 border-gray-300 @enderror p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
                     <option value="" disabled selected>Select a location</option>
                     @foreach($locations as $location)
                         <option value="{{ $location->id }}" {{ old('location') == $location->id ? 'selected' : '' }}>
@@ -72,7 +72,7 @@
             <div>
                 <label for="type" class="block text-lg font-semibold text-gray-800">Event Type</label>
                 <select id="type" name="type" required
-                        class="w-full border @error('type') border-red-500 @else border-gray-300 @enderror p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
+                        class="w-full border @error('type') border-red-500 border-gray-300 @enderror p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
                     <option value="" disabled selected>Select an event type</option>
                     @foreach($types as $type)
                         <option value="{{ $type->id }}" {{ old('type') == $type->id ? 'selected' : '' }}>
@@ -88,7 +88,7 @@
             <div>
                 <label for="price" class="block text-lg font-semibold text-gray-800">Price</label>
                 <input type="text" id="price" name="price" required
-                       class="w-full border @error('price') border-red-500 @else border-gray-300 @enderror p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                       class="w-full border @error('price') border-red-500 border-gray-300 @enderror p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
                        placeholder="price.... $" value="{{ old('price') }}">
                 @error('price')
                     <span class="text-red-500 text-sm">{{ $message }}</span>
@@ -98,7 +98,7 @@
             <div>
                 <label for="numberOfTicket" class="block text-lg font-semibold text-gray-800">Number of Tickets</label>
                 <input type="text" id="numberOfTicket" name="numberOfTicket" required
-                       class="w-full border @error('numberOfTicket') border-red-500 @else border-gray-300 @enderror p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                       class="w-full border @error('numberOfTicket') border-red-500 border-gray-300 @enderror p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
                        placeholder="e.g., 100 (Max ticket quantity)" value="{{ old('numberOfTicket') }}">
                 @error('numberOfTicket')
                     <span class="text-red-500 text-sm">{{ $message }}</span>

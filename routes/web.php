@@ -7,7 +7,8 @@ use App\Models\Event\EventType;
 use App\Models\People\Customer;
 use App\Models\People\Admin;
 use App\Models\Ticket\Ticket;
-use App\Models\Payment\Payment;
+use App\Models\Ticket\Reservation;
+
 
 Route::get('/', function () {
     return view('home');
@@ -25,7 +26,7 @@ Route::get('/login', function () {
     return view('auth.login');
 })->name('login'); // Go To Register Page
 
-Route::post('/cancelReservation', [Ticket::class , 'cancelReservation'])->name('ticketCancel');
+Route::post('/cancelReservation', [Reservation::class , 'cancelReservation'])->name('ticketCancel');
 
 Route::post('/signUp', [Customer::class , 'signUp'])->name('signUp');
 
@@ -49,13 +50,13 @@ Route::get('/cancelReservation/{eventTicket}', function ($eventTicket) {
     return view('cancelReservation', ['ticket' => Ticket::getTicketByID($eventTicket)]);
 })->name('cancelReservation');
 
-Route::post('events', [Ticket::class, 'booking'])->name('booking');
+Route::post('/events/booking', [Reservation::class , 'reservation'])->name('addTicket');
 
 Route::get('/events/booking/{event}', function (Event $event) {
     return view('events.booking', ['event' => $event]);
 })->name('book');
 
-Route::post('/events/booking', [Ticket::class , 'addTicket'])->name('addTicket');
+//Route::post('/events/booking', [Ticket::class , 'addTicket'])->name('addTicket');
 
 // Admin Pages
 Route::middleware(['auth', 'admin'])->group(function () {
@@ -93,6 +94,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::delete('/Admin/events/{event}' , [Admin::class , 'deleteEvent'])->name('admin.events.delete');
 
-    
+
 });
 

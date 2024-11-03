@@ -19,7 +19,6 @@ class Event extends Model
 
     public static function getAllEvents()
     {
-
         return Event::query()
         ->where('name','like','%'.request()->input('search').'%')
         ->get();

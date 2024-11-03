@@ -24,24 +24,24 @@
                             <!-- Email -->
                             <div>
                                 <label for="email" class="block text-sm mb-2 text-gray-700">Email Address</label>
-                                <input type="email" id="email" name="email" value="{{ old('email') }}" required class="py-3 px-4 block w-full border border-gray-300 rounded-lg text-sm focus:border-blue-500 focus:ring focus:ring-blue-300 focus:outline-none @error('email') border-red-600 @enderror" placeholder="you@example.com">
+                                <input type="email" id="email" name="email" value="{{ old('email') }}" class="py-3 px-4 block w-full border border-gray-300 rounded-lg text-sm focus:border-blue-500 focus:ring focus:ring-blue-300 focus:outline-none @error('email') border-red-600 @enderror" placeholder="you@example.com">
                             </div>
 
                             <!-- Password -->
                             <div>
                                 <label for="password" class="block text-sm mb-2 text-gray-700">Password</label>
-                                <input type="password" id="password" name="password" required class="py-3 px-4 block w-full border border-gray-300 rounded-lg text-sm focus:border-blue-500 focus:ring focus:ring-blue-300 focus:outline-none @error('password') border-red-600 @enderror" placeholder="Your Password">
+                                <input type="password" id="password" name="password" class="py-3 px-4 block w-full border border-gray-300 rounded-lg text-sm focus:border-blue-500 focus:ring focus:ring-blue-300 focus:outline-none @error('password') border-red-600 @enderror" placeholder="Your Password">
                                 @error('password')
                                     <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
 
-                            <!-- Submit Button -->
+                            <!-- Back Button -->
                             <div class="flex flex-row gap-4">
-                                <a href="{{ route('events') }}" class="w-md px-4 py-2 font-semibold text-gray-800 bg-gray-300 rounded-lg hover:bg-gray-400 transition duration-200 text-white">
+                                <a href="{{ route('events') }}" class="w-md px-4 py-2 font-semibold text-gray-800 bg-gray-500 rounded-lg hover:bg-gray-800 transition duration-200 text-white">
                                     Back
                                 </a>
-                                <button type="submit" class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-900 text-white hover:bg-blue-900 focus:outline-none">Sign In</button>
+                                <button type="submit" class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-700 text-white hover:bg-blue-900 focus:outline-none">Sign In</button>
                             </div>
                         </div>
                     </form>
@@ -79,9 +79,10 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-600">Payment Method</label>
                     <select name="payment_method" required class="w-full px-4 py-2 mt-1 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 @error('payment_method') border-red-600 @enderror">
-                        <option value="credit_card">Credit Card</option>
-                        <option value="sadad">Sadad</option>
-                        <option value="mobicash">Mobicash</option>
+                        <option value="DebtCard">Debt Card</option>
+                        <option value="Sadad">Sadad</option>
+                        <option value="Idfali">Idfa' li</option>
+                        <option value="MobyCash">Moby Cash</option>
                     </select>
                     @error('payment_method')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -91,11 +92,12 @@
                 <input type="hidden" name="eventId" value="{{ $event->id }}">
                 <input type="hidden" name="userId" value="{{ auth()->user()->id }}">
 
-                <!-- Submit Button -->
+
                 <div class="flex flex-row gap-4">
                     <a href="{{ route('events') }}" class="w-md px-4 py-2 font-semibold text-gray-800 bg-gray-300 rounded-lg hover:bg-gray-400 transition duration-200">
                         Back
                     </a>
+                    <!-- Submit Button -->
                     <button type="submit" class="w-full px-4 py-2 font-semibold text-white bg-blue-800 rounded-lg hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-700 transition duration-200">
                         Confirm Booking
                     </button>
