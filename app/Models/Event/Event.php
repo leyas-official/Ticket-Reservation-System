@@ -17,6 +17,7 @@ class Event extends Model
         'eventTypeId',
     ];
 
+    //retrieves all events for view
     public static function getAllEvents()
     {
         return Event::query()
@@ -24,6 +25,7 @@ class Event extends Model
         ->get();
     }
 
+    //data validation
     public static function validation($request)
     {
         return  $request->validate([
@@ -38,6 +40,7 @@ class Event extends Model
         ]);
     }
 
+    //inserts event data into events table
     public static function createEvent($event)
     {
         return self::create([
@@ -52,6 +55,7 @@ class Event extends Model
         ]);
     }
 
+    //updates row data in events table
     public static function updateEvent($event , $data)
     {
         $event->update([

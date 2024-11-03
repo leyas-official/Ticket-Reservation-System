@@ -29,38 +29,36 @@ Route::get('/login', function () {
 })->name('login'); // Go To Register Page
 
 // Customer Pages
-Route::middleware(['auth', 'customer'])->group(function () {
+Route::get('/', function () {
+    return view('home');
+})->name('home');
 
-    Route::get('/', function () {
-        return view('home');
-    })->name('home');
-
-    Route::get('/about', function () {
-        return view('about');
-    });
-
-
-
-    Route::get('/events/index', function ()  {
-        return view('events.index', [
-            'events' => Event::getAllEvents()
-        ]);
-    })->name('events');
-
-    Route::get('/myTickets', function ()  {
-        return view('myTickets', [
-            'userTickets' => Ticket::getAllUserTickets(Customer::getId())
-        ]);
-    })->name('myTickets');
-
-    Route::post('/events/booking', [Reservation::class , 'reservation'])->name('addTicket');
-
-    Route::get('/events/booking/{event}', function (Event $event) {
-        return view('events.booking', ['event' => $event]);
-    })->name('book');
-
-    Route::delete('/cancelReservation/{ticketId}' , [Reservation::class , 'cancelReservation'])->name('ticket.delete');
+Route::get('/about', function () {
+    return view('about');
 });
+
+
+
+Route::get('/events/index', function ()  {
+    return view('events.index', [
+        'events' => Event::getAllEvents()
+    ]);
+})->name('events');
+
+Route::get('/myTickets', function ()  {
+    return view('myTickets', [
+        'userTickets' => Ticket::getAllUserTickets(Customer::getId())
+    ]);
+})->name('myTickets');
+
+Route::post('/events/booking', [Reservation::class , 'addReservation'])->name('addTicket');
+
+Route::get('/events/booking/{event}', function (Event $event) {
+    return view('events.booking', ['event' => $event]);
+})->name('book');
+
+Route::delete('/cancelReservation/{ticketId}' , [Reservation::class , 'cancelReservation'])->name('ticket.delete');
+
 //
 
 // Admin Pages

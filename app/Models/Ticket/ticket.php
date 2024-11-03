@@ -27,18 +27,22 @@ class Ticket extends Model
         'ticketStatus' => ticketStatus::class,
     ];
 
+    // returns all tickets saved in the tickets table method
     public static function getAllTickets() {
         return Ticket::all();
     }
 
+    // returns all tickets saved in the tickets table for a specific customer method
     public static function getAllUserTickets($id) {
          return Ticket::where('userId', $id)->get();
     }
 
+    //returns ticket by its ID method
     public static function getTicketByID($id) {
         return Ticket::where('id', $id)->first();
     }
 
+    //inserts ticket in the tickets table
     public static function createTicket($data, $T_data) {
         return self::create([
             'userId' => $data['userId'],
@@ -48,7 +52,7 @@ class Ticket extends Model
         ]);
     }
 
-    
+
 
     // userId Belongs To User
     public function user()

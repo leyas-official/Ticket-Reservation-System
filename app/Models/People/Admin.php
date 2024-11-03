@@ -11,7 +11,7 @@ class Admin extends Person
     protected $table = 'customers';
 
 
-    // Add Event Method
+    // admins Adds Event method
     public static function addEvent(Request $request) {
 
         $event = Event::validation($request);
@@ -20,18 +20,18 @@ class Admin extends Person
 
             Event::createEvent($event);
 
-            return redirect()->route('admin.events')->with('success', 'Add Event Successful');
-            
+            return redirect()->route('admin.events')->with('success', 'Event has been added Successful');
+
         } catch (\Exception $e) {
 
             \Log::error('Failed to add event: ' . $e->getMessage());
 
-            return redirect()->back()->with('error', 'Failed to add event. Please try again later.');
+            return redirect()->back()->with('error', 'Failed to add the event. Please try again.');
         }
     }
 
 
-
+    // admins updates Event method
     public static function editEvent($eventId , Request $request) {
         $data = Event::validation($request);
 
@@ -46,11 +46,12 @@ class Admin extends Person
 
             \Log::error('Failed to add event: ' . $e->getMessage());
 
-            return redirect()->back()->with('error', 'Failed to add event. Please try again later.');
+            return redirect()->back()->with('error', 'Failed to update the event. Please try again.');
         }
 
     }
 
+    // admins deletes Event method
     public static function deleteEvent($eventId) {
 
         try {
@@ -65,7 +66,7 @@ class Admin extends Person
 
             \Log::error('Failed to add event: ' . $e->getMessage());
 
-            return redirect()->back()->with('error', 'Failed to add event. Please try again later.');
+            return redirect()->back()->with('error', 'Failed to Delete event. Please try again.');
         }
 
     }

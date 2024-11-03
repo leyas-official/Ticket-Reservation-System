@@ -46,7 +46,7 @@ abstract class Person extends Model implements AuthenticatableContract
     public static function signUp(Request $request)
     {
         $validatedData = self::validation($request);
-        $user = self::createUser($validatedData);
+        $user = Customer::createUser($validatedData);
         Auth::login($user);
         return redirect()->route('admin.events')->with('success', 'Signup Successful');
     }
@@ -68,17 +68,9 @@ abstract class Person extends Model implements AuthenticatableContract
         return redirect()->to(url('/'));
     }
 
-    // User creation method
-    public static function createUser($data)
-    {
-        return self::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-            'Role' => 'U',
-        ]);
-    }
 
+
+    // retrieve person id
     public static function getID(){
         if(Auth::check()) {
             return auth::id();

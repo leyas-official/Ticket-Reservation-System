@@ -11,6 +11,7 @@ class EventType extends Model
         'name'
     ];
 
+    //returns all event types from event types table
     public static function getAllTypes() {
         return EventType::all();
     }

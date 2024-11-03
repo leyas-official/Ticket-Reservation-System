@@ -17,4 +17,15 @@ class Customer extends Person
         return self::where('role', 'U')->get();
     }
 
+    //inserts new customer to the customers table
+    public static function createUser($data)
+    {
+        return self::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => bcrypt($data['password']),
+            'Role' => 'U',
+        ]);
+    }
+
 }
