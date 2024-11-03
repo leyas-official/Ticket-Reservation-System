@@ -29,7 +29,7 @@ class Event extends Model
         return  $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string|min:10',
-            'date' => 'required|date',
+            'date' => 'required|date|after_or_equal:today',
             'time' => 'required|date_format:H:i',
             'location' => 'required|integer|exists:locations,id',
             'type' => 'required|integer|exists:event_types,id',

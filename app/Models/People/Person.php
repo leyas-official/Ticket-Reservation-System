@@ -32,7 +32,7 @@ abstract class Person extends Model implements AuthenticatableContract
             if (Auth::user()->Role === 'A') {
                 return redirect()->route('dashboard')->with('success', 'Welcome Admin!');
             } else  {
-                return redirect()->route('events')->with('success', 'Login Successful');
+                return redirect()->route('home')->with('success', 'Login Successful');
             }
         } else {
             return back()->withErrors([

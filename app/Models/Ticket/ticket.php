@@ -27,9 +27,6 @@ class Ticket extends Model
         'ticketStatus' => ticketStatus::class,
     ];
 
-
-
-
     public static function getAllTickets() {
         return Ticket::all();
     }
@@ -51,10 +48,7 @@ class Ticket extends Model
         ]);
     }
 
-    public static function deleteTicket($data)
-    {
-        $data->delete();
-    }
+    
 
     // userId Belongs To User
     public function user()

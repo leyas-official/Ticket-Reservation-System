@@ -9,6 +9,16 @@
     <title>Add New Event</title>
 </head>
 <body class="bg-gray-100">
+    
+    @if (session('error'))
+    <div class="p-4 w-full bg-red-100 border border-red-400 text-red-700 rounded-lg flex items-center space-x-2">
+        <svg class="w-6 h-6 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M8.257 3.099c.366-.446.933-.663 1.502-.526a1.5 1.5 0 011.138 1.091l.007.03 2.641 12.08c.087.4-.019.823-.29 1.116a1.494 1.494 0 01-1.08.514H6.833a1.5 1.5 0 01-1.275-.716 1.503 1.503 0 01-.117-1.41l.006-.015 2.641-12.08c.07-.32.24-.603.47-.784zm.192 13.401a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+        </svg>
+        <span>{{ session('error') }}</span>
+    </div>
+    @endif
+
     <div class="max-w-xl mx-auto mt-16 bg-white rounded-xl shadow-md p-8">
         <h2 class="text-3xl font-extrabold text-center text-blue-800 mb-6">Add New Event</h2>
         <form action="{{ route('admin.events.store') }}" method="POST" class="space-y-6">

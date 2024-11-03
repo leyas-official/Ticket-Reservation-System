@@ -10,13 +10,15 @@ use App\Models\Ticket\Ticket;
 use App\Models\Ticket\Reservation;
 
 
-Route::get('/', function () {
-    return view('home');
-})->name('home');
+// ? SignIn in Signup
 
-Route::get('/about', function () {
-    return view('about');
-});
+Route::post('/signUp', [Customer::class , 'signUp'])->name('signUp');
+
+Route::post('/signIn', [Customer::class , 'signIn'])->name('signIn');
+
+Route::get('/signOut', [Customer::class, 'signOut'])->name('signOut');
+
+
 
 Route::get('/register', function () {
     return view('auth.signUp');
@@ -26,37 +28,40 @@ Route::get('/login', function () {
     return view('auth.login');
 })->name('login'); // Go To Register Page
 
-Route::post('/cancelReservation', [Reservation::class , 'cancelReservation'])->name('ticketCancel');
+// Customer Pages
+Route::middleware(['auth', 'customer'])->group(function () {
 
-Route::post('/signUp', [Customer::class , 'signUp'])->name('signUp');
+    Route::get('/', function () {
+        return view('home');
+    })->name('home');
 
-Route::post('/signIn', [Customer::class , 'signIn'])->name('signIn');
+    Route::get('/about', function () {
+        return view('about');
+    });
 
-Route::get('/signOut', [Customer::class, 'signOut'])->name('signOut');
 
-Route::get('/events/index', function ()  {
-    return view('events.index', [
-        'events' => Event::getAllEvents()
-    ]);
-})->name('events');
 
-Route::get('/myTickets', function ()  {
-    return view('myTickets', [
-        'userTickets' => Ticket::getAllUserTickets(Customer::getId())
-    ]);
-})->name('userTickets');
+    Route::get('/events/index', function ()  {
+        return view('events.index', [
+            'events' => Event::getAllEvents()
+        ]);
+    })->name('events');
 
-Route::get('/cancelReservation/{eventTicket}', function ($eventTicket) {
-    return view('cancelReservation', ['ticket' => Ticket::getTicketByID($eventTicket)]);
-})->name('cancelReservation');
+    Route::get('/myTickets', function ()  {
+        return view('myTickets', [
+            'userTickets' => Ticket::getAllUserTickets(Customer::getId())
+        ]);
+    })->name('myTickets');
 
-Route::post('/events/booking', [Reservation::class , 'reservation'])->name('addTicket');
+    Route::post('/events/booking', [Reservation::class , 'reservation'])->name('addTicket');
 
-Route::get('/events/booking/{event}', function (Event $event) {
-    return view('events.booking', ['event' => $event]);
-})->name('book');
+    Route::get('/events/booking/{event}', function (Event $event) {
+        return view('events.booking', ['event' => $event]);
+    })->name('book');
 
-//Route::post('/events/booking', [Ticket::class , 'addTicket'])->name('addTicket');
+    Route::delete('/cancelReservation/{ticketId}' , [Reservation::class , 'cancelReservation'])->name('ticket.delete');
+});
+//
 
 // Admin Pages
 Route::middleware(['auth', 'admin'])->group(function () {

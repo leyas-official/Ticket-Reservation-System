@@ -53,36 +53,60 @@
 
 
             @if(count($events) > 0)
-                <div class="flex flex-col gap-6">  <!-- Changed to flex flex-col -->
+                <div class="flex flex-col gap-4 ">  <!-- Changed to flex flex-col -->
                     @foreach ($events as $event)
-                        <div class="box bg-white shadow-md rounded-xl p-6 transition-shadow hover:shadow-lg group w-full">  <!-- Added w-full -->
-                            <h1 class="text-2xl font-bold text-black group-hover:text-blue-900">{{ $event['name'] }}</h1>
+<div class="box flex flex-col bg-white shadow-md rounded-xl p-6 transition-all duration-300 hover:shadow-lg group hover:-translate-y-1 cursor-pointer">
+    <!-- Event Name -->
+    <h1 class="text-2xl font-bold text-black group-hover:text-blue-900">{{ $event['name'] }}</h1>
 
-                            <p class="text-gray-500 mt-2 flex items-center">
-                                <svg class="w-5 h-5 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.902C12.95 21.367 12.282 21.367 11.818 20.902L8 18l-3.818 2.902C3.717 21.367 3.049 21.367 2.586 20.902L2 20c-1.103 0-2-.897-2-2v-1h2v-1a2 2 0 012-2h-2v-1h2a2 2 0 002-2h-2v-1h2v-1a2 2 0 012-2h-2V6a2 2 0 012-2h2v1H9V3h8v1H9v2h8v1h-2v2h2v1h-2z"></path></svg>
-                                Location : {{ $event['location']['name'] }}
-                            </p>
-                            <p class="text-gray-500 mt-2 flex items-center">
-                                <svg class="w-5 h-5 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                                Date :  {{ $event->date }}
-                            </p>
-                            <p class="text-gray-500 mt-2 flex items-center">
-                                <svg class="w-5 h-5 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                Time :  {{ $event->time }}
-                            </p>
+    <!-- Event Location -->
+    <p class="text-gray-500 mt-4 flex items-center space-x-2">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 text-gray-400">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+        </svg>
+        <span>Location: {{ $event['location']['name'] }}</span>
+    </p>
 
-                            <p class="text-gray-500 mt-2 flex items-center truncate">
-                                <svg class="w-5 h-5 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
-                                Description : <span class="truncate max-w-xs">{{ $event->description }}</span>
-                            </p>
+    <!-- Event Date -->
+    <p class="text-gray-500 mt-2 flex items-center space-x-2">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z" />
+          </svg>
+        <span>Date: {{ \Carbon\Carbon::parse($event->date)->format('F j, Y') }}</span>
+    </p>
 
+    <!-- Event Time -->
+    <p class="text-gray-500 mt-2 flex items-center space-x-2">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+          </svg>
+        <span>Time: {{  \Carbon\Carbon::parse($event->time)->format('h:i A') }}</span>
+    </p>
 
-                            <p class="text-gray-700 mt-2 font-semibold flex items-center">
-                                <svg class="w-5 h-5 text-yellow-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>                    Price : {{ $event->price }}
-                            </p>
-                            <a href="{{ route('book', $event->id) }}" class="mt-6 inline-block text-center text-white bg-blue-800 hover:bg-blue-900 font-medium py-2 rounded-lg transition-colors duration-200">Book Now</a>
-                        </div>
-                    @endforeach
+    <!-- Event Description -->
+    <p class="text-gray-500 mt-2 flex items-center space-x-2 truncate">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 0 1-.825-.242m9.345-8.334a2.126 2.126 0 0 0-.476-.095 48.64 48.64 0 0 0-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0 0 11.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155" />
+          </svg>
+        <span class="truncate max-w-xs hover:max-w-full transition-all duration-200">Description: {{ $event->description }}</span>
+    </p>
+
+    <!-- Event Price -->
+    <p class="text-gray-700 mt-2 font-semibold flex items-center space-x-2">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 text-yellow-500">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+          </svg>
+    <span>Price: {{ $event->price }}</span>
+    </p>
+
+    <!-- Book Now Button -->
+    <a href="{{ route('book', $event->id) }}" class="mt-6 inline-block text-center text-white bg-blue-800 hover:bg-blue-900 font-medium py-2 px-6 rounded-lg transition-colors duration-200 ">
+        Book Now
+    </a>
+</div>
+@endforeach
+
                 </div>
 
 

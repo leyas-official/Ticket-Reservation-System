@@ -34,7 +34,7 @@
                     <a href="{{ route('events') }}" class="w-md px-4 py-2 font-semibold text-gray-800 rounded-lg bg-gray-500 hover:bg-gray-800 transition duration-200 text-white">
                         Back
                     </a>
-                    <button type="submit" class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-900 focus:outline-none">Sign In</button>
+                    <button type="submit" class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-800 text-white hover:bg-blue-900 focus:outline-none">Sign In</button>
                 </div>
             </div>
         </form>

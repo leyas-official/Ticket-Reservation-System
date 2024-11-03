@@ -61,7 +61,7 @@
                 </tbody>
             </table>
             <div id="confirmation-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
-                <div class="bg-white rounded-lg p-6 shadow-lg transform -translate-y-full transition-transform duration-500 ease-in-out" id="modal-content">
+                <div class="bg-white rounded-lg p-6 shadow-lg transform  transition-transform duration-500 ease-in-out" id="modal-content">
                     <h2 class="text-lg font-bold mb-4">Are you sure you want to delete this?</h2>
                     <div class="flex justify-end">
                         <button id="confirm-delete" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="submitDeleteForm()">Delete</button>

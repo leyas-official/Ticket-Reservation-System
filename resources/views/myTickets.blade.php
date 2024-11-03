@@ -30,7 +30,7 @@
             <div class="flex text-center h-screen justify-center flex-col">
                 <h3>You Have no Purchased Tickets</h3>
                 <a href="{{ route('events') }}" class="relative inline-block px-6 py-2 rounded-full bg-blue-950 text-sm font-medium text-white transition duration-300 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 mt-4">  <!-- Changes here -->
-                    Booking
+                    Events
                 </a>
             </div>
         @else
@@ -55,13 +55,45 @@
                         <td class="py-3 px-6 text-center">{{ \Carbon\Carbon::parse($ticket['event']['date'])->format('F j, Y') }}</td>
                         <td class="py-3 px-6 text-center">{{ $ticket->paymentType }} </td>
                         <td class="px-6 py-4 flex justify-center text-center">
-                            <a href="{{ route('cancelReservation', ['eventTicket' => $ticket]) }}" class="font-medium text-white px-3 py-1 bg-red-600 hover:bg-red-700 rounded-2xl transition-all duration-300 ml-2.5 mr-2.5">Cancel</a>
+                            <button type="button" class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600 transition duration-200 font-semibold" onclick="showConfirmationModal('{{ $ticket->id }}')">
+                                Cancel
+                            </button>
+                            <form id="delete-form-{{ $ticket->id }}" action="{{ route('ticket.delete', $ticket->id) }}" method="POST" class="hidden">
+                                @csrf
+                                @method('delete')
+                            </form>
                         </td>
                     </tr>
                     @endforeach
                 </tbody>
             </table>
+            <div id="confirmation-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+                <div class="bg-white rounded-lg p-6 shadow-lg transform  transition-transform duration-500 ease-in-out" id="modal-content">
+                    <h2 class="text-lg font-bold mb-4">Are you sure you want to delete this?</h2>
+                    <div class="flex justify-end">
+                        <button id="confirm-delete" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="submitDeleteForm()">Delete</button>
+                        <button id="cancel-delete" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded ml-2" onclick="hideConfirmationModal()">Cancel</button>
+                    </div>
+                </div>
+            </div>
         </div>
         @endif
     @endauth
+    <script>
+        let deleteFormId;
+
+        function showConfirmationModal(eventId) {
+            deleteFormId = 'delete-form-' + eventId; // Set the ID of the form to delete
+            document.getElementById('confirmation-modal').classList.remove('hidden');
+        }
+
+        function submitDeleteForm() {
+            document.getElementById(deleteFormId).submit(); // Submit the correct form
+            hideConfirmationModal();
+        }
+
+        function hideConfirmationModal() {
+            document.getElementById('confirmation-modal').classList.add('hidden');
+        }
+    </script>
 </x-layout>
