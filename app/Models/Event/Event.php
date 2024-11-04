@@ -17,8 +17,8 @@ class Event extends Model
         'eventTypeId',
     ];
 
-    //retrieves all events for view
-    public static function getAllEvents()
+    //retrieves all events or specific events for view
+    public static function getAllOrSpecificEvents()
     {
         return Event::query()
         ->where('name','like','%'.request()->input('search').'%')

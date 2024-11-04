@@ -41,7 +41,7 @@ Route::get('/about', function () {
 
 Route::get('/events/index', function ()  {
     return view('events.index', [
-        'events' => Event::getAllEvents()
+        'events' => Event::getAllOrSpecificEvents()
     ]);
 })->name('events');
 
@@ -67,7 +67,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     // Dashboard
     Route::get('/Admin/dashboard', function () {
         return view('admin.dashboard', [
-            'events' => Event::getAllEvents(),
+            'events' => Event::getAllOrSpecificEvents(),
             'tickets' => Ticket::getAllTickets(),
             'customers' => Customer::getCustomers(),
         ]);
@@ -76,7 +76,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     // Events
     Route::get('/Admin/events', function () {
         return view('admin.events.index', [
-            'events' => Event::getAllEvents(),
+            'events' => Event::getAllOrSpecificEvents(),
         ]);
     })->name('admin.events');
 

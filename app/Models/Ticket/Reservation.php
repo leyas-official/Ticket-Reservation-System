@@ -57,7 +57,8 @@ class Reservation
             $ticket = Ticket::where('id', $ticketId)->first();
             $paymentType = $ticket->paymentType;
             $payment = self::getPaymentProcessor($paymentType);
-            if ($payment && $payment->processPayment()) {
+            if ($payment && $payment->processRefund()) {
+                //IMPORTANT : YOU DONT NEED TO GO TO CLASS TICKET TO PROCESS THE DELETE YOU CAN JUST DO IT HERE WITH ->delete()
                 $ticket->delete();
                 return redirect()->route('myTickets')->with('success', 'Your booking has been cancelled.');
             } else {
