@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-
     <title>Edit Event</title>
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-200">
     <div class="max-w-xl mx-auto mt-16 bg-white rounded-xl shadow-md p-8">
         <h2 class="text-3xl font-extrabold text-center text-green-700 mb-6">Edit Event</h2>
         <form action="{{ route('admin.events.update' , $event->id)}}" method="POST" class="space-y-6">

@@ -8,8 +8,8 @@
 
     <title>Add New Event</title>
 </head>
-<body class="bg-gray-100">
-    
+<body class="bg-gray-200">
+
     @if (session('error'))
     <div class="p-4 w-full bg-red-100 border border-red-400 text-red-700 rounded-lg flex items-center space-x-2">
         <svg class="w-6 h-6 text-red-500" fill="currentColor" viewBox="0 0 20 20">

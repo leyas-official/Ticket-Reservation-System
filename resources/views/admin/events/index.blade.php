@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Admin Events</title>
+    <title> Events </title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100">
     <x-admin-sidebar></x-admin-sidebar>
-    <div class="flex-1 p-10 mt-16">
+    <div class="flex-1 p-10 mt-16 ml-56">
         <div class="flex justify-between mb-4">
             <h2 class="text-2xl font-bold">Events</h2>
             <a href="{{ route('admin.events.create') }}" class="bg-blue-800 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded transition duration-200 font-semibold">Add Event</a>
@@ -40,7 +40,7 @@
                     @foreach ($events as $event)
                     <tr class="border-b border-gray-200 hover:bg-gray-300 transition duration-200 cursor-pointer">
                         <td class="py-3 px-6 truncate">{{ $event->name }}</td>
-                        <td class="py-3 px-6 truncate max-w-40 hover:max-w-60 transition-all duration-300">{{ $event->description }}</td>
+                        <td class="py-3 px-6 truncate ... max-w-40 hover:max-w-60 transition-all duration-300">{{ $event->description }}</td>
                         <td class="py-3 px-6">{{ $event['eventType']['name'] }}</td>
                         <td class="py-3 px-6">{{ $event['location']['name'] }}</td>
                         <td class="py-3 px-6">{{ \Carbon\Carbon::parse($event->time)->format('h:i A') }}</td>

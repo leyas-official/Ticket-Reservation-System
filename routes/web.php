@@ -95,8 +95,86 @@ Route::middleware(['auth', 'admin'])->group(function () {
         return view('admin.events.edit' , ['event' => $event , 'locations' => Location::getAllLocations() , 'types' => EventType::getAllTypes() ]);
     })->name('admin.events.edit');;
 
+    // Delete Event
     Route::delete('/Admin/events/{event}' , [Admin::class , 'deleteEvent'])->name('admin.events.delete');
 
+    // End Events
 
+    // Tickets
+    Route::get('/Admin/Tickets', function () {
+        return view('admin.tickets.index', [
+            'tickets' => Ticket::getAllTickets(),
+        ]);
+    })->name('admin.tickets');
+
+    Route::get('/Admin/Tickets/{ticket}', function (Ticket $ticket) {
+        return view('admin.tickets.show', [
+            'ticket' => $ticket,
+        ]);
+    })->name('admin.tickets.show');
+    // End Tickets
+
+    // Customers
+    Route::get('/Admin/Customers', function () {
+        return view('admin.customers.index', [
+            'customers' => Customer::getCustomers(),
+        ]);
+    })->name('admin.customers');
+
+    Route::get('/Admin/Customers/{customer}', function (Customer $customer) {
+        return view('admin.customers.show', [
+            'customer' => $customer,
+        ]);
+    })->name('admin.customers.show');
+
+    // Locations
+    Route::get('/Admin/Locations', function () {
+        return view('admin.locations.index', [
+            'locations' => location::getAllLocations(),
+        ]);
+    })->name('admin.locations');
+
+    Route::get('/Admin/Locations/create', function () {
+        return view('admin.locations.create');
+    })->name('admin.locations.create');
+
+
+    Route::POST('/Admin/Locations/create', [Admin::class , 'addLocation'])->name('admin.locations.store');
+
+    // Edit Location
+    Route::get('/Admin/Locations/{location}/edit', function (Location $location) {
+        return view('admin.locations.edit' , ['location' => $location]);
+    })->name('admin.locations.edit');
+
+    Route::PUT('/Admin/Locations/{location}/edit', [Admin::class , 'editLocation'])->name('admin.locations.update');
+
+    // Delete Location
+    Route::Delete('/Admin/Locations/{location}', [Admin::class , 'deleteLocation'])->name('admin.locations.delete');
+
+    // End Location
+
+    // Event Types
+    Route::get('/Admin/EventTypes', function () {
+        return view('admin.eventTypes.index', [
+            'eventTypes' => EventType::getAllTypes(),
+        ]);
+    })->name('admin.eventTypes');
+
+    // Create Event Type
+    Route::get('/Admin/EventTypes/create', function () {
+        return view('admin.eventTypes.create');
+    })->name('admin.eventTypes.create');
+
+    Route::post('/Admin/EventTypes/store', [Admin::class , 'addEventType'])->name('admin.eventTypes.store');
+
+    // Edit Event Type
+    Route::get('/Admin/EventTypes/{eventType}/edit', function (EventType $eventType) {
+        return view('admin.eventTypes.edit' , ['eventType' => $eventType]);
+    })->name('admin.eventTypes.edit');
+
+    Route::put('/Admin/EventTypes/{eventType}' , [Admin::class , 'editEventType'])->name('admin.eventTypes.update');
+
+    // Delete Event Tyoe
+    Route::delete('Admin/EventTypes/{eventType}' , [Admin::class , 'deleteEventType'])->name('admin.eventTypes.delete');
 });
 

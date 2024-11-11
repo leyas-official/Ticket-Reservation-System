@@ -7,11 +7,11 @@
     <title>Admin Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-200">
 
     <x-admin-sidebar></x-admin-sidebar>
         <!-- Main Content -->
-        <div class="flex-1 p-10">
+        <div class="flex-1 p-10 ml-56">
             <h2 class="text-3xl font-semibold">Welcome Admin {{ Auth::user()->name }} To Your Dashboard</h2>
             <p class="mt-4 text-gray-600">Here you can manage your application effectively.</p>
 

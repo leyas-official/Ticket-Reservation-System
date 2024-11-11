@@ -2,6 +2,8 @@
 
 namespace App\Models\People;
 
+use App\Models\Event\EventType;
+use App\Models\Event\Location;
 use Illuminate\Http\Request;
 use App\Models\Event\Event;
 use Illuminate\Database\Eloquent\Model;
@@ -71,5 +73,119 @@ class Admin extends Person
 
     }
 
+    // Location Methods
 
+    // Add Location
+    public static function addLocation(Request $request)
+    {
+        $data = Location::validation($request);
+        try {
+
+            $location = Location::createLocation($data);
+
+            return redirect()->route('admin.locations')->with('success', 'Add Location Successful');
+
+        } catch (\Exception $e) {
+
+            \Log::error('Failed to add Location: ' . $e->getMessage());
+
+            return redirect()->back()->with('error', 'Failed to Add Location. Please try again.');
+        }
+    }
+
+    public static function editLocation($locationId ,Request $request )
+    {
+        $data = Location::validation($request);
+
+        try {
+
+            $location = Location::where('id', $locationId)->get()->first();
+
+            Location::updateLocation($location , $data);
+
+            return redirect()->route('admin.locations')->with('success', 'Edit Location Successful');
+
+        } catch (\Exception $e) {
+
+            \Log::error('Failed to Edit Location: ' . $e->getMessage());
+
+            return redirect()->back()->with('error', 'Failed to Edit Location. Please try again.');
+        }
+    }
+
+
+    public static function deleteLocation($locationId)
+    {
+        try {
+
+            $location = Location::where('id', $locationId)->get()->first();
+
+            $location->delete();
+
+            return redirect()->route('admin.locations')->with('success', 'Delete Location Successful');
+
+        } catch (\Exception $e) {
+
+            \Log::error('Failed to Delete Location: ' . $e->getMessage());
+
+            return redirect()->back()->with('error', 'Failed to Delete Location. Please try again.');
+        }
+
+    }
+
+    // Event Type
+    public static function addEventType(Request $request)
+    {
+        $data = EventType::validation($request);
+
+        try {
+
+            $eventType = EventType::createEventType($data);
+
+            return redirect()->route('admin.eventTypes')->with('success', 'Add Type Successful');
+
+        } catch (\Exception $e) {
+
+            \Log::error('Failed to add Type: ' . $e->getMessage());
+
+            return redirect()->back()->with('error', 'Failed to Add Type. Please try again.');
+        }
+    }
+
+    public static function editEventType($eventTypeId,Request $request)
+    {
+        $data = EventType::validation($request);
+
+        try {
+
+            $eventType = EventType::where('id', $eventTypeId)->get()->first();
+
+            EventType::updateEventType($eventType , $data);
+
+            return redirect()->route('admin.eventTypes')->with('success', 'Edit Type Successful');
+
+        } catch (\Exception $e) {
+
+            \Log::error('Failed to Edit Type: ' . $e->getMessage());
+
+            return redirect()->back()->with('error', 'Failed to Edit Type. Please try again.');
+        }
+    }
+
+    public static function deleteEventType($eventTypeId) {
+        try {
+
+            $eventType = EventType::where('id', $eventTypeId)->get()->first();
+
+            $eventType->delete();
+
+            return redirect()->route('admin.eventTypes')->with('success', 'Delete Event Type Successful');
+
+        } catch (\Exception $e) {
+
+            \Log::error('Failed to Delete  Event Type: ' . $e->getMessage());
+
+            return redirect()->back()->with('error', 'Failed to Delete Event Type. Please try again.');
+        }
+    }
 }

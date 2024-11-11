@@ -6,7 +6,7 @@
     <title>Home Page</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="h-full text-black">
+<body class="h-full text-black bg-gray-200">
   <nav class="bg-blue-950 shadow-md">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="flex h-16 items-center justify-between">
@@ -150,7 +150,7 @@
           </div>
           <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
           <div class="sm:flex sm:items-center sm:justify-between">
-          <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2023 <a href="#" class="hover:underline">Leyas™</a>. All Rights Reserved.
+          <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2024 <a href="#" class="hover:underline">Aura™</a>. All Rights Reserved.
           </span>
               <div class="flex mt-4 sm:justify-center sm:mt-0">
                   <a href="https://www.facebook.com/profile.php?id=100003920870993&mibextid=ZbWKwL" class="text-gray-500 hover:text-gray-900 dark:hover:text-white">

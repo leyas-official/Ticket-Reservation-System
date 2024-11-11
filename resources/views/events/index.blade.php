@@ -34,7 +34,7 @@
     </x-slot:head>
     <div class="relative overflow-x-auto  sm:rounded-lg p-6">
         @if(session('success'))
-            <div id="success-message" class="relative mb-4 p-3 bg-green-100 text-green-700 border border-green-300 rounded-lg">
+            <div id="success-message" class="relative mb-4 p-3 bg-blue-100 text-blue-700 border border-green-300 rounded-lg">
                 <button onclick="document.getElementById('success-message').style.display='none'" class="absolute top-2 right-2 text-green-700 hover:text-green-900 focus:outline-none text-lg">
                     &times;
                 </button>
