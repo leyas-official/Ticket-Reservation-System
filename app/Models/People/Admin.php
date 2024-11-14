@@ -140,6 +140,8 @@ class Admin extends Person
 
         try {
 
+            $eventType = new EventType();
+
             $eventType = EventType::createEventType($data);
 
             return redirect()->route('admin.eventTypes')->with('success', 'Add Type Successful');
@@ -158,6 +160,8 @@ class Admin extends Person
 
         try {
 
+            $eventType = new EventType();
+
             $eventType = EventType::where('id', $eventTypeId)->get()->first();
 
             EventType::updateEventType($eventType , $data);
@@ -175,6 +179,7 @@ class Admin extends Person
     public static function deleteEventType($eventTypeId) {
         try {
 
+            $eventType = new EventType();
             $eventType = EventType::where('id', $eventTypeId)->get()->first();
 
             $eventType->delete();

@@ -18,7 +18,7 @@ class Event extends Model
     ];
 
     //retrieves all events for view
-    public static function getAllEvents()
+    public  function getAllEvents()
     {
         return Event::query()
         ->where('name','like','%'.request()->input('search').'%')

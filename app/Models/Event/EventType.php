@@ -13,7 +13,7 @@ class EventType extends Model
 
     //returns all event types from event types table
 
-    public static function getAllTypes() {
+    public  function getAllTypes() {
         return self::withCount(['events' => function ($query) {
             $query->whereColumn('event_types.id', 'events.eventTypeId');
         }])->get();

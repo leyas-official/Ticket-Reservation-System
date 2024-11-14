@@ -1,3 +1,6 @@
+    @php
+        use App\Enums\ticketStatus ;
+    @endphp
 <x-layout>
     <x-slot:head>
         <div class="w-full bg-white shadow-md rounded-lg p-4 mb-6 mx-4 flex items-center justify-between">
@@ -42,7 +45,7 @@
                         <th class="py-3 px-6 text-center">Price</th>
                         <th class="py-3 px-6 text-center">Event Time</th>
                         <th class="py-3 px-6 text-center">Event Date</th>
-                        <th class="py-3 px-6 text-center">Payment Method</th>
+                        <th class="py-3 px-6 text-center">Ticket Status</th>
                         <th class="py-3 px-6 text-center">Action</th>
                     </tr>
                 </thead>
@@ -53,7 +56,12 @@
                         <td class="py-3 px-6 text-center">{{ $ticket['event']['price']}} $</td>
                         <td class="py-3 px-6 text-center">{{ \Carbon\Carbon::parse($ticket['event']['time'])->format('h:i A') }}</td>
                         <td class="py-3 px-6 text-center">{{ \Carbon\Carbon::parse($ticket['event']['date'])->format('F j, Y') }}</td>
-                        <td class="py-3 px-6 text-center">{{ $ticket->paymentType }} </td>
+                        <td class="py-3 px-6 text-center">
+                            <p class="inline border py-2 px-2 rounded-md font-semibold  text-sm {{$ticket->ticketStatus === TicketStatus::ACTIVE ? 'border-green-700 text-green-700' : ($ticket->ticketStatus === TicketStatus::CANCELED ? 'border-red-500 text-red-500' : 'border-yellow-500 text-yellow-500')  }}">
+                                {{ $ticket->ticketStatus }}
+                            </p>
+                        </td>
+
                         <td class="px-6 py-4 flex justify-center text-center">
                             <button type="button" class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600 transition duration-200 font-semibold" onclick="showConfirmationModal('{{ $ticket->id }}')">
                                 Cancel
@@ -67,6 +75,7 @@
                     @endforeach
                 </tbody>
             </table>
+{{--            @dd($ticket->ticketStatus === ticketStatus::ACTIVE)--}}
             <div id="confirmation-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
                 <div class="bg-white rounded-lg p-6 shadow-lg transform  transition-transform duration-500 ease-in-out" id="modal-content">
                     <h2 class="text-lg font-bold mb-4">Are you sure you want to delete this?</h2>

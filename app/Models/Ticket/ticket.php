@@ -28,7 +28,7 @@ class Ticket extends Model
     ];
 
     // returns all tickets saved in the tickets table method
-    public static function getAllTickets() {
+    public  function getAllTickets() {
         return Ticket::all();
     }
 
@@ -42,13 +42,21 @@ class Ticket extends Model
         return Ticket::where('id', $id)->first();
     }
 
+    public  function getTicketByEvent($id) {
+        return Ticket::where('eventId', $id)->get();
+    }
+
+
+    public function getTicketByUserId($userId)
+    {
+        return Ticket::where('userId', $userId)->get();
+    }
     //inserts ticket in the tickets table
-    public static function createTicket($data, $T_data) {
+    public static function createTicket($event ,$customer) {
         return self::create([
-            'userId' => $data['userId'],
-            'eventId' => $data['eventId'],
-            'paymentType' => $data['payment_method'],
-            'ticketStatus' => $T_data,
+            'userId' => $customer->id,
+            'eventId' => $event->id,
+            'ticketStatus' => 'ACTIVE',
         ]);
     }
 

@@ -13,7 +13,7 @@ class Location extends Model
     ];
 
     // return all location names
-    public static function getAllLocations() {
+    public  function getAllLocations() {
         return Location::all();
     }
 

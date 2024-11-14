@@ -40,8 +40,18 @@ Route::get('/about', function () {
 
 
 Route::get('/events/index', function ()  {
+//    dd(Auth::user()->id);
+    $events = new Event(); // Array of objects
+    $allEvents = $events->getAllEvents();
+    $tickets = new Ticket();
+    if (Auth::user()) {
+        $allUserTickets = $tickets->getTicketByUserId(Auth::user()->id);
+    }else{
+        $allUserTickets = [];
+    }
     return view('events.index', [
-        'events' => Event::getAllEvents()
+        'events' => $allEvents,
+        'tickets' => $allUserTickets,
     ]);
 })->name('events');
 
@@ -53,37 +63,40 @@ Route::get('/myTickets', function ()  {
 
 Route::post('/events/booking', [Reservation::class , 'addReservation'])->name('addTicket');
 
-Route::get('/events/booking/{event}', function (Event $event) {
-    return view('events.booking', ['event' => $event]);
-})->name('book');
+Route::get('/events/{event}/{customer}', [Customer::class , 'addToCart'])->name('addToCart');
 
 Route::delete('/cancelReservation/{ticketId}' , [Reservation::class , 'cancelReservation'])->name('ticket.delete');
 
-//
 
 // Admin Pages
 Route::middleware(['auth', 'admin'])->group(function () {
 
     // Dashboard
     Route::get('/Admin/dashboard', function () {
+        $events = new Event();
+        $tickets = new Ticket();
+        $customer = new Customer();
         return view('admin.dashboard', [
-            'events' => Event::getAllEvents(),
-            'tickets' => Ticket::getAllTickets(),
-            'customers' => Customer::getCustomers(),
+            'events' => $events->getAllEvents(),
+            'tickets' => $tickets->getAllTickets(),
+            'customers' => $customer->getCustomers(),
         ]);
     })->name('dashboard');
 
     // Events
     Route::get('/Admin/events', function () {
+        $events = new Event();
         return view('admin.events.index', [
-            'events' => Event::getAllEvents(),
+            'events' => $events->getAllEvents(),
         ]);
     })->name('admin.events');
 
 
     // Add Event
     Route::get('/Admin/events/create', function () {
-        return view('admin.events.create' , ['locations' => Location::getAllLocations() , 'types' => EventType::getAllTypes() ]);
+        $locations = new Location();
+        $types = new EventType();
+        return view('admin.events.create' , ['locations' => $locations->getAllLocations() , 'types' => $types->getAllTypes() ]);
     })->name('admin.events.create');
 
     Route::post('/Admin/events/store', [Admin::class , 'addEvent'])->name('admin.events.store');
@@ -102,8 +115,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     // Tickets
     Route::get('/Admin/Tickets', function () {
+        $tickets = new Ticket();
         return view('admin.tickets.index', [
-            'tickets' => Ticket::getAllTickets(),
+            'tickets' => $tickets->getAllTickets(),
         ]);
     })->name('admin.tickets');
 
@@ -116,8 +130,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     // Customers
     Route::get('/Admin/Customers', function () {
+        $customer = new Customer();
         return view('admin.customers.index', [
-            'customers' => Customer::getCustomers(),
+            'customers' => $customer->getCustomers(),
         ]);
     })->name('admin.customers');
 
@@ -129,8 +144,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     // Locations
     Route::get('/Admin/Locations', function () {
+        $locations = new Location();
         return view('admin.locations.index', [
-            'locations' => location::getAllLocations(),
+            'locations' => $locations->getAllLocations(),
         ]);
     })->name('admin.locations');
 
@@ -155,8 +171,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     // Event Types
     Route::get('/Admin/EventTypes', function () {
+        $eventTypes = new EventType();
         return view('admin.eventTypes.index', [
-            'eventTypes' => EventType::getAllTypes(),
+            'eventTypes' => $eventTypes->getAllTypes(),
         ]);
     })->name('admin.eventTypes');
 

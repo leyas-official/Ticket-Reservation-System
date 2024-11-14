@@ -1,14 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <title>Document</title>
-</head>
-<body  class="bg-gray-200 flex items-center justify-center min-h-screen">
-    <div class="mt-7 bg-white rounded-xl p-6 shadow-lg w-full max-w-md">
+<x-layout>
+    <x-slot:head>
+    </x-slot:head>
+    <div class="mt-7 bg-white rounded-xl p-6 shadow-lg w-full max-w-md m-auto">
         <h3 class="block text-3xl font-bold text-blue-800 text-center">Sign In</h3>
         <form action="{{ route('signIn')}}" method="POST">
             @csrf
@@ -25,7 +18,7 @@
                     <label for="password" class="block text-sm mb-2 text-gray-700">Password</label>
                     <input type="password" id="password" name="password" required class="py-3 px-4 block w-full border border-gray-300 rounded-lg text-sm focus:border-blue-500 focus:ring focus:ring-blue-300 focus:outline-none @error('password') border-red-600 @enderror" placeholder="Your Password">
                     @error('password')
-                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                    <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                     @enderror
                 </div>
 
@@ -43,6 +36,4 @@
         </div>
 
     </div>
-
-</body>
-</html>
+</x-layout>

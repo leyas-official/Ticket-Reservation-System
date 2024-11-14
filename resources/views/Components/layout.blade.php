@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="h-full text-black bg-gray-200">
-  <nav class="bg-blue-950 shadow-md">
+  <nav class="bg-blue-950 dark:bg-gray-900 shadow-md">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="flex h-16 items-center justify-between">
         <div class="flex items-center">
@@ -40,13 +40,13 @@
             <div class="relative ml-3">
                 @guest()
                 <a href="{{ route('login') }}" type="submit" class="relative flex max-w-xs items-center rounded-full bg-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                    <p class="border border-white px-3 py-1 rounded-md text-white bg-blue-950 hover:bg-blue-800 transition duration-200 focus:outline-none">Login</p>
+                    <p class="border border-white px-3 py-1 rounded-md text-white bg-gray-900 hover:bg-gray-700 transition duration-200 focus:outline-none">Login</p>
                 </a>
                 @endguest
 
                 @auth()
                         <a href="{{ route('signOut') }}" type="submit" class="relative flex max-w-xs items-center rounded-full bg-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                            <p class="border border-white px-3 py-1 rounded-md text-white bg-blue-950 hover:bg-white hover:text-blue-950 transition duration-200 focus:outline-none">Logout</p>
+                            <p class="border border-white px-3 py-1 rounded-md text-white bg-gray-900 hover:bg-white hover:text-gray-800 transition duration-200 focus:outline-none">Logout</p>
                         </a>
                 @endauth
             </div>
