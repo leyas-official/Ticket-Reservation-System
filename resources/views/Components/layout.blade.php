@@ -15,7 +15,6 @@
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 text-white">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 0 1 0 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 0 1 0-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375Z" />
               </svg>
-
           </div>
           <div class="hidden md:block">
             <div class="ml-10 flex items-baseline space-x-4">
@@ -23,25 +22,25 @@
                 <x-nav-link href="{{ route('events') }}" :active="request()->routeIs('events')" class="text-gray-300 hover:bg-yellow-600 hover:text-white">
                 Events
                  </x-nav-link>
-                <x-nav-link href="/myTickets" :active="request()->is('myTickets')" class="text-gray-300 hover:bg-yellow-600 hover:text-white">My Tickets</x-nav-link>
+{{--                <x-nav-link href="/myCart" :active="request()->is('myCart')" class="text-gray-300 hover:bg-yellow-600 hover:text-white">My Tickets</x-nav-link>--}}
                 <x-nav-link href="/about" :active="request()->is('about')" class="text-gray-300 hover:bg-yellow-600 hover:text-white">About</x-nav-link>
             </div>
           </div>
         </div>
         <div class="hidden md:block">
           <div class="ml-4 flex items-center md:ml-6">
-            <button type="button" class="relative rounded-full bg-gray-700 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-              <span class="sr-only">View notifications</span>
-              <svg class="h-6 w-6 " fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
-              </svg>
-            </button>
+            <x-icon-link href="/myCart" :active="request()->is('myCart')" class="relative rounded-full bg-gray-700 p-2 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 cursor-pointer">
+              <span class="sr-only">My Cart</span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                </svg>
+            </x-icon-link>
 
             <div class="relative ml-3">
                 @guest()
-                <a href="{{ route('login') }}" type="submit" class="relative flex max-w-xs items-center rounded-full bg-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                <x-nav-link href="{{ route('login') }}"  class="relative flex max-w-xs items-center rounded-full bg-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                     <p class="border border-white px-3 py-1 rounded-md text-white bg-gray-900 hover:bg-gray-700 transition duration-200 focus:outline-none">Login</p>
-                </a>
+                </x-nav-link>
                 @endguest
 
                 @auth()
@@ -67,7 +66,7 @@
       <div class="space-y-1 px-2 pb-3 pt-2 sm:px-3">
             <x-nav-link href="/" :active="request()->is('/')" class="text-gray-300 hover:bg-yellow-600 hover:text-white">Home</x-nav-link>
             <x-nav-link href="/events" :active="request()->is('events')" class="text-gray-300 hover:bg-yellow-600 hover:text-white">Events</x-nav-link>
-            <x-nav-link href="/myTickets" :active="request()->is('myTickets')" class="text-gray-300 hover:bg-yellow-600 hover:text-white">My Tickets</x-nav-link>
+            <x-nav-link href="/myCart" :active="request()->is('myCart')" class="text-gray-300 hover:bg-yellow-600 hover:text-white">My Tickets</x-nav-link>
             <x-nav-link href="/about" :active="request()->is('about')" class="text-gray-300 hover:bg-yellow-600 hover:text-white">About</x-nav-link>
       </div>
       <div class="border-t border-gray-700 pb-3 pt-4">

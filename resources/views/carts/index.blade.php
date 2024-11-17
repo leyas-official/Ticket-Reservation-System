@@ -63,19 +63,23 @@
                         </td>
 
                         <td class="px-6 py-4 flex justify-center text-center">
-                            <button type="button" class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600 transition duration-200 font-semibold" onclick="showConfirmationModal('{{ $ticket->id }}')">
-                                Cancel
-                            </button>
-                            <form id="delete-form-{{ $ticket->id }}" action="{{ route('ticket.delete', $ticket->id) }}" method="POST" class="hidden">
-                                @csrf
-                                @method('delete')
-                            </form>
+                            <a href="{{ route('myCart.purchase') }}" class="bg-green-700 text-white py-1 px-3 rounded hover:bg-green-800 transition duration-200 font-semibold"> Complete Purchased </a>
+                            <!-- maybe we use it in Refund Functional Requirement -->
+                            {{--
+                                <button type="button" class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600 transition duration-200 font-semibold" onclick="showConfirmationModal('{{ $ticket->id }}')">
+                                    Cancel
+                                </button>
+                                <form id="delete-form-{{ $ticket->id }}" action="{{ route('ticket.delete', $ticket->id) }}" method="POST" class="hidden">
+                                    @csrf
+                                    @method('delete')
+                                </form>
+                            --}}
                         </td>
                     </tr>
                     @endforeach
                 </tbody>
             </table>
-{{--            @dd($ticket->ticketStatus === ticketStatus::ACTIVE)--}}
+
             <div id="confirmation-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
                 <div class="bg-white rounded-lg p-6 shadow-lg transform  transition-transform duration-500 ease-in-out" id="modal-content">
                     <h2 class="text-lg font-bold mb-4">Are you sure you want to delete this?</h2>

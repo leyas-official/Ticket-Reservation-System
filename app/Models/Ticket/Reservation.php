@@ -49,7 +49,6 @@ class Reservation
     }
 
 
-
     //cancel and deletes customer reservation/booking and refunds customer money
     public static function cancelReservation($ticketId)
     {
@@ -68,4 +67,6 @@ class Reservation
             return redirect()->back()->with('error', 'Failed to cancel reservation. Please try again later.');
         }
     }
+
+//    public static completePurchased(){ return}
 }

@@ -105,7 +105,7 @@
                                     $eventIdsWithTickets = $tickets->pluck('eventId')->toArray();
                                 @endphp
                                 @if(in_array($event->id, $eventIdsWithTickets))
-                                    <a href="{{ route('myTickets') }}" class="mt-6 inline-block text-center text-white bg-blue-800 hover:bg-blue-900 font-medium py-2 px-6 rounded-lg transition-colors duration-200">
+                                    <a href="{{ route('myCart') }}" class="mt-6 inline-block text-center text-white bg-blue-800 hover:bg-blue-900 font-medium py-2 px-6 rounded-lg transition-colors duration-200">
                                         View Cart
                                     </a>
                                 @else

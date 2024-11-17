@@ -44,6 +44,7 @@ Route::get('/events/index', function ()  {
     $events = new Event(); // Array of objects
     $allEvents = $events->getAllEvents();
     $tickets = new Ticket();
+
     if (Auth::user()) {
         $allUserTickets = $tickets->getTicketByUserId(Auth::user()->id);
     }else{
@@ -53,19 +54,23 @@ Route::get('/events/index', function ()  {
         'events' => $allEvents,
         'tickets' => $allUserTickets,
     ]);
+
 })->name('events');
 
-Route::get('/myTickets', function ()  {
-    return view('myTickets', [
+Route::get('/myCart', function ()  {
+    return view('carts.index', [
         'userTickets' => Ticket::getAllUserTickets(Customer::getId())
     ]);
-})->name('myTickets');
+})->name('myCart');
 
 Route::post('/events/booking', [Reservation::class , 'addReservation'])->name('addTicket');
 
 Route::get('/events/{event}/{customer}', [Customer::class , 'addToCart'])->name('addToCart');
 
-Route::delete('/cancelReservation/{ticketId}' , [Reservation::class , 'cancelReservation'])->name('ticket.delete');
+Route::get('/myCart/Purchase-ticket' , function () {
+    return view('carts.purchase');
+})->name('myCart.purchase');
+//Route::delete('/cancelReservation/{ticketId}' , [Reservation::class , 'cancelReservation'])->name('ticket.delete');
 
 
 // Admin Pages
