@@ -37,8 +37,6 @@ Route::get('/about', function () {
     return view('about');
 });
 
-
-
 Route::get('/events/index', function ()  {
 //    dd(Auth::user()->id);
     $events = new Event(); // Array of objects

@@ -18,7 +18,7 @@ class Event extends Model
     ];
 
     //retrieves all events for view
-    public  function getAllEvents()
+    public function getAllEvents()
     {
         return Event::query()
         ->where('name','like','%'.request()->input('search').'%')
@@ -41,7 +41,7 @@ class Event extends Model
     }
 
     //inserts event data into events table
-    public static function createEvent($event)
+    public function createEventMain($event)
     {
         return self::create([
             'name' => $event['name'],
@@ -80,10 +80,19 @@ class Event extends Model
         return $this->belongsTo(Location::class, 'locationId');
     }
 
+    public function movies()
+    {
+        return $this->hasone(Movies::class);
+    }
+
+    public function sports()
+    {
+        return $this->hasone(Sports::class);
+    }
+
     // eventTypeId Belongs To eventType
     public function eventType()
     {
         return $this->belongsTo(EventType::class, 'eventTypeId');
     }
-
 }

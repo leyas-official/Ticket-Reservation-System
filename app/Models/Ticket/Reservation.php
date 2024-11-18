@@ -9,9 +9,9 @@ use Illuminate\Http\Request;
 class Reservation
 {
     // add booking to the user account
+    // call the payment process to check if the payment is successful
     public static function addReservation(Request $request) {
         $paymentType = $request->input('payment_method');
-
         try {
             if ($paymentType) { // Check if payment type is provided
                 $payment = self::getPaymentProcessor($paymentType);
@@ -26,12 +26,9 @@ class Reservation
                 return redirect()->route('events')->with('error', 'Payment type not specified.'); // Handle missing payment type
             }
         } catch (\Exception $e) {
-
             \Log::error('Failed to add event: ' . $e->getMessage());
-
             return redirect()->back()->with('error', 'Failed to reserve a ticket. Please try again later.');
         }
-
     }
 
     // returns with the directory for the class that going to process the payment
