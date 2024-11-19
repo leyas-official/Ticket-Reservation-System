@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\Event\Event;
 use App\Models\Event\Location;
@@ -7,6 +8,7 @@ use App\Models\Event\EventType;
 use App\Models\People\Customer;
 use App\Models\People\Admin;
 use App\Models\Ticket\Ticket;
+use App\Models\Payment\Sadad;
 use App\Models\Ticket\Reservation;
 
 
@@ -61,15 +63,31 @@ Route::get('/myCart', function ()  {
     ]);
 })->name('myCart');
 
-Route::post('/events/booking', [Reservation::class , 'addReservation'])->name('addTicket');
+//Route::post('/events/booking', [Reservation::class , 'addReservation'])->name('addTicket');
+//Route::delete('/cancelReservation/{ticketId}' , [Reservation::class , 'cancelReservation'])->name('ticket.delete');
 
 Route::get('/events/{event}/{customer}', [Customer::class , 'addToCart'])->name('addToCart');
 
-Route::get('/myCart/Purchase-ticket' , function () {
-    return view('carts.purchase');
+// step1
+Route::get('/myCart/Purchase-ticket/{id}', function (Ticket $id,Request $request) {
+    return view('carts.step1', ['ticket' => $id]);
 })->name('myCart.purchase');
-//Route::delete('/cancelReservation/{ticketId}' , [Reservation::class , 'cancelReservation'])->name('ticket.delete');
 
+
+
+
+
+Route::get('/payments/sdad/{id}', function (Ticket $id ) {
+    return view('payment.sdad' , ['ticket' => $id ]); } )->name('payments.sdad');
+
+Route::post('/payments/sdad/{id}', function (Request $request ,Ticket $id) {
+    $sadad = new Sadad();
+    return $sadad->handleRequest($request ,$id );
+})->name('sdad.process');
+
+
+Route::get('/payments/edf3li', function (Event $id) { echo 'edf3li' ;})->name('payments.edf3li');
+Route::get('/payments/mobicash', function (Event $id) { echo 'mobicash' ;})->name('payments.mobicash');
 
 // Admin Pages
 Route::middleware(['auth', 'admin'])->group(function () {

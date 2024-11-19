@@ -12,6 +12,7 @@ class Reservation
     // call the payment process to check if the payment is successful
     public static function addReservation(Request $request) {
         $paymentType = $request->input('payment_method');
+        dd($paymentType);
         try {
             if ($paymentType) { // Check if payment type is provided
                 $payment = self::getPaymentProcessor($paymentType);

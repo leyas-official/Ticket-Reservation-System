@@ -2,8 +2,15 @@
 
 namespace App\Models\Payment;
 
-class Idfali extends Payment
+class Idfali implements Payment
 {
+
+    protected $fillable = [
+        'name',
+        'paymentMethod',
+        'amount',
+        'paymentDate',
+    ];
 
     //fake methods
     public function processPayment(){
@@ -12,5 +19,15 @@ class Idfali extends Payment
 
     public function processRefund(){
         return True;
+    }
+
+    public function getAllPayment()
+    {
+        return Payment::all();
+    }
+
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class);
     }
 }

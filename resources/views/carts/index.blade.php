@@ -63,8 +63,15 @@
                         </td>
 
                         <td class="px-6 py-4 flex justify-center text-center">
-                            <a href="{{ route('myCart.purchase') }}" class="bg-green-700 text-white py-1 px-3 rounded hover:bg-green-800 transition duration-200 font-semibold"> Complete Purchased </a>
-                            <!-- maybe we use it in Refund Functional Requirement -->
+                            @if($ticket->ticketStatus === TicketStatus::ACTIVE)
+                                <a href="{{ route('myCart.purchase' , $ticket->id) }}" class="bg-green-700 text-white py-1 px-3 rounded hover:bg-green-800 transition duration-200 font-semibold"> Complete Purchased </a>
+                            @elseif($ticket->ticketStatus === TicketStatus::CANCELED)
+                                <a href="#" class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-700 transition duration-200 font-semibold"> CANCELED </a>
+                            @else
+                                <a href="#" class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-700 transition duration-200 font-semibold"> Refund </a>
+
+                            @endif
+                                <!-- maybe we use it in Refund Functional Requirement -->
                             {{--
                                 <button type="button" class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600 transition duration-200 font-semibold" onclick="showConfirmationModal('{{ $ticket->id }}')">
                                     Cancel

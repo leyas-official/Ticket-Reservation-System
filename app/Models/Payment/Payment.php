@@ -1,29 +1,15 @@
 <?php
-
 namespace App\Models\Payment;
-
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Payment\DebtCard;
-use App\Models\Payment\idfali;
-use App\Models\Payment\MobyCash;
-use App\Models\Payment\Sadad;
 
-class Payment extends Model
+interface Payment
 {
-    protected $fillable = [
-        'name',
-        'paymentMethod',
-        'amount',
-        'paymentDate',
-    ];
+    public function getAllPayment();
+    public function processPayment();
+    public function processRefund();
+    public function tickets();
 
-    public function getAllPayment()
-    {
-        return Payment::all();
-    }
-
-    public function tickets()
-    {
-        return $this->hasMany(Ticket::class);
-    }
+    public  function handleRequest($request,$ticket);
+    public static function validation($request);
+    public static function store($request,$ticket);
 }
