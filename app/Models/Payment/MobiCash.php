@@ -7,8 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Validation\Rules\Enum;
 
-
-class Sadad extends Model implements Payment
+class MobiCash extends Model implements Payment
 {
     protected $table = 'payments';
 
@@ -20,20 +19,18 @@ class Sadad extends Model implements Payment
         'ticketId',
     ];
 
+
     //fake methods
-    public function processPayment()
-    {
+    public function processPayment(){
         return True;
     }
 
-    public function processRefund()
-    {
+    public function processRefund(){
         return True;
     }
-
     public function getAllPayment()
     {
-        // TODO: Implement getAllPayment() method.
+        return Payment::all();
     }
 
     public function tickets()
@@ -41,29 +38,27 @@ class Sadad extends Model implements Payment
         return $this->hasMany(Ticket::class);
     }
 
-    public function handleRequest($request,$ticket)
+    public function handleRequest($request, $ticket)
     {
         self::validation($request);
         self::processPayment();
-        self::store($request,$ticket);
-        return redirect()->route('myCart')->with('success', 'purchased Ticket Is Successful using Sadad');
+        self::store($request, $ticket);
+        return redirect()->route('myCart')->with('success', 'purchased Ticket Is Successful using MobiCash');
     }
 
     public static function validation($request)
     {
         return $request->validate([
-            'fullName' => 'required|min:3|max:50',
-            'phoneNumber' => 'required|numeric',
-            'cardExpiration' => 'required|date|after:today',
+            'email' => 'required|email',
+            'phoneNumber' => 'required|numeric|digits:10|starts_with:0',
             'discountType' => 'required',
-        ]) ;
+        ]);
     }
 
-    public static function store($request,$ticket)
+    public static function store($request, $ticket)
     {
-
         $ticket->update([
-            'ticketStatus' => ticketStatus::USED,
+            'ticketStatus' => ticketStatus::USED ,
         ]);
 
 
@@ -71,7 +66,7 @@ class Sadad extends Model implements Payment
             'name' => $ticket->user->name,
             'amount' => $ticket->event->price,
             'paymentDate' => now(),
-            'paymentType' => 'Sdad',
+            'paymentType' => 'MobiCash',
             'ticketId' => $ticket->id,
         ]);
     }

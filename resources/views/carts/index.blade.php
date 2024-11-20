@@ -57,7 +57,7 @@
                         <td class="py-3 px-6 text-center">{{ \Carbon\Carbon::parse($ticket['event']['time'])->format('h:i A') }}</td>
                         <td class="py-3 px-6 text-center">{{ \Carbon\Carbon::parse($ticket['event']['date'])->format('F j, Y') }}</td>
                         <td class="py-3 px-6 text-center">
-                            <p class="inline border py-2 px-2 rounded-md font-semibold  text-sm {{$ticket->ticketStatus === TicketStatus::ACTIVE ? 'border-green-700 text-green-700' : ($ticket->ticketStatus === TicketStatus::CANCELED ? 'border-red-500 text-red-500' : 'border-yellow-500 text-yellow-500')  }}">
+                            <p class="inline border py-2 px-2 rounded-md font-bold  text-sm {{$ticket->ticketStatus === TicketStatus::ACTIVE ? 'border-green-700 text-green-700' :  'border-red-500 text-red-500'  }}">
                                 {{ $ticket->ticketStatus }}
                             </p>
                         </td>
@@ -65,8 +65,6 @@
                         <td class="px-6 py-4 flex justify-center text-center">
                             @if($ticket->ticketStatus === TicketStatus::ACTIVE)
                                 <a href="{{ route('myCart.purchase' , $ticket->id) }}" class="bg-green-700 text-white py-1 px-3 rounded hover:bg-green-800 transition duration-200 font-semibold"> Complete Purchased </a>
-                            @elseif($ticket->ticketStatus === TicketStatus::CANCELED)
-                                <a href="#" class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-700 transition duration-200 font-semibold"> CANCELED </a>
                             @else
                                 <a href="#" class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-700 transition duration-200 font-semibold"> Refund </a>
 

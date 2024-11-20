@@ -65,10 +65,10 @@
                         action = '{{ route('payments.sdad' , $ticket->id ) }}'; // Example route for "Sdad"
                         break;
                     case 'edf3li':
-                        action = '{{ route('payments.edf3li' ) }}'; // Example route for "Edf3li"
+                        action = '{{ route('payments.edf3li' , $ticket->id ) }}'; // Example route for "Edf3li"
                         break;
                     case 'mobicash':
-                        action = '{{ route('payments.mobicash' ) }}'; // Example route for "MobiCash"
+                        action = '{{ route('payments.mobiCash' , $ticket->id ) }}'; // Example route for "MobiCash"
                         break;
                     default:
                         action = '#'; // Default action if no payment method is selected

@@ -9,6 +9,8 @@ use App\Models\People\Customer;
 use App\Models\People\Admin;
 use App\Models\Ticket\Ticket;
 use App\Models\Payment\Sadad;
+use App\Models\Payment\Idfali;
+use App\Models\Payment\MobiCash;
 use App\Models\Ticket\Reservation;
 
 
@@ -73,10 +75,7 @@ Route::get('/myCart/Purchase-ticket/{id}', function (Ticket $id,Request $request
     return view('carts.step1', ['ticket' => $id]);
 })->name('myCart.purchase');
 
-
-
-
-
+// Sadad Getaway
 Route::get('/payments/sdad/{id}', function (Ticket $id ) {
     return view('payment.sdad' , ['ticket' => $id ]); } )->name('payments.sdad');
 
@@ -85,9 +84,22 @@ Route::post('/payments/sdad/{id}', function (Request $request ,Ticket $id) {
     return $sadad->handleRequest($request ,$id );
 })->name('sdad.process');
 
+// Edf3li Getaway
+Route::get('/payments/edf3li/{id}', function (Ticket $id) { return view('payment.edf3li' , ['ticket' => $id ] ) ;})->name('payments.edf3li');
+Route::POST('/payments/edf3li/{id}', function (Request $request ,Ticket $id) {
+//    dd($request);
+    $idfali = new Idfali();
+    return $idfali->handleRequest($request ,$id );
+})->name('edf3li.process');
 
-Route::get('/payments/edf3li', function (Event $id) { echo 'edf3li' ;})->name('payments.edf3li');
-Route::get('/payments/mobicash', function (Event $id) { echo 'mobicash' ;})->name('payments.mobicash');
+
+// mobi cash Getaway
+Route::get('/payments/mobicash/{id}', function (Ticket $id) { return view('payment.mobiCash' , ['ticket' => $id]) ;})->name('payments.mobiCash');
+Route::post('/payments/mobicash/{id}', function (Request $request ,Ticket $id) {
+    $mobiCash = new MobiCash();
+    return $mobiCash->handleRequest($request ,$id );
+})->name('mobiCash.process');
+
 
 // Admin Pages
 Route::middleware(['auth', 'admin'])->group(function () {
