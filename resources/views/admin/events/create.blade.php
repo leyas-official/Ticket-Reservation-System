@@ -23,7 +23,6 @@
         <h2 class="text-3xl font-extrabold text-center text-blue-800 mb-6">Add New Event</h2>
         <form action="{{ route('admin.events.store') }}" method="POST" class="space-y-6">
             @csrf
-
             <div>
                 <label for="name" class="block text-lg font-semibold text-gray-800">Event Name</label>
                 <input type="text" id="name" name="name" required
@@ -33,7 +32,6 @@
                     <span class="text-red-500 text-sm">{{ $message }}</span>
                 @enderror
             </div>
-
             <div>
                 <label for="description" class="block text-lg font-semibold text-gray-800">Event Description</label>
                 <textarea id="description" name="description" required
@@ -78,22 +76,83 @@
                     <span class="text-red-500 text-sm">{{ $message }}</span>
                 @enderror
             </div>
+            {{--                    <option value="{{ $type->id }}" {{ old('type') == $type->id ? 'selected' : '' }}>--}}
+            {{--                        {{ $type->name }}--}}
+            {{--                    </option>--}}
 
             <div>
                 <label for="type" class="block text-lg font-semibold text-gray-800">Event Type</label>
-                <select id="type" name="type" required
-                        class="w-full border @error('type') border-red-500 border-gray-300 @enderror p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
-                    <option value="" disabled selected>Select an event type</option>
-                    @foreach($types as $type)
-                        <option value="{{ $type->id }}" {{ old('type') == $type->id ? 'selected' : '' }}>
-                            {{ $type->name }}
+                    <select id="type" name="type" required
+                            class="w-full border @error('type') border-red-500 border-gray-300 @enderror p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
+                        <option value="" disabled selected>Select an event type</option>
+                        <option value="sports">
+                            Sport
                         </option>
-                    @endforeach
-                </select>
+                        <option value="movies">
+                            Movie
+                        </option>
+                    </select>
                 @error('type')
                     <span class="text-red-500 text-sm">{{ $message }}</span>
                 @enderror
             </div>
+
+            <!-- Additional Fields for Sport -->
+            <div id="sport-fields" class="hidden">
+                <div>
+                    <label for="homeTeam" class="block text-lg font-semibold text-gray-800">Home Team</label>
+                    <input type="text" name="homeTeam" id="homeTeam" class="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Enter Home Team Name">
+                </div>
+                <div>
+                    <label for="awayTeam" class="block text-lg font-semibold text-gray-800">Away Team</label>
+                    <input type="text" name="awayTeam" id="awayTeam" class="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Enter Away Team Name">
+                </div>
+                <div>
+                    <label for="stadium" class="block text-lg font-semibold text-gray-800">Stadium Name</label>
+                    <input type="text" name="stadium" id="stadium" class="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Enter Stadium Name">
+                </div>
+                <div>
+                    <label for="typeOfSport" class="block text-lg font-semibold text-gray-800">Type Of Sport</label>
+                    <input type="text" name="typeOfSport" id="typeOfSport" class="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Enter Sport Name">
+                </div>
+            </div>
+
+            <!-- Additional Fields for Movie -->
+            <div id="movie-fields" class="hidden">
+                <div>
+                    <label for="director" class="block text-lg font-semibold text-gray-800">Director Name</label>
+                    <input type="text" name="director" id="director" class="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Enter Director Name">
+                </div>
+                <div>
+                    <label for="Theater" class="block text-lg font-semibold text-gray-800">Theater Number</label>
+                    <input type="text" name="actors" id="actors" class="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Enter Theater Number">
+                </div>
+                <div>
+                    <label for="genre" class="block text-lg font-semibold text-gray-800">Genre</label>
+                    <input type="text" name="genre" id="genre" class="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Romance, Comedy, Etc">
+                </div>
+                <div>
+                    <label for="length" class="block text-lg font-semibold text-gray-800">Length</label>
+                    <input type="time" name="length" id="length" class="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
+                </div>
+            </div>
+
+            <script>
+                document.getElementById('type').addEventListener('change', function() {
+                    let selectedType = this.value;
+
+                    // Hide all additional fields
+                    document.getElementById('sport-fields').classList.add('hidden');
+                    document.getElementById('movie-fields').classList.add('hidden');
+
+                    // Show fields based on selected type
+                    if (selectedType === 'sports') {
+                        document.getElementById('sport-fields').classList.remove('hidden');
+                    } else if (selectedType === 'movies') {
+                        document.getElementById('movie-fields').classList.remove('hidden');
+                    }
+                });
+            </script>
 
             <div>
                 <label for="price" class="block text-lg font-semibold text-gray-800">Price</label>

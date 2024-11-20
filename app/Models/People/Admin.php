@@ -4,6 +4,8 @@ namespace App\Models\People;
 
 use App\Models\Event\EventType;
 use App\Models\Event\Location;
+use App\Models\Event\Movies;
+use App\Models\Event\Sports;
 use Illuminate\Http\Request;
 use App\Models\Event\Event;
 use Illuminate\Database\Eloquent\Model;
@@ -15,21 +17,33 @@ class Admin extends Person
 
     // admins Adds Event method
     public static function addEvent(Request $request) {
+        $type = $request->type;
 
-        $event = Event::validation($request);
+        $models = [
+            'movies' => Movies::class,
+            'sports' => Sports::class,
+        ];
 
-        try {
+        if (array_key_exists($type, $models)) {
+            $modelClass = $models[$type];
+            $model = new $modelClass();
 
-            Event::createEvent($event);
-
-            return redirect()->route('admin.events')->with('success', 'Event has been added Successful');
-
-        } catch (\Exception $e) {
-
-            \Log::error('Failed to add event: ' . $e->getMessage());
-
+            $methodName = 'addEvent' . ucfirst($type);
+            if (method_exists($model, $methodName)) {
+                $model->$methodName($request);
+            }else{
+                return redirect()->back()->with('error', 'Failed to add the event. Please try again.');
+            }
+        } else{
             return redirect()->back()->with('error', 'Failed to add the event. Please try again.');
         }
+
+//        try {
+//            return redirect()->route('admin.events')->with('success', 'Event has been added Successful');
+//        } catch (\Exception $e) {
+//            \Log::error('Failed to add event: ' . $e->getMessage());
+//            return redirect()->back()->with('error', 'Failed to add the event. Please try again.');
+//        }
     }
 
 
@@ -55,22 +69,14 @@ class Admin extends Person
 
     // admins deletes Event method
     public static function deleteEvent($eventId) {
-
         try {
-
             $event = Event::where('id', $eventId)->get()->first();
-
             $event->delete();
-
             return redirect()->route('admin.events')->with('success', 'Delete Event Successful');
-
         } catch (\Exception $e) {
-
             \Log::error('Failed to add event: ' . $e->getMessage());
-
             return redirect()->back()->with('error', 'Failed to Delete event. Please try again.');
         }
-
     }
 
     // Location Methods

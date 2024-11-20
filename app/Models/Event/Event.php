@@ -14,7 +14,7 @@ class Event extends Model
         'description',
         'numberOfTicket',
         'locationId',
-        'eventTypeId',
+        'type',
     ];
 
     //retrieves all events for view
@@ -34,7 +34,7 @@ class Event extends Model
             'date' => 'required|date|after_or_equal:today',
             'time' => 'required|date_format:H:i',
             'location' => 'required|integer|exists:locations,id',
-            'type' => 'required|integer|exists:event_types,id',
+            'type' => 'required|string|max:255',
             'price' => 'required|numeric',
             'numberOfTicket' => 'required|integer|min:1',
         ]);
@@ -43,16 +43,30 @@ class Event extends Model
     //inserts event data into events table
     public function createEventMain($event)
     {
-        return self::create([
-            'name' => $event['name'],
-            'description' => $event['description'],
-            'date' => $event['date'],
-            'time' => $event['time'],
-            'locationId' => $event['location'],
-            'eventTypeId' => $event['type'],
-            'price' => $event['price'],
-            'numberOfTicket' => $event['numberOfTicket'],
-        ]);
+        try {
+                Event::create([
+                'name' => $event['name'],
+                'description' => $event['description'],
+                'date' => $event['date'],
+                'time' => $event['time'],
+                'locationId' => $event['location'],
+                'type' => $event['type'],
+                'price' => $event['price'],
+                'numberOfTicket' => $event['numberOfTicket'],
+            ]);
+        } catch (\Illuminate\Database\QueryException $e) {
+            // This will catch database-related exceptions
+            dd(response()->json([
+                'error' => 'Database error occurred.',
+                'message' => $e->getMessage(),
+            ], 500)) ; // Return a 500 Internal Server Error with the message
+        } catch (\Exception $e) {
+            // This will catch other general exceptions
+            return response()->json([
+                'error' => 'An unexpected error occurred.',
+                'message' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     //updates row data in events table

@@ -129,7 +129,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/Admin/events/create', function () {
         $locations = new Location();
         $types = new EventType();
-        return view('admin.events.create' , ['locations' => $locations->getAllLocations() , 'types' => $types->getAllTypes() ]);
+        return view('admin.events.create' , ['locations' => $locations->getAllLocations()]);
     })->name('admin.events.create');
 
     Route::post('/Admin/events/store', [Admin::class , 'addEvent'])->name('admin.events.store');

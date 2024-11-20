@@ -14,11 +14,9 @@ class Sports extends Event
     ];
 
     public static function addEventSports(Request $request) {
-
-        $event = Sports::validation($request);
-
+        $event = self::validation($request);
         try {
-            Sports::createEvent($event);
+            self::createEvent($event);
             return redirect()->route('admin.events')->with('success', 'Event has been added Successful');
         } catch (\Exception $e) {
             \Log::error('Failed to add event: ' . $e->getMessage());
@@ -34,7 +32,7 @@ class Sports extends Event
             'date' => 'required|date|after_or_equal:today',
             'time' => 'required|date_format:H:i',
             'location' => 'required|integer|exists:locations,id',
-            'type' => 'required|integer|exists:event_types,id',
+            'type' => 'required|string|max:255',
             'price' => 'required|numeric',
             'numberOfTicket' => 'required|integer|min:1',
             'stadium' => 'required|string|max:255',
@@ -51,10 +49,10 @@ class Sports extends Event
 
         self::create([
             'eventId' => $eventRecord->id,
-            'theaterNumber' => $event['theaterNumber'],
-            'director' => $event['director'],
-            'genre' => $event['director'],
-            'length' => $event['length'],
+            'stadium' => $event['stadium'],
+            'homeTeam' => $event['homeTeam'],
+            'awayTeam' => $event['awayTeam'],
+            'typeOfSport' => $event['typeOfSport'],
         ]);
     }
 
