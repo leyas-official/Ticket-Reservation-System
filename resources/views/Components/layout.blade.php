@@ -38,9 +38,9 @@
 
             <div class="relative ml-3">
                 @guest()
-                <x-nav-link href="{{ route('login') }}"  class="relative flex max-w-xs items-center rounded-full bg-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                <a href="{{ route('login') }}"  class="relative flex max-w-xs items-center rounded-full bg-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                     <p class="border border-white px-3 py-1 rounded-md text-white bg-gray-900 hover:bg-gray-700 transition duration-200 focus:outline-none">Login</p>
-                </x-nav-link>
+                </a>
                 @endguest
 
                 @auth()

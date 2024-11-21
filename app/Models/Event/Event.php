@@ -41,33 +41,25 @@ class Event extends Model
     }
 
     //inserts event data into events table
-    public function createEventMain($event)
-    {
-        try {
-                Event::create([
-                'name' => $event['name'],
-                'description' => $event['description'],
-                'date' => $event['date'],
-                'time' => $event['time'],
-                'locationId' => $event['location'],
-                'type' => $event['type'],
-                'price' => $event['price'],
-                'numberOfTicket' => $event['numberOfTicket'],
-            ]);
-        } catch (\Illuminate\Database\QueryException $e) {
-            // This will catch database-related exceptions
-            dd(response()->json([
-                'error' => 'Database error occurred.',
-                'message' => $e->getMessage(),
-            ], 500)) ; // Return a 500 Internal Server Error with the message
-        } catch (\Exception $e) {
-            // This will catch other general exceptions
-            return response()->json([
-                'error' => 'An unexpected error occurred.',
-                'message' => $e->getMessage(),
-            ], 500);
-        }
-    }
+//    public function createEventMain($event)
+//    {
+//        try {
+//
+//            ]);
+//        } catch (\Illuminate\Database\QueryException $e) {
+//            // This will catch database-related exceptions
+//            dd(response()->json([
+//                'error' => 'Database error occurred.',
+//                'message' => $e->getMessage(),
+//            ], 500)) ; // Return a 500 Internal Server Error with the message
+//        } catch (\Exception $e) {
+//            // This will catch other general exceptions
+//            return response()->json([
+//                'error' => 'An unexpected error occurred.',
+//                'message' => $e->getMessage(),
+//            ], 500);
+//        }
+//    }
 
     //updates row data in events table
     public static function updateEvent($event , $data)

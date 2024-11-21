@@ -11,15 +11,16 @@ class Movies extends Event
         'director',
         'genre',
         'length',
+        'eventId',
     ];
 
-    public static function addEventMovie(Request $request) {
+    public static function addEventMovies(Request $request) {
 
         $event = self::validation($request);
 
         try {
             self::createEvent($event);
-            return redirect()->route('admin.events')->with('success', 'Event has been added Successful');
+//            return redirect()->route('admin.events')->with('success', 'Event has been added Successful');
         } catch (\Exception $e) {
             \Log::error('Failed to add event: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Failed to add the event. Please try again.');
@@ -34,28 +35,55 @@ class Movies extends Event
             'date' => 'required|date|after_or_equal:today',
             'time' => 'required|date_format:H:i',
             'location' => 'required|integer|exists:locations,id',
-            'type' => 'required|integer|exists:event_types,id',
+            'type' => 'required|string|max:255',
             'price' => 'required|numeric',
             'numberOfTicket' => 'required|integer|min:1',
-            'theaterNumber' => 'required|string|max:3',
+            'theaterNumber' => 'required|numeric',
             'director' => 'required|string|max:255',
             'genre' => 'required|string|max:255',
-            'length' => 'required|date_format:H:i|before:24:00'
+            'length' => 'required'
         ]);
     }
 
     public static function createEvent($event)
     {
-        $Uniqueinstance = new Movies();
-        $eventRecord = $Uniqueinstance->createEventMain($event);
+        
+        try {
+            $movie = Event::create([
+                'name' => $event['name'],
+                'description' => $event['description'],
+                'date' => $event['date'],
+                'time' => $event['time'],
+                'locationId' => $event['location'],
+                'type' => $event['type'],
+                'price' => $event['price'],
+                'numberOfTicket' => $event['numberOfTicket'],
+            ]);
 
-        self::create([
-            'eventId' => $eventRecord->id,
-            'theaterNumber' => $event['theaterNumber'],
-            'director' => $event['director'],
-            'genre' => $event['director'],
-            'length' => $event['length'],
-        ]);
+
+
+            return self::create([
+                'eventId' => $movie->id,
+                'theaterNumber' => $event['theaterNumber'],
+                'director' => $event['director'],
+                'genre' => $event['director'],
+                'length' => $event['length'],
+            ]);
+
+        } catch (\Illuminate\Database\QueryException $e) {
+            // This will catch database-related exceptions
+            dd(response()->json([
+                'error' => 'Database error occurred.',
+                'message' => $e->getMessage(),
+            ], 500)) ; // Return a 500 Internal Server Error with the message
+        } catch (\Exception $e) {
+            // This will catch other general exceptions
+            return response()->json([
+                'error' => 'An unexpected error occurred.',
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+
     }
 
     public function events()

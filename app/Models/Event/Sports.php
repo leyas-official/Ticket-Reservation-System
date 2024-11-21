@@ -6,18 +6,23 @@ use Illuminate\Http\Request;
 
 class Sports extends Event
 {
+    protected $table = 'sports';
     protected $fillable = [
         'stadium',
         'homeTeam',
         'awayTeam',
         'typeOfSport',
+        'length',
+        'eventId',
     ];
 
     public static function addEventSports(Request $request) {
         $event = self::validation($request);
         try {
             self::createEvent($event);
-            return redirect()->route('admin.events')->with('success', 'Event has been added Successful');
+//            dd(true);
+//            return redirect()->route('myCart')->with('success', 'purchased Ticket Is Successful using Sadad');
+//            return redirect()->route('admin.events')->with('success', 'Event has been added Successful');
         } catch (\Exception $e) {
             \Log::error('Failed to add event: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Failed to add the event. Please try again.');
@@ -44,16 +49,44 @@ class Sports extends Event
 
     public static function createEvent($event)
     {
-        $Uniqueinstance = new Sports();
-        $eventRecord = $Uniqueinstance->createEventMain($event);
+//                $sport = new Sports();
+        try {
+                $sport = Event::create([
+                    'name' => $event['name'],
+                    'description' => $event['description'],
+                    'date' => $event['date'],
+                    'time' => $event['time'],
+                    'locationId' => $event['location'],
+                    'type' => $event['type'],
+                    'price' => $event['price'],
+                    'numberOfTicket' => $event['numberOfTicket'],
+                ]);
 
-        self::create([
-            'eventId' => $eventRecord->id,
-            'stadium' => $event['stadium'],
-            'homeTeam' => $event['homeTeam'],
-            'awayTeam' => $event['awayTeam'],
-            'typeOfSport' => $event['typeOfSport'],
-        ]);
+
+                return self::create([
+                    'eventId' => $sport->id,
+                    'stadium' => $event['stadium'],
+                    'homeTeam' => $event['homeTeam'],
+                    'awayTeam' => $event['awayTeam'],
+                    'typeOfSport' => $event['typeOfSport'],
+                    'length' => 90,
+                ]);
+
+        } catch (\Illuminate\Database\QueryException $e) {
+            // This will catch database-related exceptions
+            dd(response()->json([
+                'error' => 'Database error occurred.',
+                'message' => $e->getMessage(),
+            ], 500)) ; // Return a 500 Internal Server Error with the message
+        } catch (\Exception $e) {
+            // This will catch other general exceptions
+            return response()->json([
+                'error' => 'An unexpected error occurred.',
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+
+
     }
 
     public function events()

@@ -124,8 +124,8 @@
                     <input type="text" name="director" id="director" class="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Enter Director Name">
                 </div>
                 <div>
-                    <label for="Theater" class="block text-lg font-semibold text-gray-800">Theater Number</label>
-                    <input type="text" name="actors" id="actors" class="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Enter Theater Number">
+                    <label for="theaterNumber" class="block text-lg font-semibold text-gray-800">Theater Number</label>
+                    <input type="text" name="theaterNumber" id="theaterNumber" class="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Enter Theater Number">
                 </div>
                 <div>
                     <label for="genre" class="block text-lg font-semibold text-gray-800">Genre</label>

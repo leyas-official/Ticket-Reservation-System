@@ -41,7 +41,7 @@
                     <tr class="border-b border-gray-200 hover:bg-gray-300 transition duration-200 cursor-pointer">
                         <td class="py-3 px-6 truncate">{{ $event->name }}</td>
                         <td class="py-3 px-6 truncate ... max-w-40 hover:max-w-60 transition-all duration-300">{{ $event->description }}</td>
-                        <td class="py-3 px-6">{{ $event['eventType']['name'] }}</td>
+                        <td class="py-3 px-6">{{ $event->type }}</td>
                         <td class="py-3 px-6">{{ $event['location']['name'] }}</td>
                         <td class="py-3 px-6">{{ \Carbon\Carbon::parse($event->time)->format('h:i A') }}</td>
                         <td class="py-3 px-6">{{ \Carbon\Carbon::parse($event->date)->format('F d, Y') }}</td>

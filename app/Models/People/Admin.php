@@ -17,8 +17,8 @@ class Admin extends Person
 
     // admins Adds Event method
     public static function addEvent(Request $request) {
-        $type = $request->type;
 
+        $type = $request->type;
         $models = [
             'movies' => Movies::class,
             'sports' => Sports::class,
@@ -31,6 +31,7 @@ class Admin extends Person
             $methodName = 'addEvent' . ucfirst($type);
             if (method_exists($model, $methodName)) {
                 $model->$methodName($request);
+                return redirect()->route('admin.events')->with('success', 'Event has been added Successful');
             }else{
                 return redirect()->back()->with('error', 'Failed to add the event. Please try again.');
             }
