@@ -11,5 +11,6 @@ interface Payment
 
     public  function handleRequest($request,$ticket);
     public static function validation($request);
-    public static function store($request,$ticket);
+    public static function store($request,$ticket,$amount);
+    public static function checkDiscount($request,$ticket);
 }

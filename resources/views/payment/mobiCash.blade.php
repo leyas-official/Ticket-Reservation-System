@@ -49,14 +49,15 @@
 
                         <!-- Discount Type Dropdown -->
                         <div class="flex flex-col">
-                            <label for="discount_type" class="mb-2 text-sm font-medium text-gray-800 font-semibold">
+                            <label for="discount_type" class="mb-2 text-sm font-medium text-gray-900 font-semibold">
                                 Discount Type*
                             </label>
                             <select id="discount_type" name="discountType"
                                     class="w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900
-                                    focus:border-green-500 focus:ring-2 focus:ring-green-400 @error('discountType') border-red-500 @enderror"
+    focus:border-amber-500 focus:ring-2 focus:ring-amber-500 @error('discountType') border-red-500 @enderror"
                                     required>
                                 <option value="" disabled selected>Select Discount Type</option>
+                                <option value="none">No Discount</option> <!-- خيار جديد بدون خصم -->
                                 <option value="seniors">Seniors (20% Off)</option>
                                 <option value="students">Students (10% Off)</option>
                                 <option value="military">Military (15% Off)</option>
@@ -110,16 +111,19 @@
             let discount = 0;
 
             if (discountType === 'students') {
-                discount = 0.1; // 10% discount for students
+                discount = 0.1;
             } else if (discountType === 'military') {
-                discount = 0.15; // 15% discount for military
+                discount = 0.15;
             } else if (discountType === 'seniors') {
-                discount = 0.2; // 20% discount for seniors
+                discount = 0.2;
+            } else if (discountType === 'none') {
+                discount = 0;
             }
 
             const totalPrice = originalPrice * (1 - discount);
             document.getElementById('total-price').innerText = `$${totalPrice.toFixed(2)}`;
             document.getElementById('savings').innerText = `-$${(originalPrice * discount).toFixed(2)}`;
         });
+
     </script>
 </x-layout>

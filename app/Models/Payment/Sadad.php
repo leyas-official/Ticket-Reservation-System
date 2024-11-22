@@ -2,6 +2,9 @@
 
 namespace App\Models\Payment;
 use App\Enums\ticketStatus;
+use App\Models\Discount\DiscountMilitary;
+use App\Models\Discount\DiscountSeniors;
+use App\Models\Discount\DiscountStudent;
 use App\Models\Ticket\Ticket;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Request;
@@ -43,10 +46,17 @@ class Sadad extends Model implements Payment
 
     public function handleRequest($request,$ticket)
     {
+
+            $amount = self::checkDiscount($request->discountType , $ticket);
         self::validation($request);
-        self::processPayment();
-        self::store($request,$ticket);
-        return redirect()->route('myCart')->with('success', 'purchased Ticket Is Successful using Sadad');
+        try {
+            self::processPayment();
+            self::store($request,$ticket,$amount);
+            return redirect()->route('myCart')->with('success', 'purchased Ticket Is Successful using Sadad');
+        }  catch (\Exception $e) {
+            dd($e->getMessage());
+        }
+
     }
 
     public static function validation($request)
@@ -59,20 +69,35 @@ class Sadad extends Model implements Payment
         ]) ;
     }
 
-    public static function store($request,$ticket)
+    public static function store($request,$ticket,$amount)
     {
 
         $ticket->update([
             'ticketStatus' => ticketStatus::USED,
         ]);
 
-
         return self::create([
             'name' => $ticket->user->name,
-            'amount' => $ticket->event->price,
+            'amount' => $amount,
             'paymentDate' => now(),
             'paymentType' => 'Sdad',
             'ticketId' => $ticket->id,
         ]);
+    }
+
+    public static function checkDiscount($request,$ticket)
+    {
+        $discountHandlers = [
+            'seniors' => DiscountSeniors::class,
+            'students' => DiscountStudent::class,
+            'military' => DiscountMilitary::class,
+        ];
+
+        if (isset($discountHandlers[$request])) {
+            $handler = $discountHandlers[$request];
+            return $handler::makeDiscount($ticket->event->price);
+        }
+
+        return $ticket->event->price;
     }
 }
