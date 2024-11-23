@@ -10,6 +10,7 @@ class DiscountMilitary implements Discount
     //
     public static function makeDiscount($amount)
     {
-        return $amount - ($amount * .15);
+        $amount = (float) $amount;
+        return $amount - ($amount * 0.15);
     }
 }

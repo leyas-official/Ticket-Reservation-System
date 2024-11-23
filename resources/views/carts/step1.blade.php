@@ -62,13 +62,13 @@
                 let action = '';
                 switch (selectedPayment.value) {
                     case 'sdad':
-                        action = '{{ route('payments.sdad' , $ticket->id ) }}'; // Example route for "Sdad"
+                        action = '{{ route('payments', [$ticket->id, 'Sadad']) }}'; // Example route for "Sdad"
                         break;
                     case 'edf3li':
-                        action = '{{ route('payments.edf3li' , $ticket->id ) }}'; // Example route for "Edf3li"
+                        action = '{{ route('payments', [$ticket->id, 'Edf3li']) }}'; // Example route for "Edf3li"
                         break;
                     case 'mobicash':
-                        action = '{{ route('payments.mobiCash' , $ticket->id ) }}'; // Example route for "MobiCash"
+                        action = '{{ route('payments', [$ticket->id, 'MobiCash']) }}'; // Example route for "MobiCash"
                         break;
                     default:
                         action = '#'; // Default action if no payment method is selected

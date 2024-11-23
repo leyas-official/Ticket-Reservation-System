@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models\Payment;
+use App\Enums\paymentStatus;
 use App\Enums\ticketStatus;
 use App\Models\Discount\DiscountMilitary;
 use App\Models\Discount\DiscountSeniors;
@@ -9,6 +10,7 @@ use App\Models\Ticket\Ticket;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Validation\Rules\Enum;
+use phpDocumentor\Reflection\Types\True_;
 
 
 class Sadad extends Model implements Payment
@@ -21,6 +23,7 @@ class Sadad extends Model implements Payment
         'paymentType',
         'paymentDate',
         'ticketId',
+        'status',
     ];
 
     //fake methods
@@ -46,17 +49,19 @@ class Sadad extends Model implements Payment
 
     public function handleRequest($request,$ticket)
     {
-
-            $amount = self::checkDiscount($request->discountType , $ticket);
+        $discountType = $request->discountType;
+        $amount = self::checkDiscount($discountType, $ticket);
         self::validation($request);
         try {
-            self::processPayment();
-            self::store($request,$ticket,$amount);
-            return redirect()->route('myCart')->with('success', 'purchased Ticket Is Successful using Sadad');
-        }  catch (\Exception $e) {
+            if(self::processPayment()){
+                self::store($request,$ticket,$amount);
+                return true;
+            } else {
+                return false;
+            }
+        }  catch (\Exception $e){
             dd($e->getMessage());
         }
-
     }
 
     public static function validation($request)
@@ -71,21 +76,36 @@ class Sadad extends Model implements Payment
 
     public static function store($request,$ticket,$amount)
     {
+        try {
+            $row = self::create([
+                'name' => $ticket->user->name,
+                'amount' => $amount,
+                'paymentDate' => now(),
+                'paymentType' => 'Sadad',
+                'status' => paymentStatus::PAID,
+            ]);
 
-        $ticket->update([
-            'ticketStatus' => ticketStatus::USED,
-        ]);
+            $ticket->update([
+                'ticketStatus' => ticketStatus::ACTIVE,
+                'payment_id' => $row->id,
+            ]);
 
-        return self::create([
-            'name' => $ticket->user->name,
-            'amount' => $amount,
-            'paymentDate' => now(),
-            'paymentType' => 'Sdad',
-            'ticketId' => $ticket->id,
-        ]);
+        }catch (\Illuminate\Database\QueryException $e) {
+            // This will catch database-related exceptions
+            dd(response()->json([
+                'error' => 'Database error occurred.',
+                'message' => $e->getMessage(),
+            ], 500)) ; // Return a 500 Internal Server Error with the message
+        } catch (\Exception $e) {
+            // This will catch other general exceptions
+            dd(response()->json([
+                'error' => 'An unexpected error occurred.',
+                'message' => $e->getMessage(),
+            ], 500));
+        }
     }
 
-    public static function checkDiscount($request,$ticket)
+    public static function checkDiscount($discountType,$ticket)
     {
         $discountHandlers = [
             'seniors' => DiscountSeniors::class,
@@ -93,9 +113,9 @@ class Sadad extends Model implements Payment
             'military' => DiscountMilitary::class,
         ];
 
-        if (isset($discountHandlers[$request])) {
-            $handler = $discountHandlers[$request];
-            return $handler::makeDiscount($ticket->event->price);
+        if (isset($discountHandlers[$discountType])) {
+            $handler = new $discountHandlers[$discountType];
+            return $handler->makeDiscount($ticket->event->price);
         }
 
         return $ticket->event->price;

@@ -11,6 +11,7 @@ use App\Models\Ticket\Ticket;
 use App\Models\Payment\Sadad;
 use App\Models\Payment\Idfali;
 use App\Models\Payment\MobiCash;
+use App\Enums\ticketStatus;
 use App\Models\Ticket\Reservation;
 
 
@@ -65,40 +66,48 @@ Route::get('/myCart', function ()  {
     ]);
 })->name('myCart');
 
+Route::get('/myCart/{ticket}', function (Ticket $ticket){
+    $refundProcessor = new Reservation();
+    $refundProcessor->hundleRefundProcedures($ticket);
+    return view('carts.index', [
+        'userTickets' => Ticket::getAllUserTickets(Customer::getId())
+    ]);
+})->name('myCart.refund');
+
 //Route::post('/events/booking', [Reservation::class , 'addReservation'])->name('addTicket');
 //Route::delete('/cancelReservation/{ticketId}' , [Reservation::class , 'cancelReservation'])->name('ticket.delete');
 
 Route::get('/events/{event}/{customer}', [Customer::class , 'addToCart'])->name('addToCart');
 
 // step1
-Route::get('/myCart/Purchase-ticket/{id}', function (Ticket $id,Request $request) {
+Route::get('/myCart/Purchase-ticket/{id}', function (Ticket $id) {
     return view('carts.step1', ['ticket' => $id]);
 })->name('myCart.purchase');
 
-// Sadad Getaway
-Route::get('/payments/sdad/{id}', function (Ticket $id ) {
-    return view('payment.sdad' , ['ticket' => $id ]); } )->name('payments.sdad');
 
-Route::post('/payments/sdad/{id}', function (Request $request ,Ticket $id) {
-    $sadad = new Sadad();
-    return $sadad->handleRequest($request ,$id );
-})->name('sdad.process');
+// Payment Getaway
+Route::get('/payments/PaymentForm/{id}/{paymentType}', function (Ticket $id, $paymentType ) {
+    return view('payment.paymentForm' , ['ticket' => $id, 'type' => $paymentType ]); } )->name('payments');
+
+Route::post('/payments/purchase/{ticket}/{paymentType}', function (Request $request, Ticket $ticket, $paymentType) {
+    $processor = new Reservation();
+    return $processor->hundlePurchaseProcedures($request, $ticket, $paymentType);
+})->name('processPayment');
 
 // Edf3li Getaway
-Route::get('/payments/edf3li/{id}', function (Ticket $id) { return view('payment.edf3li' , ['ticket' => $id ] ) ;})->name('payments.edf3li');
-Route::POST('/payments/edf3li/{id}', function (Request $request ,Ticket $id) {
-//    dd($request);
-    $idfali = new Idfali();
-    return $idfali->handleRequest($request ,$id );
-})->name('edf3li.process');
+//Route::get('/payments/edf3li/{id}', function (Ticket $id) { return view('payment.edf3li' , ['ticket' => $id ] ) ;})->name('payments.edf3li');
+//Route::POST('/payments/edf3li/{ticket}', function (Request $request ,Ticket $ticket, $paymentType) {
+//    $processor = new reservation();
+//    return $processor->hundlePurchaseProcedures($request ,$id);
+//})->name('edf3li.process');
 
 
 // mobi cash Getaway
-Route::get('/payments/mobicash/{id}', function (Ticket $id) { return view('payment.mobiCash' , ['ticket' => $id]) ;})->name('payments.mobiCash');
-Route::post('/payments/mobicash/{id}', function (Request $request ,Ticket $id) {
-    $mobiCash = new MobiCash();
-    return $mobiCash->handleRequest($request ,$id );
-})->name('mobiCash.process');
+//Route::get('/payments/mobicash/{id}', function (Ticket $id) { return view('payment.mobiCash' , ['ticket' => $id]) ;})->name('payments.mobiCash');
+//Route::post('/payments/mobicash/{id}', function (Request $request ,Ticket $id) {
+//    $mobiCash = new MobiCash();
+//    return $mobiCash->handleRequest($request ,$id );
+//})->name('mobiCash.process');
 
 
 // Admin Pages

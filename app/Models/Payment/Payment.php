@@ -9,7 +9,7 @@ interface Payment
     public function processRefund();
     public function tickets();
 
-    public  function handleRequest($request,$ticket);
+    public function handleRequest($request,$ticket);
     public static function validation($request);
     public static function store($request,$ticket,$amount);
     public static function checkDiscount($request,$ticket);

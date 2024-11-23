@@ -2,6 +2,7 @@
 
 
 namespace App\Models\Payment;
+use App\Enums\paymentStatus;
 use App\Enums\ticketStatus;
 use App\Models\Discount\DiscountMilitary;
 use App\Models\Discount\DiscountSeniors;
@@ -20,20 +21,23 @@ class Idfali extends Model implements Payment
         'amount',
         'paymentDate',
         'ticketId',
+        'status',
     ];
 
     //fake methods
-    public function processPayment(){
+    public function processPayment()
+    {
         return True;
     }
 
-    public function processRefund(){
+    public function processRefund()
+    {
         return True;
     }
 
     public function getAllPayment()
     {
-        return Payment::all();
+        // TODO: Implement getAllPayment() method.
     }
 
     public function tickets()
@@ -41,18 +45,21 @@ class Idfali extends Model implements Payment
         return $this->hasMany(Ticket::class);
     }
 
-    public function handleRequest($request, $ticket)
+    public function handleRequest($request,$ticket)
     {
+        $discountType = $request->discountType;
+        $amount = self::checkDiscount($discountType , $ticket);
         self::validation($request);
-        $amount = self::checkDiscount($request->discountType,$ticket);
         try {
-            self::processPayment();
-            self::store($request, $ticket,$amount);
-            return redirect()->route('myCart')->with('success', 'purchased Ticket Is Successful using edf3li');
-        }  catch (\Exception $e) {
+            if(self::processPayment()){
+                self::store($request,$ticket,$amount);
+                return true;
+            } else {
+                return false;
+            }
+        }  catch (\Exception $e){
             dd($e->getMessage());
         }
-
     }
 
     public static function validation($request)
@@ -61,25 +68,41 @@ class Idfali extends Model implements Payment
             'cardNumber' => 'required|numeric',
             'nationalId' => 'required|numeric|starts_with:1,2|digits:10',
             'discountType' => 'required',
-        ]);
+        ]) ;
     }
 
-    public static function store($request, $ticket,$amount)
+    public static function store($request,$ticket,$amount)
     {
-        $ticket->update([
-            'ticketStatus' => ticketStatus::USED,
-        ]);
+        try {
+            $row = self::create([
+                'name' => $ticket->user->name,
+                'amount' => $amount,
+                'paymentDate' => now(),
+                'paymentType' => 'Idfali',
+                'status' => paymentStatus::PAID,
+            ]);
 
-        return self::create([
-            'name' => $ticket->user->name,
-            'amount' => $amount,
-            'paymentDate' => now(),
-            'paymentType' => 'Idfail',
-            'ticketId' => $ticket->id,
-        ]);
+            $ticket->update([
+                'ticketStatus' => ticketStatus::ACTIVE,
+                'payment_id' => $row->id,
+            ]);
+
+        }catch (\Illuminate\Database\QueryException $e) {
+            // This will catch database-related exceptions
+            dd(response()->json([
+                'error' => 'Database error occurred.',
+                'message' => $e->getMessage(),
+            ], 500)) ; // Return a 500 Internal Server Error with the message
+        } catch (\Exception $e) {
+            // This will catch other general exceptions
+            dd(response()->json([
+                'error' => 'An unexpected error occurred.',
+                'message' => $e->getMessage(),
+            ], 500));
+        }
     }
 
-    public static function checkDiscount($request, $ticket)
+    public static function checkDiscount($discountType,$ticket)
     {
         $discountHandlers = [
             'seniors' => DiscountSeniors::class,
@@ -87,9 +110,9 @@ class Idfali extends Model implements Payment
             'military' => DiscountMilitary::class,
         ];
 
-        if (isset($discountHandlers[$request])) {
-            $handler = $discountHandlers[$request];
-            return $handler::makeDiscount($ticket->event->price);
+        if (isset($discountHandlers[$discountType])) {
+            $handler = new $discountHandlers[$discountType];
+            return $handler->makeDiscount($ticket->event->price);
         }
 
         return $ticket->event->price;

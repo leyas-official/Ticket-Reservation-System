@@ -57,17 +57,16 @@
                         <td class="py-3 px-6 text-center">{{ \Carbon\Carbon::parse($ticket['event']['time'])->format('h:i A') }}</td>
                         <td class="py-3 px-6 text-center">{{ \Carbon\Carbon::parse($ticket['event']['date'])->format('F j, Y') }}</td>
                         <td class="py-3 px-6 text-center">
-                            <p class="inline border py-2 px-2 rounded-md font-bold  text-sm {{$ticket->ticketStatus === TicketStatus::ACTIVE ? 'border-green-700 text-green-700' :  'border-red-500 text-red-500'  }}">
+                            <p class="inline border py-2 px-2 rounded-md font-bold  text-sm {{$ticket->ticketStatus === TicketStatus::INACTIVE ? 'border-yellow-500 text-yellow-500' :  'border-red-500 text-red-500'  }}">
                                 {{ $ticket->ticketStatus }}
                             </p>
                         </td>
 
                         <td class="px-6 py-4 flex justify-center text-center">
-                            @if($ticket->ticketStatus === TicketStatus::ACTIVE)
-                                <a href="{{ route('myCart.purchase' , $ticket->id) }}" class="bg-green-700 text-white py-1 px-3 rounded hover:bg-green-800 transition duration-200 font-semibold"> Complete Purchased </a>
-                            @else
-                                <a href="#" class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-700 transition duration-200 font-semibold"> Refund </a>
-
+                            @if($ticket->ticketStatus === TicketStatus::INACTIVE)
+                                <a href="{{ route('myCart.purchase' , $ticket->id) }}" class="bg-yellow-500 text-white py-1 px-3 rounded hover:bg-yellow-600 transition duration-200 font-semibold"> Complete Purchase </a>
+                            @elseif($ticket->ticketStatus === TicketStatus::ACTIVE)
+                                <a href="javascript:void(0)" onclick="showRefundConfirmationModal({{ $ticket->id }})" class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-700 transition duration-200 font-semibold">Refund</a>
                             @endif
                                 <!-- maybe we use it in Refund Functional Requirement -->
                             {{--
@@ -87,10 +86,10 @@
 
             <div id="confirmation-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
                 <div class="bg-white rounded-lg p-6 shadow-lg transform  transition-transform duration-500 ease-in-out" id="modal-content">
-                    <h2 class="text-lg font-bold mb-4">Are you sure you want to delete this?</h2>
+                    <h2 class="text-lg font-bold mb-4">Are you sure you want to refund this ticket?</h2>
                     <div class="flex justify-end">
-                        <button id="confirm-delete" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="submitDeleteForm()">Delete</button>
-                        <button id="cancel-delete" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded ml-2" onclick="hideConfirmationModal()">Cancel</button>
+                        <a href="{{ route('myCart.refund' , $ticket->id) }}" id="confirm-delete" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="submitDeleteForm()">Delete</a>
+                        <a id="cancel-delete" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded ml-2" onclick="hideConfirmationModal()">Cancel</a>
                     </div>
                 </div>
             </div>
@@ -98,20 +97,25 @@
         @endif
     @endauth
     <script>
-        let deleteFormId;
+        let refundFormId;
 
-        function showConfirmationModal(eventId) {
-            deleteFormId = 'delete-form-' + eventId; // Set the ID of the form to delete
+        function showRefundConfirmationModal(ticketId) {
+            // Set the ID of the form to refund
+            refundFormId = 'refund-form-' + ticketId;
+            // Show the modal
             document.getElementById('confirmation-modal').classList.remove('hidden');
         }
 
-        function submitDeleteForm() {
-            document.getElementById(deleteFormId).submit(); // Submit the correct form
+        function submitRefundForm() {
+            // Submit the form for refund
+            document.getElementById(refundFormId).submit();
             hideConfirmationModal();
         }
 
         function hideConfirmationModal() {
+            // Hide the modal
             document.getElementById('confirmation-modal').classList.add('hidden');
         }
+
     </script>
 </x-layout>

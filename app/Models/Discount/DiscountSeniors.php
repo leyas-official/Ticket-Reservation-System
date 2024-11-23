@@ -9,6 +9,7 @@ class DiscountSeniors  implements Discount
     //
     public static function makeDiscount($amount)
     {
-        return $amount - ($amount * .2);
+        $amount = (float) $amount;
+        return $amount - ($amount * 0.2);
     }
 }

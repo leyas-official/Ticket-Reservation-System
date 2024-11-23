@@ -9,6 +9,7 @@ class DiscountStudent  implements Discount
     //
     public static function makeDiscount($amount)
     {
-        return $amount - ($amount * .1);
+        $amount = (float) $amount;
+        return $amount - ($amount * 0.1);
     }
 }

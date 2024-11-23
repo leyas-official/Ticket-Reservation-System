@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Enums\ticketStatus;
+use App\Models\Payment\Sadad;
 
 
 class Ticket extends Model
@@ -20,7 +21,7 @@ class Ticket extends Model
         'price',
         'userId',
         'eventId',
-        'paymentType',
+        'payment_id',
     ];
 
     protected $casts = [
@@ -38,12 +39,16 @@ class Ticket extends Model
     }
 
     //returns ticket by its ID method
-    public static function getTicketByID($id) {
+    public function getTicketByID($id) {
         return Ticket::where('id', $id)->first();
     }
 
-    public  function getTicketByEvent($id) {
+    public function getTicketByEvent($id) {
         return Ticket::where('eventId', $id)->get();
+    }
+
+    public function changeTicketStatusToUsed(){
+
     }
 
 
@@ -56,7 +61,7 @@ class Ticket extends Model
         return self::create([
             'userId' => $customer->id,
             'eventId' => $event->id,
-            'ticketStatus' => 'ACTIVE',
+            'ticketStatus' => ticketStatus::INACTIVE,
         ]);
     }
 
@@ -77,6 +82,7 @@ class Ticket extends Model
     // paymentId Belongs To Payment
     public function payment()
     {
-        return $this->belongsTo(Payment::class, 'paymentId');
+        return $this->belongsTo(Sadad::class, 'payment_id');  // This assumes the 'payment_id' column in 'tickets' references 'id' in 'payments'
     }
+
 }
