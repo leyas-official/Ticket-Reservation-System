@@ -53,12 +53,8 @@ class Sadad extends Model implements Payment
         $amount = self::checkDiscount($discountType, $ticket);
         self::validation($request);
         try {
-            if(self::processPayment()){
-                self::store($request,$ticket,$amount);
-                return true;
-            } else {
-                return false;
-            }
+            self::store($request,$ticket,$amount);
+            return redirect()->route('myCart')->with('success', 'Paid With Sadad is Sucess');
         }  catch (\Exception $e){
             dd($e->getMessage());
         }
@@ -67,9 +63,7 @@ class Sadad extends Model implements Payment
     public static function validation($request)
     {
         return $request->validate([
-            'fullName' => 'required|min:3|max:50',
             'phoneNumber' => 'required|numeric',
-            'cardExpiration' => 'required|date|after:today',
             'discountType' => 'required',
         ]) ;
     }

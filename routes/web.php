@@ -85,29 +85,27 @@ Route::get('/myCart/Purchase-ticket/{id}', function (Ticket $id) {
 })->name('myCart.purchase');
 
 
-// Payment Getaway
-Route::get('/payments/PaymentForm/{id}/{paymentType}', function (Ticket $id, $paymentType ) {
-    return view('payment.paymentForm' , ['ticket' => $id, 'type' => $paymentType ]); } )->name('payments');
-
-Route::post('/payments/purchase/{ticket}/{paymentType}', function (Request $request, Ticket $ticket, $paymentType) {
-    $processor = new Reservation();
-    return $processor->hundlePurchaseProcedures($request, $ticket, $paymentType);
-})->name('processPayment');
+// mobi cash Getaway
+Route::get('/payments/sadad/{id}', function (Ticket $id) { return view('payment.sadad' , ['ticket' => $id]) ;})->name('payments.sadad');
+Route::post('/payments/sadad/{id}', function (Request $request ,Ticket $id) {
+   $sadad = new Sadad();
+   return $sadad->handleRequest($request ,$id);
+})->name('sadad.process');
 
 // Edf3li Getaway
-//Route::get('/payments/edf3li/{id}', function (Ticket $id) { return view('payment.edf3li' , ['ticket' => $id ] ) ;})->name('payments.edf3li');
-//Route::POST('/payments/edf3li/{ticket}', function (Request $request ,Ticket $ticket, $paymentType) {
-//    $processor = new reservation();
-//    return $processor->hundlePurchaseProcedures($request ,$id);
-//})->name('edf3li.process');
+Route::get('/payments/edf3li/{id}', function (Ticket $id) { return view('payment.idfali' , ['ticket' => $id ] ) ;})->name('payments.edf3li');
+Route::POST('/payments/edf3li/{ticket}', function (Request $request ,Ticket $ticket) {
+   $idfali = new Idfali();
+   return $idfali->handleRequest($request ,$ticket);
+})->name('edf3li.process');
 
 
 // mobi cash Getaway
-//Route::get('/payments/mobicash/{id}', function (Ticket $id) { return view('payment.mobiCash' , ['ticket' => $id]) ;})->name('payments.mobiCash');
-//Route::post('/payments/mobicash/{id}', function (Request $request ,Ticket $id) {
-//    $mobiCash = new MobiCash();
-//    return $mobiCash->handleRequest($request ,$id );
-//})->name('mobiCash.process');
+Route::get('/payments/mobicash/{id}', function (Ticket $id) { return view('payment.mobiCash' , ['ticket' => $id]) ;})->name('payments.mobiCash');
+Route::post('/payments/mobicash/{id}', function (Request $request ,Ticket $id) {
+   $mobiCash = new MobiCash();
+   return $mobiCash->handleRequest($request ,$id );
+})->name('mobiCash.process');
 
 
 // Admin Pages

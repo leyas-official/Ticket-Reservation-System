@@ -53,7 +53,7 @@ class MobiCash extends Model implements Payment
         try {
             if(self::processPayment()){
                 self::store($request,$ticket,$amount);
-                return true;
+                return redirect()->route('myCart')->with('success', 'Paid With Mobi Cash is Sucess');
             } else {
                 return false;
             }

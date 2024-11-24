@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Enums\paymentStatus;
 use App\Models\People\Customer;
 use App\Models\Ticket\Ticket;
 use App\Models\Event\Event;
@@ -36,11 +37,10 @@ class SadadStoreTest extends TestCase
             'type' => 'sport',
         ]);
 
-        // إنشاء تذكرة
         $ticket = Ticket::create([
             'userId' => $user->id,
             'eventId' => $event->id,
-            'ticketStatus' => ticketStatus::ACTIVE->value,
+            'ticketStatus' => ticketStatus::INACTIVE->value,
         ]);
 
         // بيانات الطلب (Request)
@@ -51,21 +51,22 @@ class SadadStoreTest extends TestCase
             'discountType' => 'students',
         ]);
 
-        // استدعاء الفنكشن
         $sadad = new Sadad();
         $amount = $event->price;
+
+
         $payment = $sadad::store($request, $ticket, $amount);
 
-        // التحقق من تحديث حالة التذكرة
-        $this->assertEquals(ticketStatus::USED , $ticket->fresh()->ticketStatus);
 
-
+        $this->assertEquals(ticketStatus::ACTIVE, $ticket->fresh()->ticketStatus);
 
         $this->assertDatabaseHas('payments', [
             'name' => $user->name,
             'amount' => $amount,
-            'paymentType' => 'Sdad',
-            'ticketId' => $ticket->id,
+            'paymentType' => 'Sadad',
+            'paymentDate' => now()->format('Y-m-d H:i:s'),
+            'status' => paymentStatus::PAID,
         ]);
+
     }
 }

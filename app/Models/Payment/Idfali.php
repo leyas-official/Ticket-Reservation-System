@@ -51,12 +51,8 @@ class Idfali extends Model implements Payment
         $amount = self::checkDiscount($discountType , $ticket);
         self::validation($request);
         try {
-            if(self::processPayment()){
-                self::store($request,$ticket,$amount);
-                return true;
-            } else {
-                return false;
-            }
+            self::store($request,$ticket,$amount);
+            return redirect()->route('myCart')->with('success', 'Paid With Idfail is Sucess');
         }  catch (\Exception $e){
             dd($e->getMessage());
         }

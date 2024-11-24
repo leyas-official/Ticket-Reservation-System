@@ -14,21 +14,21 @@
 
                 <!-- Payment Method Selection -->
                 <div class="grid grid-cols-3 gap-4 mb-8">
-                    <!-- Option 1 -->
+                    <!-- Sadad -->
                     <label class="cursor-pointer group flex justify-center">
                         <input type="radio" name="payment" value="sdad" class="hidden peer" required>
                         <img src="{{ asset('images/sdad.png') }}" alt="Sdad"
                              class="w-32 h-32 object-contain border-4 border-gray-300 rounded-lg group-hover:border-blue-500 transition transform group-hover:scale-110 peer-focus:border-blue-500 peer-checked:border-blue-600">
                     </label>
 
-                    <!-- Option 2 -->
+                    <!-- Edf3li -->
                     <label class="cursor-pointer group flex justify-center">
                         <input type="radio" name="payment" value="edf3li" class="hidden peer" required>
                         <img src="{{ asset('images/edf3li.png') }}" alt="Edf3li"
                              class="w-32 h-32 object-contain border-4 border-gray-300 rounded-lg group-hover:border-blue-500 transition transform group-hover:scale-110 peer-focus:border-blue-500 peer-checked:border-blue-600">
                     </label>
 
-                    <!-- Option 3 -->
+                    <!-- Mobi Cash -->
                     <label class="cursor-pointer group flex justify-center">
                         <input type="radio" name="payment" value="mobicash" class="hidden peer" required>
                         <img src="{{ asset('images/mobicash.png') }}" alt="MobiCash"
@@ -62,13 +62,13 @@
                 let action = '';
                 switch (selectedPayment.value) {
                     case 'sdad':
-                        action = '{{ route('payments', [$ticket->id, 'Sadad']) }}'; // Example route for "Sdad"
+                        action = '{{ route('payments.sadad', [$ticket->id, 'Sadad']) }}'; // Example route for "Sdad"
                         break;
                     case 'edf3li':
-                        action = '{{ route('payments', [$ticket->id, 'Edf3li']) }}'; // Example route for "Edf3li"
+                        action = '{{ route('payments.edf3li', [$ticket->id, 'Edf3li']) }}'; // Example route for "Edf3li"
                         break;
                     case 'mobicash':
-                        action = '{{ route('payments', [$ticket->id, 'MobiCash']) }}'; // Example route for "MobiCash"
+                        action = '{{ route('payments.mobiCash', [$ticket->id, 'MobiCash']) }}'; // Example route for "MobiCash"
                         break;
                     default:
                         action = '#'; // Default action if no payment method is selected
