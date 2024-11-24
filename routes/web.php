@@ -13,6 +13,9 @@ use App\Models\Payment\Idfali;
 use App\Models\Payment\MobiCash;
 use App\Enums\ticketStatus;
 use App\Models\Ticket\Reservation;
+use App\Models\Event\Movies;
+use App\Models\Event\Sports;
+
 
 
 // ? SignIn in Signup
@@ -85,12 +88,23 @@ Route::get('/myCart/Purchase-ticket/{id}', function (Ticket $id) {
 })->name('myCart.purchase');
 
 
+
 // mobi cash Getaway
 Route::get('/payments/sadad/{id}', function (Ticket $id) { return view('payment.sadad' , ['ticket' => $id]) ;})->name('payments.sadad');
 Route::post('/payments/sadad/{id}', function (Request $request ,Ticket $id) {
    $sadad = new Sadad();
    return $sadad->handleRequest($request ,$id);
 })->name('sadad.process');
+
+// Payment Getaway
+Route::get('/paymentForm/{id}/{paymentType}', function (Ticket $id, $paymentType ) {
+    return view('payment.paymentForm' , ['ticket' => $id, 'type' => $paymentType ]); } )->name('payments');
+
+Route::post('/paymentForm/{ticket}/{paymentType}', function (Request $request, Ticket $ticket, $paymentType) {
+    $processor = new Reservation();
+    return $processor->hundlePurchaseProcedures($request, $ticket, $paymentType);
+})->name('processPayment');
+
 
 // Edf3li Getaway
 Route::get('/payments/edf3li/{id}', function (Ticket $id) { return view('payment.idfali' , ['ticket' => $id ] ) ;})->name('payments.edf3li');
@@ -106,7 +120,6 @@ Route::post('/payments/mobicash/{id}', function (Request $request ,Ticket $id) {
    $mobiCash = new MobiCash();
    return $mobiCash->handleRequest($request ,$id );
 })->name('mobiCash.process');
-
 
 // Admin Pages
 Route::middleware(['auth', 'admin'])->group(function () {
@@ -131,11 +144,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
         ]);
     })->name('admin.events');
 
-
     // Add Event
     Route::get('/Admin/events/create', function () {
         $locations = new Location();
-        $types = new EventType();
         return view('admin.events.create' , ['locations' => $locations->getAllLocations()]);
     })->name('admin.events.create');
 
@@ -145,7 +156,16 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::put('/Admin/events/{event}', [Admin::class , 'editEvent'])->name('admin.events.update');
 
     Route::get('/Admin/events/{event}/edit', function (Event $event) {
-        return view('admin.events.edit' , ['event' => $event , 'locations' => Location::getAllLocations() , 'types' => EventType::getAllTypes() ]);
+        $locations = new Location();
+        $locationsData = $locations->getAllLocations();
+        $type = $event['type'];
+        $models = [
+            'movies' => Movies::class,
+            'sports' => Sports::class,
+        ];
+        $type = new $models[$type];
+        $typeData = $type->getTypeDataById($event->id);
+        return view('admin.events.edit' , ['event' => $event , 'locations' => $locationsData, 'eventType' => $typeData]);
     })->name('admin.events.edit');;
 
     // Delete Event
@@ -231,7 +251,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::put('/Admin/EventTypes/{eventType}' , [Admin::class , 'editEventType'])->name('admin.eventTypes.update');
 
-    // Delete Event Tyoe
+    // Delete Event Type
     Route::delete('Admin/EventTypes/{eventType}' , [Admin::class , 'deleteEventType'])->name('admin.eventTypes.delete');
 });
 

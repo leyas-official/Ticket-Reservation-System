@@ -138,6 +138,7 @@
             </div>
 
             <script>
+                // Listen for change event when the user selects an option
                 document.getElementById('type').addEventListener('change', function() {
                     let selectedType = this.value;
 
@@ -151,6 +152,11 @@
                     } else if (selectedType === 'movies') {
                         document.getElementById('movie-fields').classList.remove('hidden');
                     }
+                });
+
+                // Trigger the change event on page load to show the relevant fields
+                window.addEventListener('load', function() {
+                    document.getElementById('type').dispatchEvent(new Event('change'));
                 });
             </script>
 

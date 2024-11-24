@@ -5,6 +5,12 @@
         </div>
     </x-slot:head>
 
+    <x-slot:head>
+        <div class="w-full bg-white shadow-lg rounded-lg p-6 mb-8 mx-4 flex items-center justify-between">
+            <h1 class="text-3xl font-semibold text-blue-900">Step 2: Welcome To Edf3li Getaway</h1>
+        </div>
+    </x-slot:head>
+
     <section class="py-8 antialiased md:py-16 bg-gray-50 rounded-md shadow-lg">
         <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
             <div class="mx-auto max-w-5xl">
@@ -16,9 +22,8 @@
 
                 <!-- Payment Form Section -->
                 <div class="mt-6 sm:mt-8 lg:flex lg:items-start lg:gap-12 flex flex-row justify-center items-center">
-                    <form id="payment-form" action="{{ route('edf3li.process', $ticket->id) }}" method="post" class="w-full  p-6 shadow-md sm:p-8 lg:max-w-xl lg:p-10 space-y-6">
+                    <form id="payment-form" action="{{ route('processPayment', ["paymentType" => "Edf3li" ,$ticket->id]) }}" method="post" class="w-full  p-6 shadow-md sm:p-8 lg:max-w-xl lg:p-10 space-y-6">
                         @csrf
-
                         <!-- Card Number -->
                         <div class="flex flex-col">
                             <label for="card-number-input" class="mb-2 text-sm font-medium text-gray-900 font-semibold">

@@ -61,24 +61,6 @@ class Event extends Model
 //        }
 //    }
 
-    //updates row data in events table
-    public static function updateEvent($event , $data)
-    {
-        $event->update([
-            'name' => $data['name'],
-            'description' => $data['description'],
-            'date' => $data['date'],
-            'time' => $data['time'],
-            'locationId' => $data['location'],
-            'eventTypeId' => $data['type'],
-            'price' => $data['price'],
-            'numberOfTicket' => $data['numberOfTicket'],
-        ]);
-
-        return $event;
-    }
-
-
 
     // locationId Belongs To Location
     public function location()

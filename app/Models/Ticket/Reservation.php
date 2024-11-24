@@ -18,17 +18,25 @@ class Reservation
         try {
             if ($paymentType) { // Check if payment type is provided
                 $payment = self::getPaymentProcessor($paymentType);
-                if ($payment && $payment->handleRequest($request, $ticket)) {// Process payment and check if successful
-                    return redirect()->route('myCart')->with('success', 'Purchase successful using ' . $paymentType .'.');
+                if ($payment) {
+                    $validatedData = $payment->validation($request);
+                    if ($validatedData instanceof \Illuminate\Http\RedirectResponse) {
+                        return $validatedData;
+                    }
+                    if ($payment->handleRequest($request, $ticket)) { // Process payment
+                        return redirect()->route('myCart')->with('success', 'Purchase successful using ' . $paymentType . '.');
+                    } else {
+                        return redirect()->route('myCart')->with('error', 'Payment failed. Please try again.');
+                    }
                 } else {
-                    return redirect()->route('myCart')->with('error', 'Payment failed. Please try again.'); // Handle payment failure
+                    return redirect()->route('myCart')->with('error', 'Invalid payment type selected.'); // More specific error message
                 }
             } else {
-                return redirect()->route('myCart')->with('error', 'Payment type not specified.'); // Handle missing payment type
+                return redirect()->route('myCart')->with('error', 'Payment type not specified.');
             }
-        } catch (\Exception $e) {
-            \Log::error('Failed to add event: ' . $e->getMessage());
-            return redirect()->back()->with('myCart', 'Failed to reserve a ticket. Please try again later.');
+        }catch (\Exception $e) {
+            \Log::error('Error: ' . $e->getMessage()); // Log the error for debugging
+            return redirect()->route('myCart')->with('error', 'Failed to purchase the ticket. Please try again.'); // Redirect with error message
         }
     }
 

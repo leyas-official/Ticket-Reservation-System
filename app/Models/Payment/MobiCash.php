@@ -49,11 +49,10 @@ class MobiCash extends Model implements Payment
     {
         $discountType = $request->discountType;
         $amount = self::checkDiscount($discountType , $ticket);
-        self::validation($request);
         try {
             if(self::processPayment()){
                 self::store($request,$ticket,$amount);
-                return redirect()->route('myCart')->with('success', 'Paid With Mobi Cash is Sucess');
+                return true;
             } else {
                 return false;
             }
@@ -62,13 +61,19 @@ class MobiCash extends Model implements Payment
         }
     }
 
-    public static function validation($request)
+    public function validation($request)
     {
-        return $request->validate([
+        $validator = \Validator::make($request->all(), [
             'email' => 'required|email',
             'phoneNumber' => 'required|numeric|digits:10|starts_with:0',
             'discountType' => 'required',
-        ]) ;
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        return $validator->validated(); // Return validated data if successful
     }
 
     public static function store($request,$ticket,$amount)

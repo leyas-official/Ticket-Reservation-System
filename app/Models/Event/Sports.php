@@ -29,6 +29,17 @@ class Sports extends Event
         }
     }
 
+    public static function editEventSports($request, Sports $data) {
+        $validatedData = self::validation($request);
+        try {
+            self::updateEvent($validatedData, $data);
+//            return redirect()->route('admin.events')->with('success', 'Event has been added Successful');
+        } catch (\Exception $e) {
+            \Log::error('Failed to add event: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Failed to add the event. Please try again.');
+        }
+    }
+
     public static function validation($request)
     {
         return  $request->validate([
@@ -47,10 +58,46 @@ class Sports extends Event
         ]);
     }
 
-    public static function createEvent($event)
-    {
-//                $sport = new Sports();
+    public static function updateEvent($request, Sports $data) {
         try {
+            $data->events->update([
+                'name' => $request['name'],
+                'description' => $request['description'],
+                'date' => $request['date'],
+                'time' => $request['time'],
+                'locationId' => $request['location'],
+                'type' => $request['type'],
+                'price' => $request['price'],
+                'numberOfTicket' => $request['numberOfTicket'],
+            ]);
+
+            $data->update([
+                'stadium' => $request['stadium'],
+                'homeTeam' => $request['homeTeam'],
+                'awayTeam' => $request['awayTeam'],
+                'typeOfSport' => $request['typeOfSport'],
+                'length' => 90,
+            ]);
+
+        } catch (\Illuminate\Database\QueryException $e) {
+            // This will catch database-related exceptions
+            dd(response()->json([
+                'error' => 'Database error occurred.',
+                'message' => $e->getMessage(),
+            ], 500)) ; // Return a 500 Internal Server Error with the message
+        } catch (\Exception $e) {
+            // This will catch other general exceptions
+            return response()->json([
+                'error' => 'An unexpected error occurred.',
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public static function createEvent($event){
+
+        try{
+
                 $sport = Event::create([
                     'name' => $event['name'],
                     'description' => $event['description'],
@@ -63,7 +110,7 @@ class Sports extends Event
                 ]);
 
 
-                return self::create([
+                $tre =  self::create([
                     'eventId' => $sport->id,
                     'stadium' => $event['stadium'],
                     'homeTeam' => $event['homeTeam'],
@@ -71,6 +118,8 @@ class Sports extends Event
                     'typeOfSport' => $event['typeOfSport'],
                     'length' => 90,
                 ]);
+
+
 
         } catch (\Illuminate\Database\QueryException $e) {
             // This will catch database-related exceptions
@@ -87,6 +136,10 @@ class Sports extends Event
         }
 
 
+    }
+
+    public function getTypeDataById($id){
+        return self::where('eventId', $id)->first();
     }
 
     public function events()

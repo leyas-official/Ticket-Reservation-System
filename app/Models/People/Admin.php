@@ -6,6 +6,7 @@ use App\Models\Event\EventType;
 use App\Models\Event\Location;
 use App\Models\Event\Movies;
 use App\Models\Event\Sports;
+use App\Models\Ticket\Ticket;
 use Illuminate\Http\Request;
 use App\Models\Event\Event;
 use Illuminate\Database\Eloquent\Model;
@@ -49,22 +50,43 @@ class Admin extends Person
 
 
     // admins updates Event method
-    public static function editEvent($eventId , Request $request) {
-        $data = Event::validation($request);
+    public static function editEvent($event, Request $request) {
 
-        try {
+        $type = $request->type;
+        $models = [
+            'movies' => Movies::class,
+            'sports' => Sports::class,
+        ];
 
-            $event = Event::where('id', $eventId)->get()->first();
+        if (array_key_exists($type, $models)) {
+            $modelClass = $models[$type];
+            $model = new $modelClass();
+            $model = $model->getTypeDataById($event);
 
-            Event::updateEvent($event , $data);
+            $methodName = 'editEvent' . ucfirst($type);
+            if (method_exists($model, $methodName)) {
+                $model->$methodName($request, $model);
 
-            return redirect()->route('admin.events')->with('success', 'Update Event Successful');
-        } catch (\Exception $e) {
-
-            \Log::error('Failed to add event: ' . $e->getMessage());
-
-            return redirect()->back()->with('error', 'Failed to update the event. Please try again.');
+                return redirect()->route('admin.events')->with('success', 'Event has been Edited Successful');
+            }else{
+                return redirect()->back()->with('error', 'Failed to edit the event. Please try again.');
+            }
+        } else{
+            return redirect()->back()->with('error', 'Failed to edit the event. Please try again.');
         }
+
+//        $data = Event::validation($request);
+//
+//        try {
+//            $event = Event::where('id', $eventId)->get()->first();
+//            Event::updateEvent($event , $data);
+//            return redirect()->route('admin.events')->with('success', 'Update Event Successful');
+//        } catch (\Exception $e) {
+//
+//            \Log::error('Failed to add event: ' . $e->getMessage());
+//
+//            return redirect()->back()->with('error', 'Failed to update the event. Please try again.');
+//        }
 
     }
 

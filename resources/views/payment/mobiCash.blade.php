@@ -16,7 +16,7 @@
 
                 <!-- Payment Form Section -->
                 <div class="mt-6 sm:mt-8 lg:flex lg:items-start lg:gap-12 flex flex-row justify-center items-center">
-                    <form id="payment-form" action="{{ route('mobiCash.process' , $ticket->id) }}" method="POST" class="w-full p-6 shadow-md sm:p-8 lg:max-w-xl lg:p-10 space-y-6 bg-white rounded-lg border border-gray-200">
+                    <form id="payment-form" action="{{ route('processPayment' , ["paymentType" => "MobiCash",$ticket->id]) }}" method="POST" class="w-full p-6 shadow-md sm:p-8 lg:max-w-xl lg:p-10 space-y-6 bg-white rounded-lg border border-gray-200">
                         @csrf
 
                         <!-- Card Number -->
@@ -25,9 +25,9 @@
                                 Your Email in Mobi Cash*
                             </label>
                             <input type="email" id="email" name="email"
-                                    class="w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900
-                                focus:border-green-500 focus:ring-2 focus:ring-green-400 @error('email') border-red-500 @enderror"
-                                    placeholder="something@mobi.com" />
+                                   class="w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900
+                                    focus:border-green-500 focus:ring-2 focus:ring-green-400 @error('email') border-red-500 @enderror"
+                                   placeholder="something@mobi.com" />
                             @error('email')
                             <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
                             @enderror
@@ -39,9 +39,9 @@
                                 Phone Number *
                             </label>
                             <input type="text" id="phoneNumber" name="phoneNumber"
-                                    class="w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900
-                                focus:border-green-500 focus:ring-2 focus:ring-green-400 @error('phoneNumber') border-red-500 @enderror"
-                                    placeholder="09XXXXXXXX" />
+                                   class="w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900
+                                    focus:border-green-500 focus:ring-2 focus:ring-green-400 @error('phoneNumber') border-red-500 @enderror"
+                                   placeholder="09XXXXXXXX" />
                             @error('phoneNumber')
                             <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
                             @enderror
@@ -54,7 +54,7 @@
                             </label>
                             <select id="discount_type" name="discountType"
                                     class="w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900
-focus:border-amber-500 focus:ring-2 focus:ring-amber-500 @error('discountType') border-red-500 @enderror"
+    focus:border-amber-500 focus:ring-2 focus:ring-amber-500 @error('discountType') border-red-500 @enderror"
                                     required>
                                 <option value="" disabled selected>Select Discount Type</option>
                                 <option value="none">No Discount</option> <!-- خيار جديد بدون خصم -->
@@ -72,7 +72,7 @@ focus:border-amber-500 focus:ring-2 focus:ring-amber-500 @error('discountType') 
                             <button type="submit" class="w-full px-6 py-3 bg-green-700 text-white font-semibold rounded-lg hover:bg-green-800 transition duration-300 focus:ring-4 focus:ring-green-300">
                                 Pay Now
                             </button>
-                            <a href="{{ route('myCart.purchase', $ticket->id) }}" class="w-full px-6 py-3 text-center bg-gray-400 text-white font-medium rounded-lg hover:bg-gray-500 transition duration-300">
+                            <a href="{{ route('myCart.purchase', $ticket->id)}}" class="w-full px-6 py-3 text-center bg-gray-400 text-white font-medium rounded-lg hover:bg-gray-500 transition duration-300">
                                 Back
                             </a>
                         </div>

@@ -16,8 +16,21 @@
 
                 <!-- Payment Form Section -->
                 <div class="mt-6 sm:mt-8 lg:flex lg:items-start lg:gap-12 flex flex-row justify-center items-center">
-                    <form id="payment-form" action="{{ route('sadad.process', $ticket->id) }}" method="POST" class="w-full p-6 shadow-md sm:p-8 lg:max-w-xl lg:p-10 space-y-6">
+                    <form id="payment-form" action="{{ route('processPayment', ["paymentType" => "Sadad", $ticket->id]) }}" method="POST" class="w-full p-6 shadow-md sm:p-8 lg:max-w-xl lg:p-10 space-y-6">
                         @csrf
+                        <!-- Full Name -->
+                        <div class="flex flex-col">
+                            <label for="full_name" class="mb-2 text-sm font-medium text-gray-900 font-semibold">
+                                Full Name (as displayed on card)*
+                            </label>
+                            <input type="text" id="full_name" name="fullName"
+                                   class="w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900
+          focus:border-amber-500 focus:ring-2 focus:ring-amber-500 @error('fullName') border-red-500 @enderror"
+                                   placeholder="Bonnie Green" required />
+                            @error('fullName')
+                            <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                            @enderror
+                        </div>
 
                         <!-- Phone Number -->
                         <div class="flex flex-col">
@@ -29,6 +42,20 @@
           focus:border-amber-500 focus:ring-2 focus:ring-amber-500 @error('phoneNumber') border-red-500 @enderror"
                                    placeholder="0123-456-789" required />
                             @error('phoneNumber')
+                            <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <!-- Card Expiration -->
+                        <div class="flex flex-col">
+                            <label for="card-expiration-input" class="mb-2 text-sm font-medium text-gray-900 font-semibold">
+                                Card Expiration*
+                            </label>
+                            <input type="date" id="card-expiration-input" name="cardExpiration"
+                                   class="w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900
+          focus:border-amber-500 focus:ring-2 focus:ring-amber-500 @error('cardExpiration') border-red-500 @enderror"
+                                   required />
+                            @error('cardExpiration')
                             <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
                             @enderror
                         </div>

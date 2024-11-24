@@ -8,9 +8,9 @@ use App\Models\Discount\DiscountSeniors;
 use App\Models\Discount\DiscountStudent;
 use App\Models\Ticket\Ticket;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Validation\Rules\Enum;
 use phpDocumentor\Reflection\Types\True_;
+use Illuminate\Http\Request;
 
 
 class Sadad extends Model implements Payment
@@ -47,25 +47,35 @@ class Sadad extends Model implements Payment
         return $this->hasMany(Ticket::class);
     }
 
-    public function handleRequest($request,$ticket)
+    public function handleRequest(Request $request, $ticket)
     {
         $discountType = $request->discountType;
         $amount = self::checkDiscount($discountType, $ticket);
-        self::validation($request);
         try {
-            self::store($request,$ticket,$amount);
-            return redirect()->route('myCart')->with('success', 'Paid With Sadad is Sucess');
+            if(self::processPayment()){
+                self::store($request,$ticket,$amount);
+                return true;
+            }else{
+                return false;
+            }
         }  catch (\Exception $e){
             dd($e->getMessage());
         }
     }
 
-    public static function validation($request)
-    {
-        return $request->validate([
+    public function validation(Request $request){
+        $validator = \Validator::make($request->all(), [
+            'fullName' => 'required|min:3|max:50',
             'phoneNumber' => 'required|numeric',
+            'cardExpiration' => 'required|date|after:today',
             'discountType' => 'required',
-        ]) ;
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        return $validator->validated(); // Return validated data if successful
     }
 
     public static function store($request,$ticket,$amount)

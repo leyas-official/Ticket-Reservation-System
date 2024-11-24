@@ -13,7 +13,6 @@
         <form action="{{ route('admin.events.update' , $event->id)}}" method="POST" class="space-y-6">
             @csrf
             @method('PUT')
-
             <div>
                 <label for="name" class="block text-lg font-semibold text-gray-800">Event Name</label>
                 <input type="text" id="name" name="name" required
@@ -74,16 +73,83 @@
                 <select id="type" name="type" required
                         class="w-full border @error('type') border-red-500 @else border-gray-300 @enderror p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
                     <option value="" disabled>Select an event type</option>
-                    @foreach($types as $type)
-                        <option value="{{ $type->id }}" {{ $event['eventType']['id'] == $type->id ? 'selected' : '' }}>
-                            {{ $type->name }}
+                        <option value="{{ $event['type']}}" selected>
+                            {{ ucfirst($event['type']) }}
                         </option>
-                    @endforeach
+                    @if($event['type'] == 'sports')
+                        <option value="movies">Movies</option>
+                    @endif
+                    @if($event['type'] == 'movies')
+                        <option value="sports">Sports</option>
+                    @endif
                 </select>
                 @error('type')
                     <span class="text-red-500 text-sm">{{ $message }}</span>
                 @enderror
             </div>
+
+            <!-- Additional Fields for Sport -->
+            <div id="sport-fields" class="hidden">
+                <div>
+                    <label for="homeTeam" class="block text-lg font-semibold text-gray-800">Home Team</label>
+                    <input type="text" value="@if(!empty($eventType['homeTeam'])){{$eventType['homeTeam']}}@endif" name="homeTeam" id="homeTeam" class="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Enter Home Team Name">
+                </div>
+                <div>
+                    <label for="awayTeam" class="block text-lg font-semibold text-gray-800">Away Team</label>
+                    <input type="text" name="awayTeam" value="@if(!empty($eventType['awayTeam'])){{$eventType['awayTeam']}}@endif" id="awayTeam" class="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Enter Away Team Name">
+                </div>
+                <div>
+                    <label for="stadium" class="block text-lg font-semibold text-gray-800">Stadium Name</label>
+                    <input type="text" name="stadium" value="@if(!empty($eventType['stadium'])){{$eventType['stadium']}}@endif" id="stadium" class="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Enter Stadium Name">
+                </div>
+                <div>
+                    <label for="typeOfSport" class="block text-lg font-semibold text-gray-800">Type Of Sport</label>
+                    <input type="text" name="typeOfSport" value="@if(!empty($eventType['typeOfSport'])){{$eventType['typeOfSport']}}@endif" id="typeOfSport" class="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Enter Sport Name">
+                </div>
+            </div>
+
+            <!-- Additional Fields for Movie -->
+            <div id="movie-fields" class="hidden">
+                <div>
+                    <label for="director" class="block text-lg font-semibold text-gray-800">Director Name</label>
+                    <input type="text" name="director" value="@if(!empty($eventType['director'])){{$eventType['director']}}@endif" id="director" class="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Enter Director Name">
+                </div>
+                <div>
+                    <label for="theaterNumber" class="block text-lg font-semibold text-gray-800">Theater Number</label>
+                    <input type="text" name="theaterNumber" value="@if(!empty($eventType['theaterNumber'])){{$eventType['theaterNumber']}}@endif" id="theaterNumber" class="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Enter Theater Number">
+                </div>
+                <div>
+                    <label for="genre" class="block text-lg font-semibold text-gray-800">Genre</label>
+                    <input type="text" name="genre" value="@if(!empty($eventType['genre'])){{$eventType['genre']}}@endif" id="genre" class="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Romance, Comedy, Etc">
+                </div>
+                <div>
+                    <label for="length" class="block text-lg font-semibold text-gray-800">Length</label>
+                    <input type="time" name="length" value="@if(!empty($eventType['length'])){{$eventType['length']}}@endif" id="length" class="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
+                </div>
+            </div>
+
+            <script>
+                // Listen for change event when the user selects an option
+                document.getElementById('type').addEventListener('change', function() {
+                    let selectedType = this.value;
+
+                    // Hide all additional fields
+                    document.getElementById('sport-fields').classList.add('hidden');
+                    document.getElementById('movie-fields').classList.add('hidden');
+
+                    // Show fields based on selected type
+                    if (selectedType === 'sports') {
+                        document.getElementById('sport-fields').classList.remove('hidden');
+                    } else if (selectedType === 'movies') {
+                        document.getElementById('movie-fields').classList.remove('hidden');
+                    }
+                });
+
+                // Trigger the change event on page load to show the relevant fields
+                window.addEventListener('load', function() {
+                    document.getElementById('type').dispatchEvent(new Event('change'));
+                });
+            </script>
 
             <div>
                 <label for="price" class="block text-lg font-semibold text-gray-800">Price</label>
