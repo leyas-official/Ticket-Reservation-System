@@ -40,26 +40,6 @@ class Event extends Model
         ]);
     }
 
-    //inserts event data into events table
-//    public function createEventMain($event)
-//    {
-//        try {
-//
-//            ]);
-//        } catch (\Illuminate\Database\QueryException $e) {
-//            // This will catch database-related exceptions
-//            dd(response()->json([
-//                'error' => 'Database error occurred.',
-//                'message' => $e->getMessage(),
-//            ], 500)) ; // Return a 500 Internal Server Error with the message
-//        } catch (\Exception $e) {
-//            // This will catch other general exceptions
-//            return response()->json([
-//                'error' => 'An unexpected error occurred.',
-//                'message' => $e->getMessage(),
-//            ], 500);
-//        }
-//    }
 
 
     // locationId Belongs To Location

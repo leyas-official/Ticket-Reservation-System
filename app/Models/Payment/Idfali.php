@@ -122,4 +122,11 @@ class Idfali extends Model implements Payment
 
         return $ticket->event->price;
     }
+
+    public function updateToRefunded($ticket): void
+    {
+        $ticket->payment->status = paymentStatus::REFUNDED;
+        $ticket->payment->save();
+        $ticket->delete();
+    }
 }

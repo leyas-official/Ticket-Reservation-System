@@ -64,14 +64,12 @@ class Reservation
             $paymentType = $ticket->payment->paymentType;
             $payment = self::getPaymentProcessor($paymentType);
             if ($payment && $payment->processRefund()) {
-                $ticket->payment->status = paymentStatus::REFUNDED;
-                $ticket->payment->save();
-                $ticket->delete();
+                $payment->updateToRefunded($ticket);
                 return redirect()->route('myCart')->with('success', 'Refund successful to your ' . $paymentType . ' account.');
             } else {
                 return redirect()->route('myCart')->with('error', 'Error occurred during the refund process, Please try again.');
             }
-        } catch (\Exception $e) {
+        } catch (\Exception $e){
             \Log::error('Failed to add event: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Failed to cancel reservation. Please try again later.');
         }

@@ -10,8 +10,11 @@ interface Payment
     public function processRefund();
     public function tickets();
 
+    public function updateToRefunded($ticket);
+
     public function handleRequest(Request $request,$ticket);
     public function validation(Request $request);
     public static function store($request,$ticket,$amount);
     public static function checkDiscount($request,$ticket);
+
 }

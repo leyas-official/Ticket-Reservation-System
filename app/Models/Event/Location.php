@@ -21,7 +21,7 @@ class Location extends Model
         return $request->validate([
             'name' => 'required|string|min:1|max:255',
             'capacity' => 'required|integer|min:1|max:500',
-            'address' => 'required|string|max:255|regex:/^[\d\-\#\@\*\,\.\&\!\(\)]+$/',
+            'address' => 'required|string|max:255',
         ]);
     }
 

@@ -55,7 +55,7 @@ class SadadStoreTest extends TestCase
         $amount = $event->price;
 
 
-        $payment = $sadad::store($request, $ticket, $amount);
+        $sadad->store($request, $ticket, $amount);
 
 
         $this->assertEquals(ticketStatus::ACTIVE, $ticket->fresh()->ticketStatus);

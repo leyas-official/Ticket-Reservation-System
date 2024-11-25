@@ -15,12 +15,9 @@ class Movies extends Event
     ];
 
     public static function addEventMovies(Request $request) {
-
         $event = self::validation($request);
-
         try {
             self::createEvent($event);
-//            return redirect()->route('admin.events')->with('success', 'Event has been added Successful');
         } catch (\Exception $e) {
             \Log::error('Failed to add event: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Failed to add the event. Please try again.');
@@ -28,7 +25,6 @@ class Movies extends Event
     }
 
     public static function editEventMovies($request) {
-
         $event = self::validation($request);
         try {
             self::updateEvent($event);
