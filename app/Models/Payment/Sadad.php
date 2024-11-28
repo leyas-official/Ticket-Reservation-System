@@ -42,11 +42,9 @@ class Sadad extends Model implements Payment
         // TODO: Implement getAllPayment() method.
     }
 
-    public function tickets()
-    {
-        return $this->hasMany(Ticket::class);
-    }
 
+
+    //main method responsible for storing payments into database
     public function handleRequest(Request $request, $ticket)
     {
         $discountType = $request->discountType;
@@ -63,6 +61,7 @@ class Sadad extends Model implements Payment
         }
     }
 
+    // validates data and returns it to form page if data is invalid
     public function validation(Request $request){
         $validator = \Validator::make($request->all(), [
             'fullName' => 'required|min:3|max:50',
@@ -78,6 +77,8 @@ class Sadad extends Model implements Payment
         return $validator->validated(); // Return validated data if successful
     }
 
+    // this creates and saves an instance of payment into the database
+    // also it updates the ticket status from INACTIVE to ACTIVE after successful purchase
     public static function store($request,$ticket,$amount)
     {
         try {
@@ -109,6 +110,8 @@ class Sadad extends Model implements Payment
         }
     }
 
+    // this checks what type of discount the user chosen in the form
+    // it creates an instance of discount based on the users discount type dynamically
     public static function checkDiscount($discountType,$ticket)
     {
         $discountHandlers = [
@@ -130,5 +133,11 @@ class Sadad extends Model implements Payment
                 $ticket->payment->status = paymentStatus::REFUNDED;
                 $ticket->payment->save();
                 $ticket->delete();
+    }
+
+    // database relationship
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class);
     }
 }

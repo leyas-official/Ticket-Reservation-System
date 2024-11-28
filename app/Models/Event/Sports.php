@@ -16,30 +16,30 @@ class Sports extends Event
         'eventId',
     ];
 
+
+    //main method responsible for storing and adding sports instances into database
     public static function addEventSports(Request $request) {
         $event = self::validation($request);
         try {
             self::createEvent($event);
-//            dd(true);
-//            return redirect()->route('myCart')->with('success', 'purchased Ticket Is Successful using Sadad');
-//            return redirect()->route('admin.events')->with('success', 'Event has been added Successful');
         } catch (\Exception $e) {
             \Log::error('Failed to add event: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Failed to add the event. Please try again.');
         }
     }
 
+    //main method responsible for updating sports instances into database
     public static function editEventSports($request, Sports $data) {
         $validatedData = self::validation($request);
         try {
             self::updateEvent($validatedData, $data);
-//            return redirect()->route('admin.events')->with('success', 'Event has been added Successful');
         } catch (\Exception $e) {
             \Log::error('Failed to add event: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Failed to add the event. Please try again.');
         }
     }
 
+    // validates data and returns it to form page if data is invalid
     public static function validation($request)
     {
         return  $request->validate([
@@ -58,6 +58,7 @@ class Sports extends Event
         ]);
     }
 
+    //updates the saved data in the database
     public static function updateEvent($request, Sports $data) {
         try {
             $data->events->update([
@@ -94,10 +95,12 @@ class Sports extends Event
         }
     }
 
+    // creates an instance of event and saves it into the database
+    // also creates an instance of movie and saves it into the database
+    // now that may sound weird but that's just how laravel works
+    // it automatically creates these instances before it saves into the database
     public static function createEvent($event){
-
         try{
-
                 $sport = Event::create([
                     'name' => $event['name'],
                     'description' => $event['description'],
@@ -109,8 +112,7 @@ class Sports extends Event
                     'numberOfTicket' => $event['numberOfTicket'],
                 ]);
 
-
-                $tre =  self::create([
+                return self::create([
                     'eventId' => $sport->id,
                     'stadium' => $event['stadium'],
                     'homeTeam' => $event['homeTeam'],
@@ -138,10 +140,12 @@ class Sports extends Event
 
     }
 
+    // retrieve a record by ID
     public function getTypeDataById($id){
         return self::where('eventId', $id)->first();
     }
 
+    // database relationship
     public function events()
     {
         return $this->belongsTo(Event::class, 'eventId');

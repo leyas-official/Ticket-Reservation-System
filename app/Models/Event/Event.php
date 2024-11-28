@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Event extends Model
 {
+    //fields
     protected $fillable = [
         'name',
         'date',
@@ -42,7 +43,7 @@ class Event extends Model
 
 
 
-    // locationId Belongs To Location
+    // database relationships
     public function location()
     {
         return $this->belongsTo(Location::class, 'locationId');

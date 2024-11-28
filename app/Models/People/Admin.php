@@ -16,7 +16,7 @@ class Admin extends Person
     protected $table = 'customers';
 
 
-    // admins Adds Event method
+    // admins Adds a new event to database
     public static function addEvent(Request $request) {
 
         $type = $request->type;
@@ -39,17 +39,9 @@ class Admin extends Person
         } else{
             return redirect()->back()->with('error', 'Failed to add the event. Please try again.');
         }
-
-//        try {
-//            return redirect()->route('admin.events')->with('success', 'Event has been added Successful');
-//        } catch (\Exception $e) {
-//            \Log::error('Failed to add event: ' . $e->getMessage());
-//            return redirect()->back()->with('error', 'Failed to add the event. Please try again.');
-//        }
     }
 
-
-    // admins updates Event method
+    // admin edits an event instance from database
     public static function editEvent($event, Request $request) {
 
         $type = $request->type;
@@ -75,22 +67,9 @@ class Admin extends Person
             return redirect()->back()->with('error', 'Failed to edit the event. Please try again.');
         }
 
-//        $data = Event::validation($request);
-//
-//        try {
-//            $event = Event::where('id', $eventId)->get()->first();
-//            Event::updateEvent($event , $data);
-//            return redirect()->route('admin.events')->with('success', 'Update Event Successful');
-//        } catch (\Exception $e) {
-//
-//            \Log::error('Failed to add event: ' . $e->getMessage());
-//
-//            return redirect()->back()->with('error', 'Failed to update the event. Please try again.');
-//        }
-
     }
 
-    // admins deletes Event method
+    // admin deletes an event instance from database
     public static function deleteEvent($eventId) {
         try {
             $event = Event::where('id', $eventId)->get()->first();
@@ -102,18 +81,13 @@ class Admin extends Person
         }
     }
 
-    // Location Methods
-
-    // Add Location
+    // admin add a location instance from database
     public static function addLocation(Request $request)
     {
         $data = Location::validation($request);
         try {
-
             $location = Location::createLocation($data);
-
             return redirect()->route('admin.locations')->with('success', 'Add Location Successful');
-
         } catch (\Exception $e) {
 
             \Log::error('Failed to add Location: ' . $e->getMessage());
@@ -122,6 +96,7 @@ class Admin extends Person
         }
     }
 
+    // admin edits a location instance from database
     public static function editLocation($locationId ,Request $request )
     {
         $data = Location::validation($request);
@@ -143,6 +118,7 @@ class Admin extends Person
     }
 
 
+    // admin deletes a location instance from database
     public static function deleteLocation($locationId)
     {
         try {
@@ -160,66 +136,5 @@ class Admin extends Person
             return redirect()->back()->with('error', 'Failed to Delete Location. Please try again.');
         }
 
-    }
-
-    // Event Type
-    public static function addEventType(Request $request)
-    {
-        $data = EventType::validation($request);
-
-        try {
-
-            $eventType = new EventType();
-
-            $eventType = EventType::createEventType($data);
-
-            return redirect()->route('admin.eventTypes')->with('success', 'Add Type Successful');
-
-        } catch (\Exception $e) {
-
-            \Log::error('Failed to add Type: ' . $e->getMessage());
-
-            return redirect()->back()->with('error', 'Failed to Add Type. Please try again.');
-        }
-    }
-
-    public static function editEventType($eventTypeId,Request $request)
-    {
-        $data = EventType::validation($request);
-
-        try {
-
-            $eventType = new EventType();
-
-            $eventType = EventType::where('id', $eventTypeId)->get()->first();
-
-            EventType::updateEventType($eventType , $data);
-
-            return redirect()->route('admin.eventTypes')->with('success', 'Edit Type Successful');
-
-        } catch (\Exception $e) {
-
-            \Log::error('Failed to Edit Type: ' . $e->getMessage());
-
-            return redirect()->back()->with('error', 'Failed to Edit Type. Please try again.');
-        }
-    }
-
-    public static function deleteEventType($eventTypeId) {
-        try {
-
-            $eventType = new EventType();
-            $eventType = EventType::where('id', $eventTypeId)->get()->first();
-
-            $eventType->delete();
-
-            return redirect()->route('admin.eventTypes')->with('success', 'Delete Event Type Successful');
-
-        } catch (\Exception $e) {
-
-            \Log::error('Failed to Delete  Event Type: ' . $e->getMessage());
-
-            return redirect()->back()->with('error', 'Failed to Delete Event Type. Please try again.');
-        }
     }
 }

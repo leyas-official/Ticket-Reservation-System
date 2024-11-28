@@ -45,6 +45,7 @@ class MobiCash extends Model implements Payment
         return $this->hasMany(Ticket::class);
     }
 
+    //main method responsible for storing payments into database
     public function handleRequest($request,$ticket)
     {
         $discountType = $request->discountType;
@@ -61,6 +62,7 @@ class MobiCash extends Model implements Payment
         }
     }
 
+    // validates data and returns it to form page if data is invalid
     public function validation($request)
     {
         $validator = \Validator::make($request->all(), [
@@ -76,6 +78,8 @@ class MobiCash extends Model implements Payment
         return $validator->validated(); // Return validated data if successful
     }
 
+    // this creates and saves an instance of payment into the database
+    // also it updates the ticket status from INACTIVE to ACTIVE after successful purchase
     public static function store($request,$ticket,$amount)
     {
         try {
@@ -107,6 +111,8 @@ class MobiCash extends Model implements Payment
         }
     }
 
+    // this checks what type of discount the user chosen in the form
+    // it creates an instance of discount based on the users discount type dynamically
     public static function checkDiscount($discountType,$ticket)
     {
         $discountHandlers = [
@@ -123,6 +129,7 @@ class MobiCash extends Model implements Payment
         return $ticket->event->price;
     }
 
+    //responsible for changing payment records status to REFUNDED
     public function updateToRefunded($ticket): void
     {
         $ticket->payment->status = paymentStatus::REFUNDED;
