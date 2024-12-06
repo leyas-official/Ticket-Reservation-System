@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Report;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\Event\Event;
@@ -45,7 +46,7 @@ Route::get('/about', function () {
     return view('about');
 });
 
-Route::get('/events/index', function ()  {
+Route::get('/events/index.blade.php', function ()  {
 //    dd(Auth::user()->id);
     $events = new Event(); // Array of objects
     $allEvents = $events->getAllEvents();
@@ -69,10 +70,10 @@ Route::get('/myCart', function ()  {
     ]);
 })->name('myCart');
 
-Route::get('/myCart/{ticket}', function (Ticket $ticket){
+Route::delete('/myCart/{ticket}', function (Ticket $ticket){
     $refundProcessor = new Reservation();
     $refundProcessor->hundleRefundProcedures($ticket);
-    return view('carts.index', [
+    return to_route('myCart', [
         'userTickets' => Ticket::getAllUserTickets(Customer::getId())
     ]);
 })->name('myCart.refund');
@@ -86,7 +87,6 @@ Route::get('/events/{event}/{customer}', [Customer::class , 'addToCart'])->name(
 Route::get('/myCart/Purchase-ticket/{id}', function (Ticket $id) {
     return view('carts.step1', ['ticket' => $id]);
 })->name('myCart.purchase');
-
 
 
 // mobi cash Getaway
@@ -253,5 +253,10 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     // Delete Event Type
     Route::delete('Admin/EventTypes/{eventType}' , [Admin::class , 'deleteEventType'])->name('admin.eventTypes.delete');
+
+    Route::get('/Admin/Reports', [Report::class, 'monthlyReport'])->name('admin.reports');
+
+    Route::get('/download-report', [Report::class, 'downloadReport'])->name('downloadReport');
+
 });
 

@@ -35,4 +35,14 @@ class Customer extends Person
         $ticket->createTicket($event,$customer);
         return redirect()->route('events')->with('success', 'Add Cart Successful');
     }
+
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class, 'userId');
+    }
+
+    public function events()
+    {
+        return $this->hasManyThrough(Event::class, Ticket::class, 'userId', 'id', 'id', 'eventId');
+    }
 }

@@ -66,56 +66,19 @@
                             @if($ticket->ticketStatus === TicketStatus::INACTIVE)
                                 <a href="{{ route('myCart.purchase' , $ticket->id) }}" class="bg-yellow-500 text-white py-1 px-3 rounded hover:bg-yellow-600 transition duration-200 font-semibold"> Complete Purchase </a>
                             @elseif($ticket->ticketStatus === TicketStatus::ACTIVE)
-                                <a href="javascript:void(0)" onclick="showRefundConfirmationModal({{ $ticket->id }})" class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-700 transition duration-200 font-semibold">Refund</a>
-                            @endif
-                                <!-- maybe we use it in Refund Functional Requirement -->
-                            {{--
-                                <button type="button" class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600 transition duration-200 font-semibold" onclick="showConfirmationModal('{{ $ticket->id }}')">
-                                    Cancel
-                                </button>
-                                <form id="delete-form-{{ $ticket->id }}" action="{{ route('ticket.delete', $ticket->id) }}" method="POST" class="hidden">
+                                <form method="post" action="{{ route('myCart.refund' , $ticket->id) }}" onsubmit="alert('are u sure ?')">
                                     @csrf
                                     @method('delete')
+                                    <button class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-700 transition duration-200 font-semibold">Refund</button>
                                 </form>
-                            --}}
+                            @endif
                         </td>
                     </tr>
                     @endforeach
                 </tbody>
             </table>
-
-            <div id="confirmation-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
-                <div class="bg-white rounded-lg p-6 shadow-lg transform  transition-transform duration-500 ease-in-out" id="modal-content">
-                    <h2 class="text-lg font-bold mb-4">Are you sure you want to refund this ticket?</h2>
-                    <div class="flex justify-end">
-                        <a href="{{ route('myCart.refund' , $ticket->id) }}" id="confirm-delete" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="submitDeleteForm()">Delete</a>
-                        <a id="cancel-delete" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded ml-2" onclick="hideConfirmationModal()">Cancel</a>
-                    </div>
-                </div>
-            </div>
         </div>
         @endif
     @endauth
-    <script>
-        let refundFormId;
 
-        function showRefundConfirmationModal(ticketId) {
-            // Set the ID of the form to refund
-            refundFormId = 'refund-form-' + ticketId;
-            // Show the modal
-            document.getElementById('confirmation-modal').classList.remove('hidden');
-        }
-
-        function submitRefundForm() {
-            // Submit the form for refund
-            document.getElementById(refundFormId).submit();
-            hideConfirmationModal();
-        }
-
-        function hideConfirmationModal() {
-            // Hide the modal
-            document.getElementById('confirmation-modal').classList.add('hidden');
-        }
-
-    </script>
 </x-layout>

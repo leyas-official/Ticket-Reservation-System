@@ -2,6 +2,7 @@
 
 namespace App\Models\Event;
 
+use App\Models\Ticket\Ticket;
 use Illuminate\Database\Eloquent\Model;
 
 class Event extends Model
@@ -58,9 +59,9 @@ class Event extends Model
         return $this->hasone(Sports::class);
     }
 
-    // eventTypeId Belongs To eventType
-    public function eventType()
+    public function tickets()
     {
-        return $this->belongsTo(EventType::class, 'eventTypeId');
+        return $this->hasMany(Ticket::class , 'eventId');
     }
+
 }

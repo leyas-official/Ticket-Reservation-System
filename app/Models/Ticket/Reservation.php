@@ -45,7 +45,7 @@ class Reservation
         $models = [
             'Sadad' => Sadad::class,
             'MobiCash' => MobiCash::class,
-            'Edf3li' => Idfali::class,
+            'Idfali' => Idfali::class,
         ];
 
         if (array_key_exists($paymentType, $models)) {
@@ -63,7 +63,7 @@ class Reservation
         try {
             $paymentType = $ticket->payment->paymentType;
             $payment = self::getPaymentProcessor($paymentType);
-            if ($payment && $payment->processRefund()) {
+            if ($payment) {
                 $payment->updateToRefunded($ticket);
                 return redirect()->route('myCart')->with('success', 'Refund successful to your ' . $paymentType . ' account.');
             } else {
