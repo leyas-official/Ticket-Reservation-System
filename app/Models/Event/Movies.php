@@ -14,6 +14,7 @@ class Movies extends Event
         'eventId',
     ];
 
+    //main method responsible for storing and adding movies instances into database
     public static function addEventMovies(Request $request) {
         $event = self::validation($request);
         try {
@@ -24,6 +25,7 @@ class Movies extends Event
         }
     }
 
+    //main method responsible for updating movies instances into database
     public static function editEventMovies($request) {
         $event = self::validation($request);
         try {
@@ -35,9 +37,10 @@ class Movies extends Event
         }
     }
 
-    public static function updateEvent($request) {
+    //updates the saved data in the database
+    public static function updateEvent($request, Movies $movie) {
         try {
-            $movie = Event::update([
+            $movie->events->update([
                 'name' => $request['name'],
                 'description' => $request['description'],
                 'date' => $request['date'],
@@ -48,7 +51,7 @@ class Movies extends Event
                 'numberOfTicket' => $request['numberOfTicket'],
             ]);
 
-            return $model->update([
+            return $movie->update([
                 'theaterNumber' => $request['theaterNumber'],
                 'director' => $request['director'],
                 'genre' => $request['director'],
@@ -72,6 +75,7 @@ class Movies extends Event
 
 
 
+    // validates data and returns it to form page if data is invalid
     public static function validation($request)
     {
         return $request->validate([
@@ -90,10 +94,14 @@ class Movies extends Event
         ]);
     }
 
+
+    // creates an instance of event and saves it into the database
+    // also creates an instance of movie and saves it into the database
+    // now that may sound weird but that's just how laravel works
+    // it automatically creates these instances before it saves into the database
     public static function createEvent($event)
     {
-
-
+        try {
             $movie = Event::create([
                 'name' => $event['name'],
                 'description' => $event['description'],
@@ -104,10 +112,6 @@ class Movies extends Event
                 'price' => $event['price'],
                 'numberOfTicket' => $event['numberOfTicket'],
             ]);
-
-
-
-        try {
 
             return self::create([
                 'eventId' => $movie->id,
@@ -132,10 +136,12 @@ class Movies extends Event
         }
     }
 
+    // retrieve a record by ID
     public function getTypeDataById($id){
         return self::where('eventId', $id)->first();
     }
 
+    //database relationship
     public function events(){
         return $this->belongsTo(Event::class, 'eventId');
     }

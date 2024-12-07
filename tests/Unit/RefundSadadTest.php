@@ -42,14 +42,6 @@ class RefundSadadTest extends TestCase
             'type' => 'sport',
         ]);
 
-        // بيانات الطلب (Request)
-        $request = new \Illuminate\Http\Request([
-            'fullName' => $user->name,
-            'phoneNumber' => $user->phone,
-            'cardExpiration' => now()->addMonth()->toDateString(),
-            'discountType' => 'students',
-        ]);
-
         $paymentData = [
             'name' => $user->name,
             'amount' => $event->price,
@@ -88,13 +80,13 @@ class RefundSadadTest extends TestCase
 
         // إنشاء حدث
         $event = Event::create([
-            'name' => 'Test Event',
-            'price' => 100,
+            'name' => 'Festival',
+            'price' => 1000,
             'time' => now()->addDays(10)->format('H:i:s'),
             'description' => 'This is a test event description.',
             'date' => now()->addDays(10)->toDateString(),
             'locationId' => 1,
-            'numberOfTicket' => 30,
+            'numberOfTicket' => 200,
             'type' => 'movie',
         ]);
 
