@@ -13,19 +13,8 @@ use phpDocumentor\Reflection\Types\True_;
 use Illuminate\Http\Request;
 
 
-class Sadad extends Model implements Payment
+class Sadad extends Payment
 {
-    protected $table = 'payments';
-
-    protected $fillable = [
-        'name',
-        'amount',
-        'paymentType',
-        'paymentDate',
-        'ticketId',
-        'status',
-    ];
-
     //fake methods
     public function processPayment()
     {
@@ -35,30 +24,6 @@ class Sadad extends Model implements Payment
     public function processRefund()
     {
         return True;
-    }
-
-    public function getAllPayment()
-    {
-        // TODO: Implement getAllPayment() method.
-    }
-
-
-
-    //main method responsible for storing payments into database
-    public function handleRequest(Request $request, $ticket)
-    {
-        $discountType = $request->discountType;
-        $amount = self::checkDiscount($discountType, $ticket);
-        try {
-            if(self::processPayment()){
-                self::store($request,$ticket,$amount);
-                return true;
-            }else{
-                return false;
-            }
-        }  catch (\Exception $e){
-            dd($e->getMessage());
-        }
     }
 
     // validates data and returns it to form page if data is invalid
@@ -77,67 +42,7 @@ class Sadad extends Model implements Payment
         return $validator->validated(); // Return validated data if successful
     }
 
-    // this creates and saves an instance of payment into the database
-    // also it updates the ticket status from INACTIVE to ACTIVE after successful purchase
-    public static function store($request,$ticket,$amount)
-    {
-        try {
-            $row = self::create([
-                'name' => $ticket->user->name,
-                'amount' => $amount,
-                'paymentDate' => now(),
-                'paymentType' => 'Sadad',
-                'status' => paymentStatus::PAID,
-            ]);
 
-            $ticket->update([
-                'ticketStatus' => ticketStatus::ACTIVE,
-                'payment_id' => $row->id,
-            ]);
 
-        }catch (\Illuminate\Database\QueryException $e) {
-            // This will catch database-related exceptions
-            dd(response()->json([
-                'error' => 'Database error occurred.',
-                'message' => $e->getMessage(),
-            ], 500)) ; // Return a 500 Internal Server Error with the message
-        } catch (\Exception $e) {
-            // This will catch other general exceptions
-            dd(response()->json([
-                'error' => 'An unexpected error occurred.',
-                'message' => $e->getMessage(),
-            ], 500));
-        }
-    }
 
-    // this checks what type of discount the user chosen in the form
-    // it creates an instance of discount based on the users discount type dynamically
-    public static function checkDiscount($discountType,$ticket)
-    {
-        $discountHandlers = [
-            'seniors' => DiscountSeniors::class,
-            'students' => DiscountStudent::class,
-            'military' => DiscountMilitary::class,
-        ];
-
-        if (isset($discountHandlers[$discountType])) {
-            $handler = new $discountHandlers[$discountType];
-            return $handler->makeDiscount($ticket->event->price);
-        }
-
-        return $ticket->event->price;
-    }
-
-    public function updateToRefunded($ticket): void
-    {
-                $ticket->payment->status = paymentStatus::REFUNDED;
-                $ticket->payment->save();
-                $ticket->delete();
-    }
-
-    // database relationship
-    public function tickets()
-    {
-        return $this->hasMany(Ticket::class);
-    }
 }

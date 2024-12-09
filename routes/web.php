@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Event\Rate;
 use App\Models\Report;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -27,7 +28,16 @@ Route::post('/signIn', [Customer::class , 'signIn'])->name('signIn');
 
 Route::get('/signOut', [Customer::class, 'signOut'])->name('signOut');
 
+Route::get('/Rate/index', function () {
+    $allRates = new Rate();
+    $allRates = $allRates->getAllRatings();
 
+    dd($allRates);
+
+
+
+    return view('Rate.index');
+});
 
 Route::get('/register', function () {
     return view('auth.signUp');

@@ -17,6 +17,7 @@ class Event extends Model
         'numberOfTicket',
         'locationId',
         'type',
+        'endDate'
     ];
 
     //retrieves all events for view
@@ -39,6 +40,7 @@ class Event extends Model
             'type' => 'required|string|max:255',
             'price' => 'required|numeric',
             'numberOfTicket' => 'required|integer|min:1',
+            'endDate' => 'required|date|after:today',
         ]);
     }
 

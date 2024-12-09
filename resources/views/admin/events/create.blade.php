@@ -52,6 +52,14 @@
                     @enderror
                 </div>
                 <div>
+                    <label for="endDate" class="block text-lg font-semibold text-gray-800">Event End Date</label>
+                    <input type="date" id="endDate" name="endDate" required
+                           class="w-full border @error('endDate') border-red-500 border-gray-300 @enderror p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" value="{{ old('endDate') }}">
+                    @error('endDate')
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div>
                     <label for="time" class="block text-lg font-semibold text-gray-800">Event Time</label>
                     <input type="time" id="time" name="time" required
                            class="w-full border @error('time') border-red-500 border-gray-300 @enderror p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" value="{{ old('time') }}">

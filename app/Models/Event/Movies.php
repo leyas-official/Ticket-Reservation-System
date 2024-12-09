@@ -14,7 +14,7 @@ class Movies extends Event
         'eventId',
     ];
 
-    //main method responsible for storing and adding movies instances into database
+    //main method responsible for storing and adding movie instances into the database
     public static function addEventMovies(Request $request) {
         $event = self::validation($request);
         try {
@@ -25,12 +25,11 @@ class Movies extends Event
         }
     }
 
-    //main method responsible for updating movies instances into database
-    public static function editEventMovies($request) {
-        $event = self::validation($request);
+    //main method responsible for updating movie instances into the database
+    public static function editEventMovies($request, Movies $data) {
+        $validatedData = self::validation($request);
         try {
-            self::updateEvent($event);
-//            return redirect()->route('admin.events')->with('success', 'Event has been added Successful');
+            self::updateEvent($validatedData, $data);
         } catch (\Exception $e) {
             \Log::error('Failed to add event: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Failed to add the event. Please try again.');
@@ -49,9 +48,10 @@ class Movies extends Event
                 'type' => $request['type'],
                 'price' => $request['price'],
                 'numberOfTicket' => $request['numberOfTicket'],
+                'endDate' => $request['endDate'],
             ]);
 
-            return $movie->update([
+            $movie->update([
                 'theaterNumber' => $request['theaterNumber'],
                 'director' => $request['director'],
                 'genre' => $request['director'],
@@ -81,7 +81,8 @@ class Movies extends Event
         return $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string|min:10',
-            'date' => 'required|date|after_or_equal:today',
+            'date' => 'required|date',
+            'endDate' => 'required|date',
             'time' => 'required|date_format:H:i',
             'location' => 'required|integer|exists:locations,id',
             'type' => 'required|string|max:255',
@@ -111,6 +112,7 @@ class Movies extends Event
                 'type' => $event['type'],
                 'price' => $event['price'],
                 'numberOfTicket' => $event['numberOfTicket'],
+                'endDate' => $event['endDate'],
             ]);
 
             return self::create([

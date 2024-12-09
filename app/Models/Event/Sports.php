@@ -17,8 +17,9 @@ class Sports extends Event
     ];
 
 
-    //main method responsible for storing and adding sports instances into database
+    //main method responsible for storing and adding sports instances into the database
     public static function addEventSports(Request $request) {
+
         $event = self::validation($request);
         try {
             self::createEvent($event);
@@ -28,7 +29,7 @@ class Sports extends Event
         }
     }
 
-    //main method responsible for updating sports instances into database
+    //main method responsible for updating sports instances into the database
     public static function editEventSports($request, Sports $data) {
         $validatedData = self::validation($request);
         try {
@@ -45,7 +46,8 @@ class Sports extends Event
         return  $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string|min:10',
-            'date' => 'required|date|after_or_equal:today',
+            'date' => 'required|date',
+            'endDate' => 'required|date',
             'time' => 'required|date_format:H:i',
             'location' => 'required|integer|exists:locations,id',
             'type' => 'required|string|max:255',
@@ -70,6 +72,7 @@ class Sports extends Event
                 'type' => $request['type'],
                 'price' => $request['price'],
                 'numberOfTicket' => $request['numberOfTicket'],
+                'endDate' => $request['endDate'],
             ]);
 
             $data->update([
@@ -110,6 +113,7 @@ class Sports extends Event
                     'type' => $event['type'],
                     'price' => $event['price'],
                     'numberOfTicket' => $event['numberOfTicket'],
+                    'endDate' => $event['endDate'],
                 ]);
 
                 return self::create([
