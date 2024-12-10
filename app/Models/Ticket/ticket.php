@@ -38,17 +38,18 @@ class Ticket extends Model
          return Ticket::where('userId', $id)->get();
     }
 
-    //returns ticket by its ID method
-    public function getTicketByID($id) {
-        return Ticket::where('id', $id)->first();
+    public function getTicketsForMonth($startOfMonth, $endOfMonth)
+    {
+        return Ticket::whereHas('event', function ($query) use ($startOfMonth, $endOfMonth) {
+            $query->whereBetween('date', [$startOfMonth, $endOfMonth]);
+        })->get();
     }
 
-    public function getTicketByEvent($id) {
-        return Ticket::where('eventId', $id)->get();
-    }
-
-    public function changeTicketStatusToUsed(){
-
+    public function calculateTotalTicketPrice($tickets)
+    {
+        return $tickets->sum(function ($ticket) {
+            return $ticket->event->price; // Assuming event has a 'price' column
+        });
     }
 
 

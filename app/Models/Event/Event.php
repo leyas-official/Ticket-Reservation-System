@@ -44,6 +44,10 @@ class Event extends Model
         ]);
     }
 
+    public function getEventsForMonth($startOfMonth, $endOfMonth)
+    {
+        return Event::whereBetween('date', [$startOfMonth, $endOfMonth])->get();
+    }
 
 
     // database relationships

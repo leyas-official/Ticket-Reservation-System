@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\Event\Rate;
-use App\Models\Report;
+use App\Models\Report\Report;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\Event\Event;
@@ -249,9 +249,14 @@ Route::middleware(['auth', 'admin'])->group(function () {
     // Delete Event Type
     Route::delete('Admin/EventTypes/{eventType}' , [Admin::class , 'deleteEventType'])->name('admin.eventTypes.delete');
 
-    Route::get('/Admin/Reports', [Report::class, 'monthlyReport'])->name('admin.reports');
+// عرض التقرير الشهري
+    Route::get('/Admin/Reports', function () {
+        return Report::getInstance()->monthlyReport();
+    })->name('admin.reports');
 
-    Route::get('/download-report', [Report::class, 'downloadReport'])->name('downloadReport');
-
+// تنزيل التقرير
+    Route::get('/download-report', function () {
+        return Report::getInstance()->downloadReport();
+    })->name('downloadReport');
 });
 

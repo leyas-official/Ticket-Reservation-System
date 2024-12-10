@@ -30,6 +30,15 @@ class Customer extends Person
         ]);
     }
 
+    public function getCustomersForMonth($startOfMonth, $endOfMonth)
+    {
+        return Customer::whereHas('tickets', function ($query) use ($startOfMonth, $endOfMonth) {
+            $query->whereHas('event', function ($query) use ($startOfMonth, $endOfMonth) {
+                $query->whereBetween('date', [$startOfMonth, $endOfMonth]);
+            });
+        })->get();
+    }
+
     public function addToCart(Event $event ,Customer $customer) {
         $ticket = new Ticket();
         $ticket->createTicket($event,$customer);

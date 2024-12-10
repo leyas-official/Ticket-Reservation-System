@@ -14,14 +14,6 @@
 <div class="flex-1 p-10 ml-56">
     <h2 class="text-3xl font-semibold">Monthly Report</h2>
     <p class="mt-4 text-gray-600">View the key statistics and reports for the selected month.</p>
-    <div class="bg-white p-6 rounded-lg shadow-md mt-6">
-        <form method="GET" action="{{ route('admin.reports') }}">
-            <input type="month" id="month" name="month" value="{{ request('month', now()->format('Y-m')) }}"
-                   class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-            <button type="submit" class="mt-2 p-2 bg-blue-500 text-white rounded-md">Filter</button>
-        </form>
-
-    </div>
 
     <!-- Reports Summary -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
