@@ -22,7 +22,6 @@ class Report
         if (self::$instance === null) {
             self::$instance = new Report();
         }
-
         return self::$instance;
     }
 

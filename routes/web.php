@@ -29,14 +29,14 @@ Route::post('/signIn', [Customer::class , 'signIn'])->name('signIn');
 Route::get('/signOut', [Customer::class, 'signOut'])->name('signOut');
 
 Route::get('/Rate/index', function () {
-    $allRates = new Rate();
-    $allRates = $allRates->getAllRatings();
+    $rates = new Event();
+    $endedEvents = $rates->getAllEndedEvents();
 
-    dd($allRates);
+    return view('Rate.index', ['events' => $endedEvents]);
+});
 
-
-
-    return view('Rate.index');
+Route::get('/Rate/eventReviews', function (Event $event) {
+    return view('Rate.Reviews', ['events' => $event]);
 });
 
 Route::get('/register', function () {

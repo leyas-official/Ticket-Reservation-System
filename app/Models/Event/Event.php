@@ -3,6 +3,7 @@
 namespace App\Models\Event;
 
 use App\Models\Ticket\Ticket;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Event extends Model
@@ -17,7 +18,8 @@ class Event extends Model
         'numberOfTicket',
         'locationId',
         'type',
-        'endDate'
+        'endDate',
+
     ];
 
     //retrieves all events for view
@@ -49,8 +51,18 @@ class Event extends Model
         return Event::whereBetween('date', [$startOfMonth, $endOfMonth])->get();
     }
 
+    public function getAllEndedEvents(){
+        $today = Carbon::today(); // Get today's date
+        return Event::where('endDate', '<', $today)->get();
+    }
+
 
     // database relationships
+    public function rate()
+    {
+        return $this->hasMany(Rate::class, 'eventId');
+    }
+
     public function location()
     {
         return $this->belongsTo(Location::class, 'locationId');

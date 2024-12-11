@@ -3,6 +3,7 @@
 namespace App\Models\Event;
 
 use Illuminate\Database\Eloquent\Model;
+use carbon\carbon;
 
 class Rate extends Model
 {
@@ -14,14 +15,17 @@ class Rate extends Model
         'description',
     ];
 
-    public function store($request){
+    public function storeRate($request){
 
     }
 
     //returns all ratings from this database
-    public function getAllRatings(){
-        return Event::where('endDate', '<', now())->get();
+    public function getAllRatings($endedEvents){
+
     }
 
-
+    public function event()
+    {
+        return $this->belongsTo(Event::class);
+    }
 }
