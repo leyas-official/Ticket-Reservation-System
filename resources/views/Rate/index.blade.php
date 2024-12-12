@@ -33,7 +33,7 @@
                         @endphp
                     </p>
                     <span class="w-1 h-1 mx-1.5 bg-gray-500 rounded-full dark:bg-gray-400"></span>
-                    <a href="{{ route('Rate.eventRates', ['eventId' => $eventId])}}" class="text-sm font-medium text-gray-900 underline hover:no-underline dark:text-black">{{count($event->rate)}} reviews</a>
+                    <a href="{{ route('userReviews', ['event' => $event->id])}}" class="text-sm font-medium text-gray-900 underline hover:no-underline dark:text-black">{{count($event->rate)}} reviews</a>
                 </div>
             </li>
         @endforeach

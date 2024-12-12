@@ -2,8 +2,10 @@
 
 namespace App\Models\Event;
 
+use App\Models\People\Customer;
 use Illuminate\Database\Eloquent\Model;
 use carbon\carbon;
+use Illuminate\Support\Facades\Auth;
 
 class Rate extends Model
 {
@@ -15,13 +17,31 @@ class Rate extends Model
         'description',
     ];
 
-    public function storeRate($request){
-
+    public function hundleStoreRateProcedure($request, $event){
+        $validatedData = self::validate($request);
+        self::storeRate($validatedData, $event);
     }
 
-    //returns all ratings from this database
-    public function getAllRatings($endedEvents){
+    public function storeRate($validatedData, $event){
+        self::create([
+            'NumberOfStars' => $validatedData['NumberOfStars'],
+            'userID' => Auth::user()->id,
+            'eventID' => $event->id,
+            'description' => $validatedData['description'],
+        ]);
+    }
 
+
+    public function validate($request){
+        return $request->validate([
+            'NumberOfStars' => 'required|integer|between:1,5',
+            'description' => 'required|string',
+        ]);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(Customer::class, 'userId');
     }
 
     public function event()

@@ -35,9 +35,20 @@ Route::get('/Rate/index', function () {
     return view('Rate.index', ['events' => $endedEvents]);
 });
 
-Route::get('/Rate/eventReviews', function (Event $event) {
-    return view('Rate.Reviews', ['events' => $event]);
-});
+Route::get('/Rate/eventReviews/{event}', function (Event $event) {
+    return view('Rate.userReviews', ['event' => $event]);
+})->name('userReviews');
+
+Route::post('/Rate/reviewForm/{event}', function (Request $request,Event $event) {
+    $submittedRate = new Rate();
+    $submittedRate->hundleStoreRateProcedure($request, $event);
+
+    return view('Rate.userReviews', ['event' => $event]);
+})->name('storeReview');
+
+Route::get('/Rate/userReviews/{event}', function (Event $event) {
+    return view('Rate.reviewForm', ['event' => $event]);
+})->name('reviewSubmit');
 
 Route::get('/register', function () {
     return view('auth.signUp');

@@ -4,6 +4,7 @@ namespace App\Models\People;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Event\Event;
+use App\Models\Event\Rate;
 use App\Models\Ticket\Ticket;
 use Illuminate\Foundation\Auth\Customer as Authenticatable;
 use Illuminate\Support\Facades\Auth;
@@ -43,6 +44,11 @@ class Customer extends Person
         $ticket = new Ticket();
         $ticket->createTicket($event,$customer);
         return redirect()->route('events')->with('success', 'Add Cart Successful');
+    }
+
+    public function rate()
+    {
+        return $this->hasone(Rate::class);
     }
 
     public function tickets()

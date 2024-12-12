@@ -33,7 +33,7 @@ class Event extends Model
     //data validation
     public static function validation($request)
     {
-        return  $request->validate([
+        return $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string|min:10',
             'date' => 'required|date|after_or_equal:today',
