@@ -3,6 +3,7 @@
 namespace App\Models\Event;
 
 use App\Models\People\Customer;
+use App\Models\Ticket\Ticket;
 use Illuminate\Database\Eloquent\Model;
 use carbon\carbon;
 use Illuminate\Support\Facades\Auth;
@@ -18,8 +19,16 @@ class Rate extends Model
     ];
 
     public function hundleStoreRateProcedure($request, $event){
-        $validatedData = self::validate($request);
-        self::storeRate($validatedData, $event);
+        $obj = new Ticket();
+        $flag = $obj->checkIfTicketPurchased($event, Auth::user()->id);
+
+        if ($flag) {
+            $validatedData = self::validate($request);
+            self::storeRate($validatedData, $event);
+            return redirect()->route('Rate.index')->with('success', 'Review Submitted Successfully.');
+        } else{
+            return redirect()->route('Rate.index')->with('error', 'You did not purchase a ticket to this event.');
+        }
     }
 
     public function storeRate($validatedData, $event){
@@ -46,6 +55,6 @@ class Rate extends Model
 
     public function event()
     {
-        return $this->belongsTo(Event::class);
+        return $this->belongsTo(Event::class, 'eventId');
     }
 }

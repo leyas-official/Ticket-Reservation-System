@@ -24,6 +24,9 @@
                  </x-nav-link>
 {{--                <x-nav-link href="/myCart" :active="request()->is('myCart')" class="text-gray-300 hover:bg-yellow-600 hover:text-white">My Tickets</x-nav-link>--}}
                 <x-nav-link href="/about" :active="request()->is('about')" class="text-gray-300 hover:bg-yellow-600 hover:text-white">About</x-nav-link>
+                <x-nav-link href="{{ route('Rate.index') }}" :active="request()->routeIs('events')" class="text-gray-300 hover:bg-yellow-600 hover:text-white">
+                    Ratings
+                </x-nav-link>
             </div>
           </div>
         </div>

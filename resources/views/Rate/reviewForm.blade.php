@@ -9,21 +9,7 @@
     <title>Submit Review</title>
 </head>
 <body class="bg-gray-200">
-@if(session('success'))
-    <div id="success-message" class="relative mb-4 p-3 bg-green-100 text-green-700 border border-green-300 rounded-lg">
-        <button onclick="document.getElementById('success-message').style.display='none'" class="absolute top-2 right-2 text-green-700 hover:text-green-900 focus:outline-none text-lg">
-            &times;
-        </button>
-        {{ session('success') }}
-    </div>
-@elseif (session('error'))
-    <div id="success-message" class="relative mb-4 p-3 bg-red-100 text-red-700 border border-red-300 rounded-lg">
-        <button onclick="document.getElementById('success-message').style.display='none'" class="absolute top-2 right-2 text-red-700 hover:text-red-900 focus:outline-none text-lg">
-            &times;
-        </button>
-        {{ session('success') }}
-    </div>
-@endif
+
 <div class="max-w-xl mx-auto mt-16 bg-white rounded-xl shadow-md p-8">
     <h2 class="text-3xl font-extrabold text-center text-blue-800 mb-6">Submit Your Review</h2>
     <form action="{{ route('storeReview', [$event->id]) }}" method="POST" class="space-y-6">

@@ -31,9 +31,8 @@ Route::get('/signOut', [Customer::class, 'signOut'])->name('signOut');
 Route::get('/Rate/index', function () {
     $rates = new Event();
     $endedEvents = $rates->getAllEndedEvents();
-
     return view('Rate.index', ['events' => $endedEvents]);
-});
+})->name('Rate.index');
 
 Route::get('/Rate/eventReviews/{event}', function (Event $event) {
     return view('Rate.userReviews', ['event' => $event]);

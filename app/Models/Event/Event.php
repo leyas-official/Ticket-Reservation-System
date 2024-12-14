@@ -5,6 +5,7 @@ namespace App\Models\Event;
 use App\Models\Ticket\Ticket;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Event extends Model
 {
@@ -55,6 +56,7 @@ class Event extends Model
         $today = Carbon::today(); // Get today's date
         return Event::where('endDate', '<', $today)->get();
     }
+
 
 
     // database relationships

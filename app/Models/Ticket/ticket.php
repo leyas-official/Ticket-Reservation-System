@@ -45,6 +45,11 @@ class Ticket extends Model
         })->get();
     }
 
+    public function checkIfTicketPurchased($event, $userId){
+        return true;
+    }
+
+
     public function calculateTotalTicketPrice($tickets)
     {
         return $tickets->sum(function ($ticket) {

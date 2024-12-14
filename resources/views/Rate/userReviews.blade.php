@@ -7,6 +7,21 @@
             Submit your review
         </a>
     </div>
+    @if(session('success'))
+        <div id="success-message" class="relative mb-4 p-3 bg-green-100 text-green-700 border border-green-300 rounded-lg">
+            <button onclick="document.getElementById('success-message').style.display='none'" class="absolute top-2 right-2 text-green-700 hover:text-green-900 focus:outline-none text-lg">
+                &times;
+            </button>
+            {{ session('success') }}
+        </div>
+    @elseif (session('error'))
+        <div id="success-message" class="relative mb-4 p-3 bg-red-100 text-red-700 border border-red-300 rounded-lg">
+            <button onclick="document.getElementById('success-message').style.display='none'" class="absolute top-2 right-2 text-red-700 hover:text-red-900 focus:outline-none text-lg">
+                &times;
+            </button>
+            {{ session('success') }}
+        </div>
+    @endif
     <ul role="list" class="divide-y divide-gray-100 ">
         @foreach($event->rate as $rate)
             <li class="gap-x-6 py-5 bg-white px-10 mb-5 rounded-lg">
