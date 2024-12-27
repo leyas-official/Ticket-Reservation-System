@@ -16,30 +16,6 @@ class Sports extends Event
         'eventId',
     ];
 
-
-    //main method responsible for storing and adding sports instances into the database
-    public static function addEventSports(Request $request) {
-
-        $event = self::validation($request);
-        try {
-            self::createEvent($event);
-        } catch (\Exception $e) {
-            \Log::error('Failed to add event: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Failed to add the event. Please try again.');
-        }
-    }
-
-    //main method responsible for updating sports instances into the database
-    public static function editEventSports($request, Sports $data) {
-        $validatedData = self::validation($request);
-        try {
-            self::updateEvent($validatedData, $data);
-        } catch (\Exception $e) {
-            \Log::error('Failed to add event: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Failed to add the event. Please try again.');
-        }
-    }
-
     // validates data and returns it to form page if data is invalid
     public static function validation($request)
     {

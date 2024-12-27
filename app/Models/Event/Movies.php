@@ -14,27 +14,6 @@ class Movies extends Event
         'eventId',
     ];
 
-    //main method responsible for storing and adding movie instances into the database
-    public static function addEventMovies(Request $request) {
-        $event = self::validation($request);
-        try {
-            self::createEvent($event);
-        } catch (\Exception $e) {
-            \Log::error('Failed to add event: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Failed to add the event. Please try again.');
-        }
-    }
-
-    //main method responsible for updating movie instances into the database
-    public static function editEventMovies($request, Movies $data) {
-        $validatedData = self::validation($request);
-        try {
-            self::updateEvent($validatedData, $data);
-        } catch (\Exception $e) {
-            \Log::error('Failed to add event: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Failed to add the event. Please try again.');
-        }
-    }
 
     //updates the saved data in the database
     public static function updateEvent($request, Movies $movie) {

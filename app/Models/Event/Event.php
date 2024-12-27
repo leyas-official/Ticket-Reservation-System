@@ -5,6 +5,7 @@ namespace App\Models\Event;
 use App\Models\Ticket\Ticket;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class Event extends Model
@@ -23,28 +24,34 @@ class Event extends Model
 
     ];
 
+    //main method responsible for storing and adding movie instances into the database
+    public static function addEvent(Request $request) {
+        $event = self::validation($request);
+        try {
+            self::createEvent($event);
+        } catch (\Exception $e) {
+            \Log::error('Failed to add event: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Failed to add the event. Please try again.');
+        }
+    }
+
+    //main method responsible for updating movie instances into the database
+    public static function editEvent($request, $data) {
+        $validatedData = self::validation($request);
+        try {
+            self::updateEvent($validatedData, $data);
+        } catch (\Exception $e) {
+            \Log::error('Failed to add event: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Failed to add the event. Please try again.');
+        }
+    }
+
     //retrieves all events for view
     public function getAllEvents()
     {
         return Event::query()
         ->where('name','like','%'.request()->input('search').'%')
         ->get();
-    }
-
-    //data validation
-    public static function validation($request)
-    {
-        return $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string|min:10',
-            'date' => 'required|date|after_or_equal:today',
-            'time' => 'required|date_format:H:i',
-            'location' => 'required|integer|exists:locations,id',
-            'type' => 'required|string|max:255',
-            'price' => 'required|numeric',
-            'numberOfTicket' => 'required|integer|min:1',
-            'endDate' => 'required|date|after:today',
-        ]);
     }
 
     public function getEventsForMonth($startOfMonth, $endOfMonth)
@@ -56,6 +63,7 @@ class Event extends Model
         $today = Carbon::today(); // Get today's date
         return Event::where('endDate', '<', $today)->get();
     }
+
 
 
 

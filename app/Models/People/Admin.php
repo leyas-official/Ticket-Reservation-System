@@ -29,13 +29,8 @@ class Admin extends Person
             $modelClass = $models[$type];
             $model = new $modelClass();
 
-            $methodName = 'addEvent' . ucfirst($type);
-            if (method_exists($model, $methodName)) {
-                $model->$methodName($request);
-                return redirect()->route('admin.events')->with('success', 'Event has been added Successful');
-            }else{
-                return redirect()->back()->with('error', 'Failed to add the event. Please try again.');
-            }
+            $model->addEvent($request);
+            return redirect()->route('admin.events')->with('success', 'Event has been added Successful');
         } else{
             return redirect()->back()->with('error', 'Failed to add the event. Please try again.');
         }
